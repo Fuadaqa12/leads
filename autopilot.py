@@ -165,50 +165,63 @@ def make_messages(lead, demo_url):
 # ---------- очередь (дашборд) ----------
 
 def render_queue(leads, base_url):
-    e = html.escape
-    items = sorted(leads.values(), key=lambda l: (l["added"], bool(l["wa"]), l["reviews"] or 0), reverse=True)
-    cards = []
-    for l in items:
+    items = []
+    for l in sorted(leads.values(), key=lambda l: (bool(l["wa"]), l["reviews"] or 0, l["added"]), reverse=True):
         demo = base_url + "sites/" + l["slug"] + "/"
         az, ru = make_messages(l, demo)
-        btns = ""
-        if l["wa"]:
-            btns = (f"<a class='b wa' target='_blank' href='https://wa.me/{l['wa']}?text={urllib.parse.quote(az)}'>WhatsApp AZ</a>"
-                    f"<a class='b wa' target='_blank' href='https://wa.me/{l['wa']}?text={urllib.parse.quote(ru)}'>WhatsApp RU</a>")
-        else:
-            btns = f"<span class='no'>WhatsApp нет, звони: {e(l['phone'] or '—')}</span>"
-        cards.append(f"""<div class="c" data-id="{e(l['id'])}">
-<div class="top"><b>{e(l['name'])}</b><label><input type="checkbox" class="done"> написал</label></div>
-<small>{e(l['category'])} · {e(l['city'])} · {e(str(l['rating'] or '–'))}★ ({l['reviews'] or 0}) · сайт: {e(l['site'])} · найден {e(l['added'])}</small>
-<small>{e(l['address'])}</small>
-<div>{btns}<a class="b" target="_blank" href="{e(demo)}">Демо</a><a class="b" target="_blank" href="{e(l['maps'])}">Карта</a></div>
-</div>""")
-    return f"""<!doctype html><html lang="ru"><head><meta charset="utf-8">
+        items.append({"id": l["id"], "n": l["name"], "c": l["category"], "a": l["address"],
+                      "r": l["rating"], "rv": l["reviews"] or 0, "s": l["site"], "p": l["phone"],
+                      "wa": l["wa"], "d": demo, "m": l["maps"], "az": az, "ru": ru})
+    data = json.dumps(items, ensure_ascii=False).replace("</", "<\\/")
+    return """<!doctype html><html lang="ru"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
 <title>Очередь клиентов</title><style>
-body{{font-family:system-ui,sans-serif;margin:0;padding:16px;background:#f5f5f5;color:#222;max-width:760px;margin:auto}}
-.c{{background:#fff;border-radius:10px;padding:12px;margin:10px 0;box-shadow:0 1px 3px #0001}}
-.c.sent{{opacity:.4}}.top{{display:flex;justify-content:space-between;gap:8px}}small{{display:block;color:#666;margin-top:4px}}
-.b{{display:inline-block;margin:8px 6px 0 0;padding:8px 12px;border-radius:8px;background:#eee;color:#222;text-decoration:none;font-size:14px}}
-.wa{{background:#25d366;color:#fff}}.no{{display:inline-block;margin-top:8px;color:#a00;font-size:14px}}
-.bar{{position:sticky;top:0;background:#f5f5f5;padding:8px 0}}
-</style></head><body>
-<div class="bar"><h2 style="margin:0">Очередь: {len(items)}</h2>
-<small>Сегодня отправлено: <b id="today">0</b> из 25 (больше в день не надо, иначе бан). <label><input type="checkbox" id="hide"> скрыть отправленных</label></small></div>
-{''.join(cards)}
+*{box-sizing:border-box}body{font-family:system-ui,sans-serif;margin:0;background:#f2f2f2;color:#222}
+.w{max-width:520px;margin:auto;padding:16px}
+.top{display:flex;justify-content:space-between;align-items:center;font-size:15px}
+.bar{height:8px;background:#ddd;border-radius:4px;margin:8px 0 16px;overflow:hidden}.bar i{display:block;height:100%;background:#25d366}
+.card{background:#fff;border-radius:16px;padding:20px;box-shadow:0 2px 8px #0001}
+h1{font-size:24px;margin:0 0 6px}.muted{color:#666;font-size:14px;margin:4px 0}
+.msg{background:#f7f7f7;border-radius:10px;padding:12px;font-size:14px;white-space:pre-wrap;margin:14px 0}
+.send{display:block;width:100%;padding:18px;border:0;border-radius:14px;background:#25d366;color:#fff;font-size:20px;font-weight:700;text-align:center;text-decoration:none}
+.row{display:flex;gap:8px;margin-top:10px}.row>*{flex:1;padding:12px;border-radius:10px;border:0;background:#e8e8e8;color:#222;font-size:15px;text-align:center;text-decoration:none}
+.lang button{border:0;padding:6px 12px;border-radius:8px;background:#e8e8e8}.lang .on{background:#222;color:#fff}
+.warn{background:#fff3cd;color:#664d03;padding:12px;border-radius:10px;margin-bottom:12px;font-size:14px}
+.call{background:#1565c0!important;color:#fff!important}
+</style></head><body><div class="w">
+<div class="top"><span>Сегодня: <b id="t">0</b> / 25</span><span class="lang"><button id="laz">AZ</button> <button id="lru">RU</button></span></div>
+<div class="bar"><i id="b"></i></div>
+<div id="app"></div>
+<p class="muted" style="text-align:center;margin-top:16px">Осталось в очереди: <b id="left">0</b> · <a href="#" id="undo">вернуть последнего</a></p>
+</div>
 <script>
-const K='sent_v1';let s={{}};try{{s=JSON.parse(localStorage.getItem(K)||'{{}}')}}catch(e){{}}
-const day=new Date().toISOString().slice(0,10);
-function save(){{try{{localStorage.setItem(K,JSON.stringify(s))}}catch(e){{}};draw()}}
-function draw(){{let n=0;const h=document.getElementById('hide').checked;
-document.querySelectorAll('.c').forEach(c=>{{const v=s[c.dataset.id];c.classList.toggle('sent',!!v);
-c.querySelector('.done').checked=!!v;c.style.display=(h&&v)?'none':'';if(v===day)n++}});
-document.getElementById('today').textContent=n}}
-document.querySelectorAll('.c').forEach(c=>{{
-c.querySelector('.done').onchange=e=>{{if(e.target.checked)s[c.dataset.id]=day;else delete s[c.dataset.id];save()}};
-c.querySelectorAll('.wa').forEach(a=>a.addEventListener('click',()=>{{s[c.dataset.id]=day;save()}}))}});
-document.getElementById('hide').onchange=draw;draw();
-</script></body></html>"""
+const L=__DATA__,LIM=25,day=new Date().toISOString().slice(0,10);
+let st={sent:{},lang:'az',last:[]};try{st=Object.assign(st,JSON.parse(localStorage.getItem('q1')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('q1',JSON.stringify(st))}catch(e){}};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function done(id,how){st.sent[id]=how+':'+day;st.last.push(id);save();setTimeout(draw,300)}
+function draw(){
+ const today=Object.values(st.sent).filter(v=>v==='sent:'+day).length;
+ document.getElementById('t').textContent=today;document.getElementById('b').style.width=Math.min(100,today/LIM*100)+'%';
+ document.getElementById('laz').className=st.lang=='az'?'on':'';document.getElementById('lru').className=st.lang=='ru'?'on':'';
+ const q=L.filter(x=>!st.sent[x.id]);document.getElementById('left').textContent=q.length;
+ const app=document.getElementById('app');
+ if(!q.length){app.innerHTML='<div class="card"><h1>Очередь пуста 🎉</h1><p class="muted">Новые бизнесы появятся завтра утром.</p></div>';return}
+ const x=q[0],m=st.lang=='az'?x.az:x.ru;
+ const warn=today>=LIM?'<div class="warn">Сегодня уже '+today+'. Больше 25 в день не надо, иначе WhatsApp может забанить номер. Продолжи завтра.</div>':'';
+ const btn=x.wa?'<a class="send" id="go" target="_blank" href="https://wa.me/'+x.wa+'?text='+encodeURIComponent(m)+'">Отправить в WhatsApp</a>'
+   :'<a class="send call" id="go" href="tel:'+esc(x.p)+'">Нет WhatsApp, позвонить</a>';
+ app.innerHTML=warn+'<div class="card"><h1>'+esc(x.n)+'</h1><p class="muted">'+esc(x.c)+' · '+(x.r?esc(x.r)+'★ ('+x.rv+')':'без рейтинга')+' · сайт: '+esc(x.s)+'</p><p class="muted">'+esc(x.a)+'</p>'
+  +'<div class="msg">'+esc(m)+'</div>'+btn
+  +'<div class="row"><a href="'+esc(x.d)+'" target="_blank">Демо</a><a href="'+esc(x.m)+'" target="_blank">Карта</a><button id="skip">Пропустить</button></div></div>';
+ document.getElementById('go').onclick=()=>done(x.id,'sent');
+ document.getElementById('skip').onclick=()=>done(x.id,'skip');
+}
+document.getElementById('laz').onclick=()=>{st.lang='az';save();draw()};
+document.getElementById('lru').onclick=()=>{st.lang='ru';save();draw()};
+document.getElementById('undo').onclick=e=>{e.preventDefault();const id=st.last.pop();if(id){delete st.sent[id];save();draw()}};
+draw();
+</script></body></html>""".replace("__DATA__", data)
 
 
 # ---------- главное ----------
