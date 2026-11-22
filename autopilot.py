@@ -334,7 +334,15 @@ def main():
     hunt = "--hunt" in sys.argv  # большой разовый поиск: все категории, больше страниц (для автописем)
     cats = cfg.get("categories", fc.DEFAULT_CATEGORIES) + (cfg.get("hunt_extra_categories", []) if hunt else [])
     pairs = [(c, k) for c in cfg.get("cities", ["Bakı"]) for k in cats]
-    if hunt:  # идём по кругу с места, где остановились в прошлый раз
+    nearby = "--nearby" in sys.argv  # поиск по точкам карты Баку (другой лимит Google)
+    if nearby:
+        grid = [(round(40.34 + i * 0.045, 3), round(49.76 + j * 0.06, 3)) for i in range(4) for j in range(5)]
+        types = list(NEARBY_TYPES)
+        pairs = [(pt, t) for t in types for pt in grid]
+        start = db.get("nearby_cursor", 0) % len(pairs)
+        todo, pages = pairs[start:] + pairs[:start], 1
+        hunt, hunt_max = True, cfg.get("hunt_max_searches", 80)
+    elif hunt:  # идём по кругу с места, где остановились в прошлый раз
         start = db.get("hunt_cursor", 0) % len(pairs)
         todo, pages = pairs[start:] + pairs[:start], cfg.get("hunt_pages", 3)
         hunt_max = cfg.get("hunt_max_searches", 80)
@@ -353,9 +361,15 @@ def main():
     for city, cat in todo:
         if fc.QUOTA_HIT or (hunt and fc.SEARCHES + pages > hunt_max):
             break
-        if hunt:
-            db["hunt_cursor"] = db.get("hunt_cursor", 0) + 1
-        for p in fc.find_places(api_key, city, [cat], pages, cfg.get("lang", "ru")):
+        if nearby:
+            db["nearby_cursor"] = db.get("nearby_cursor", 0) + 1
+            found = fc.find_nearby(api_key, city[0], city[1], cat, cfg.get("lang", "ru"))
+            city, cat = "Bakı", NEARBY_TYPES[cat]
+        else:
+            if hunt:
+                db["hunt_cursor"] = db.get("hunt_cursor", 0) + 1
+            found = fc.find_places(api_key, city, [cat], pages, cfg.get("lang", "ru"))
+        for p in found:
             if p["id"] in leads or p.get("businessStatus") not in (None, "OPERATIONAL"):
                 continue
             site, label = fc.classify_site(p.get("websiteUri"))
@@ -402,6 +416,12 @@ def write_queue(cfg, leads):
 
 PRICE = "50 AZN"
 PHOTOS_PER_LEAD = 4
+NEARBY_TYPES = {
+    "beauty_salon": "салон красоты", "barber_shop": "барбершоп", "nail_salon": "маникюр",
+    "hair_salon": "салон красоты", "car_repair": "автосервис", "car_wash": "автомойка", "dentist": "стоматология",
+    "cafe": "кафе", "bakery": "пекарня", "gym": "фитнес клуб", "florist": "цветочный магазин",
+    "veterinary_care": "ветеринарная клиника", "spa": "салон красоты", "restaurant": "кафе",
+}
 COUNTRY_WORDS = ("Азербайджан", "Azerbaijan", "Azərbaycan")
 
 if __name__ == "__main__":
