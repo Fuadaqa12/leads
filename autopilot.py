@@ -152,6 +152,8 @@ footer{{text-align:center;color:#888;font-size:13px;padding:24px}}
 # ---------- сообщения ----------
 
 def make_messages(lead, demo_url):
+    if lead.get("msg"):  # своё сообщение для особого клиента (оба языка)
+        return lead["msg"], lead["msg"]
     n = lead["name"]
     az = (f"Salam! «{n}» üçün pulsuz kiçik sayt hazırladım, baxın: {demo_url}\n"
           f"Bu sadə demo versiyadır. Bəyənsəniz, tam saytı edərik: öz domeniniz, Google-da görünmə, "
@@ -274,6 +276,9 @@ def main():
             site, label = fc.classify_site(p.get("websiteUri"))
             if site == "есть":
                 continue
+            addr = p.get("formattedAddress", "")
+            if addr and not any(w in addr for w in COUNTRY_WORDS):
+                continue  # Google иногда отдаёт места из других стран (напр. «Кафе Баку» в Казахстане)
             name = (p.get("displayName") or {}).get("text", "")
             lead = {
                 "id": p["id"], "name": name, "slug": make_slug(name, p["id"]),
@@ -305,6 +310,7 @@ def main():
 
 
 PRICE = "50 AZN"
+COUNTRY_WORDS = ("Азербайджан", "Azerbaijan", "Azərbaycan")
 
 if __name__ == "__main__":
     main()
