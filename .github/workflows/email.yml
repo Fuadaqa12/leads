@@ -4,6 +4,10 @@ on:
     - cron: "*/10 * * * *"   # проверка каждые 10 мин; сам скрипт шлёт не чаще раза в 30-45 мин
   workflow_dispatch:
     inputs:
+      hunt:
+        description: "Сначала большой поиск новых клиентов (все категории, 3 страницы) и их почты"
+        type: boolean
+        default: false
       test:
         description: "Только проверить пароль: отправить тестовое письмо самому себе"
         type: boolean
@@ -16,7 +20,7 @@ concurrency:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 40
     steps:
       - name: Есть ли пароль приложения Gmail?
         id: gate
@@ -33,6 +37,7 @@ jobs:
           GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
         run: |
           if [ "${{ inputs.test }}" = "true" ]; then python3 email_outreach.py test; exit 0; fi
+          if [ "${{ inputs.hunt }}" = "true" ]; then pip install -q pillow || true; python3 autopilot.py --hunt; python3 email_outreach.py find 300; fi
           python3 email_outreach.py find
           python3 email_outreach.py send
       - name: Сохранить, кому уже написали
@@ -40,7 +45,7 @@ jobs:
         run: |
           git config user.name "autopilot"
           git config user.email "autopilot@users.noreply.github.com"
-          git add data/emails.json
+          git add data docs
           git diff --cached --quiet && exit 0
           git commit -m "Письма: $(date -u +%F' '%H:%M) UTC"
           for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 5; done
