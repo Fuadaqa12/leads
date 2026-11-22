@@ -361,7 +361,7 @@ def main():
                 "wa": fc.whatsapp_number(p.get("internationalPhoneNumber"), p.get("nationalPhoneNumber")),
                 "address": p.get("formattedAddress", ""), "rating": p.get("rating", ""),
                 "reviews": p.get("userRatingCount", 0), "maps": p.get("googleMapsUri", ""),
-                "site": label or "нет", "added": today,
+                "site": label or "нет", "site_url": p.get("websiteUri", ""), "added": today,
             }
             leads[lead["id"]] = lead
             enrich(lead, p, api_key, budget)
