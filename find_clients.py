@@ -78,6 +78,11 @@ WEAK_SITE_DOMAINS = {
     "wa.me": "WhatsApp", "whatsapp.com": "WhatsApp", "tiktok.com": "TikTok",
     "linktr.ee": "Linktree", "taplink.cc": "Taplink", "taplink.at": "Taplink",
     "t.me": "Telegram", "business.site": "старая Google-визитка", "youtube.com": "YouTube",
+    # бесплатные конструкторы: сайт вроде есть, но слабый, и на нём часто видна почта
+    "wixsite.com": "бесплатный Wix", "tilda.ws": "бесплатная Tilda", "blogspot.com": "Blogspot",
+    "sites.google.com": "Google Sites", "weebly.com": "Weebly", "jimdosite.com": "Jimdo",
+    "webnode.page": "Webnode", "ucoz.net": "uCoz", "ucoz.ru": "uCoz", "mssg.me": "mssg.me",
+    "taplink.ws": "Taplink", "linkr.bio": "ссылка-визитка", "carrd.co": "Carrd", "beacons.ai": "ссылка-визитка",
 }
 
 # Мобильные коды Азербайджана (на них есть WhatsApp). 12 = городской Баку.
