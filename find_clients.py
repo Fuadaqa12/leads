@@ -39,8 +39,31 @@ FIELDS = ",".join([
     "places.googleMapsUri",
     "places.primaryTypeDisplayName",
     "places.businessStatus",
+    # для красивого демо-сайта: координаты, часы, фото, отзывы, описание
+    "places.location",
+    "places.regularOpeningHours",
+    "places.photos",
+    "places.reviews",
+    "places.editorialSummary",
+    "places.addressComponents",
+    "places.addressDescriptor",
+    "places.paymentOptions",
+    "places.parkingOptions",
+    "places.accessibilityOptions",
+    "places.delivery",
+    "places.takeout",
+    "places.outdoorSeating",
+    "places.goodForChildren",
+    "places.reservable",
+    "places.servesBreakfast",
     "nextPageToken",
 ])
+
+DETAILS_FIELDS = ",".join(f.split(".", 1)[1] for f in FIELDS.split(",") if f.startswith("places."))
+
+# Прямоугольник вокруг Азербайджана: Google иногда отдаёт «Кафе Баку» из Казахстана и т.п.
+AZ_BOX = {"rectangle": {"low": {"latitude": 38.3, "longitude": 44.7},
+                        "high": {"latitude": 41.95, "longitude": 50.9}}}
 
 DEFAULT_CATEGORIES = [
     "салон красоты", "барбершоп", "маникюр", "автосервис", "шиномонтаж", "автомойка",
@@ -84,7 +107,8 @@ def load_api_key():
 # ---------- запросы к Google ----------
 
 def search_text(api_key, query, language, page_token=None):
-    body = {"textQuery": query, "languageCode": language, "pageSize": 20}
+    body = {"textQuery": query, "languageCode": language, "pageSize": 20,
+            "locationRestriction": AZ_BOX}
     if page_token:
         body["pageToken"] = page_token
     req = urllib.request.Request(
@@ -104,6 +128,51 @@ def search_text(api_key, query, language, page_token=None):
         detail = e.read().decode("utf-8", "replace")
         sys.exit(f"Ошибка Google API ({e.code}):\n{detail}\n\n"
                  "Чаще всего: не включён 'Places API (New)' или не привязана карта к Billing.")
+
+
+class DailyQuota(Exception):
+    pass
+
+
+def get_details(api_key, place_id, language="ru"):
+    """Подробности одного места (для старых лидов, у которых нет фото/часов/отзывов)."""
+    url = f"https://places.googleapis.com/v1/places/{place_id}?languageCode={language}"
+    req = urllib.request.Request(url, headers={"X-Goog-Api-Key": api_key, "X-Goog-FieldMask": DETAILS_FIELDS})
+    for attempt in range(5):
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                return json.loads(resp.read().decode("utf-8"))
+        except urllib.error.HTTPError as e:
+            body = e.read().decode("utf-8", "replace")
+            if e.code == 429 and "per day" in body:
+                raise DailyQuota("дневной лимит Place Details исчерпан")
+            if e.code == 429 and attempt < 4:  # лимит запросов в минуту — ждём и повторяем
+                time.sleep(15 * (attempt + 1))
+                continue
+            print(f"  details {place_id}: ошибка {e.code}")
+            return None
+
+
+def download_photo(api_key, photo_name, path, max_w=1200):
+    """Скачивает фото места (Places Photo API) и ужимает в JPEG. True, если получилось."""
+    url = (f"https://places.googleapis.com/v1/{photo_name}/media?maxWidthPx={max_w}&key="
+           + urllib.parse.quote(api_key))
+    try:
+        with urllib.request.urlopen(url, timeout=30) as resp:
+            raw = resp.read()
+    except Exception as e:  # noqa: BLE001
+        print(f"  фото не скачалось: {e}")
+        return False
+    try:  # Pillow необязателен: если есть — пережимаем, чтобы репозиторий не пух
+        import io
+        from PIL import Image
+        im = Image.open(io.BytesIO(raw)).convert("RGB")
+        im.thumbnail((max_w, max_w))
+        im.save(path, "JPEG", quality=72, optimize=True, progressive=True)
+    except Exception:  # noqa: BLE001
+        with open(path, "wb") as f:
+            f.write(raw)
+    return True
 
 
 def find_places(api_key, city, categories, pages, language):

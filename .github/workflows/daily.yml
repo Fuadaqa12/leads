@@ -3,6 +3,11 @@ on:
   schedule:
     - cron: "0 5 * * *"   # 09:00 по Баку
   workflow_dispatch:       # кнопка "Run workflow" для запуска вручную
+    inputs:
+      rebuild:
+        description: "Перегенерировать все демо-сайты (подтянуть фото/часы/отзывы из Google)"
+        type: boolean
+        default: false
 permissions:
   contents: write
 jobs:
@@ -13,10 +18,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Pillow (сжатие фото для демо)
+        run: pip install pillow || true
       - name: Найти новых клиентов и сделать демо-сайты
         env:
           GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
-        run: python autopilot.py
+        run: |
+          if [ "${{ inputs.rebuild }}" = "true" ]; then python autopilot.py --rebuild 400; else python autopilot.py; fi
       - name: Сохранить и опубликовать
         run: |
           git config user.name "autopilot"

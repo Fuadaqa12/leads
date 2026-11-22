@@ -16,59 +16,17 @@ import html
 import json
 import os
 import re
-import urllib.parse
+import shutil
+import sys
 from datetime import datetime
 
 import find_clients as fc
+from demo_site import render_demo
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DOCS = os.path.join(HERE, "docs")            # эта папка публикуется на GitHub Pages
 DATA = os.path.join(HERE, "data", "leads.json")
 CONFIG = os.path.join(HERE, "config.json")
-
-# ---------- темы демо-сайтов по типу бизнеса ----------
-
-THEMES = {
-    "beauty": {
-        "keys": ["салон", "барбер", "маникюр", "beauty", "barber", "nail", "spa", "gözəllik"],
-        "color": "#c2185b", "icon": "💇",
-        "az": {"tag": "Gözəlliyiniz bizim işimizdir", "services": ["Saç kəsimi və düzümü", "Manikür və pedikür", "Boyama", "Qaş və kirpik"]},
-        "ru": {"tag": "Ваша красота — наша работа", "services": ["Стрижки и укладки", "Маникюр и педикюр", "Окрашивание", "Брови и ресницы"]},
-    },
-    "auto": {
-        "keys": ["авто", "шином", "мойк", "car", "auto", "tire"],
-        "color": "#1565c0", "icon": "🚗",
-        "az": {"tag": "Avtomobiliniz etibarlı əllərdə", "services": ["Diaqnostika", "Mühərrik təmiri", "Təkər xidməti", "Yağ dəyişmə"]},
-        "ru": {"tag": "Ваш автомобиль в надёжных руках", "services": ["Диагностика", "Ремонт двигателя", "Шиномонтаж", "Замена масла"]},
-    },
-    "food": {
-        "keys": ["кафе", "пекар", "кондит", "доставк", "ресторан", "cafe", "bakery", "restaurant", "food"],
-        "color": "#e65100", "icon": "🍽️",
-        "az": {"tag": "Dadlı yemək, isti münasibət", "services": ["Səhər yeməyi", "Nahar menyusu", "Şirniyyat və desertlər", "Çatdırılma"]},
-        "ru": {"tag": "Вкусная еда и тёплая атмосфера", "services": ["Завтраки", "Бизнес-ланч", "Десерты и выпечка", "Доставка"]},
-    },
-    "health": {
-        "keys": ["стомат", "ветерин", "клиник", "dental", "clinic", "vet"],
-        "color": "#00897b", "icon": "🩺",
-        "az": {"tag": "Sağlamlığınız üçün peşəkar qayğı", "services": ["Müayinə və məsləhət", "Müalicə", "Profilaktika", "Onlayn qeydiyyat"]},
-        "ru": {"tag": "Профессиональная забота о здоровье", "services": ["Осмотр и консультация", "Лечение", "Профилактика", "Онлайн-запись"]},
-    },
-    "default": {
-        "keys": [],
-        "color": "#37474f", "icon": "⭐",
-        "az": {"tag": "Keyfiyyətli xidmət, sərfəli qiymət", "services": ["Peşəkar xidmət", "Sürətli icra", "Sərfəli qiymətlər", "Zəmanət"]},
-        "ru": {"tag": "Качественный сервис по доступной цене", "services": ["Профессиональный подход", "Быстрое выполнение", "Доступные цены", "Гарантия"]},
-    },
-}
-
-
-def pick_theme(text):
-    t = (text or "").lower()
-    for name, th in THEMES.items():
-        if any(k in t for k in th["keys"]):
-            return th
-    return THEMES["default"]
-
 
 TRANSLIT = str.maketrans({
     "ə": "e", "ğ": "g", "ı": "i", "ö": "o", "ü": "u", "ş": "s", "ç": "c", "İ": "i",
@@ -85,68 +43,131 @@ def make_slug(name, place_id):
     return f"{s}-{hashlib.md5(place_id.encode()).hexdigest()[:4]}"
 
 
-# ---------- демо-сайт ----------
+# ---------- данные для демо-сайта ----------
 
-def render_demo(lead):
-    e = html.escape
-    th = pick_theme(lead["query"] + " " + lead["category"])
-    wa = lead["wa"]
-    maps_q = urllib.parse.quote(f'{lead["name"]}, {lead["address"]}')
-    rating = f'⭐ {lead["rating"]} · {lead["reviews"]}' if lead["rating"] else ""
+def _hours(p):
+    """periods из Google -> 7 дней (Пн..Вс): [открытие_мин, закрытие_мин] или [] если выходной."""
+    oh = p.get("regularOpeningHours") or {}
+    periods = oh.get("periods") or []
+    if not periods:
+        return None
+    if len(periods) == 1 and "close" not in periods[0]:
+        return [[0, 1440]] * 7  # круглосуточно
+    days = [[] for _ in range(7)]
+    for per in periods:
+        o, c = per.get("open"), per.get("close")
+        if not o or not c:
+            continue
+        d = (o["day"] + 6) % 7  # Google: 0 = воскресенье
+        om = o.get("hour", 0) * 60 + o.get("minute", 0)
+        cm = c.get("hour", 0) * 60 + c.get("minute", 0) + ((c["day"] - o["day"]) % 7) * 1440
+        if cm <= om:
+            cm += 1440
+        if days[d]:
+            days[d] = [min(days[d][0], om), max(days[d][1], cm)]
+        else:
+            days[d] = [om, cm]
+    return days
 
-    def block(lang):
-        d = th[lang]
-        L = {
-            "az": {"banner": "Bu saytın sadə demo versiyasıdır. Tam versiyanı da edə bilərik: öz domen, qalereya, onlayn qeydiyyat.",
-                   "call": "Zəng et", "write": "WhatsApp-a yaz", "serv": "Xidmətlər", "contacts": "Əlaqə",
-                   "addr": "Ünvan", "phone": "Telefon", "reviews": "rəy Google-da"},
-            "ru": {"banner": "Это лёгкая демо-версия сайта. Можем сделать полноценный: свой домен, галерея, онлайн-запись.",
-                   "call": "Позвонить", "write": "Написать в WhatsApp", "serv": "Услуги", "contacts": "Контакты",
-                   "addr": "Адрес", "phone": "Телефон", "reviews": "отзывов в Google"},
-        }[lang]
-        services = "".join(f"<div class='card'>{th['icon']} {e(s)}</div>" for s in d["services"])
-        wa_btn = f"<a class='btn' href='https://wa.me/{wa}'>{L['write']}</a>" if wa else ""
-        call_btn = f"<a class='btn ghost' href='tel:{e(lead['phone'])}'>{L['call']}</a>" if lead["phone"] else ""
-        return f"""<div class="lang" data-lang="{lang}">
-<div class="banner">{L['banner']}</div>
-<header><div class="wrap">
-<div class="icon">{th['icon']}</div>
-<h1>{e(lead['name'])}</h1>
-<p class="tag">{e(d['tag'])}</p>
-<p class="rate">{e(rating)} {L['reviews'] if rating else ''}</p>
-<div class="btns">{wa_btn}{call_btn}</div>
-</div></header>
-<section class="wrap"><h2>{L['serv']}</h2><div class="grid">{services}</div></section>
-<section class="wrap"><h2>{L['contacts']}</h2>
-<p><b>{L['addr']}:</b> {e(lead['address'])}</p>
-<p><b>{L['phone']}:</b> {e(lead['phone'])}</p>
-<iframe loading="lazy" src="https://www.google.com/maps?q={maps_q}&output=embed"></iframe>
-</section></div>"""
 
-    return f"""<!doctype html><html lang="az"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{e(lead['name'])}</title><meta name="robots" content="noindex">
-<style>
-:root{{--c:{th['color']}}}*{{box-sizing:border-box}}
-body{{margin:0;font-family:system-ui,-apple-system,sans-serif;color:#222;background:#fafafa}}
-.wrap{{max-width:900px;margin:0 auto;padding:24px 16px}}
-.banner{{background:#fff3cd;color:#664d03;text-align:center;padding:10px 16px;font-size:14px}}
-header{{background:var(--c);color:#fff;text-align:center}}header .wrap{{padding:56px 16px}}
-.icon{{font-size:56px}}h1{{font-size:clamp(28px,6vw,44px);margin:8px 0}}.tag{{font-size:18px;opacity:.9}}.rate{{opacity:.85}}
-.btns{{margin-top:20px}}.btn{{display:inline-block;margin:6px;padding:12px 22px;border-radius:30px;background:#25d366;color:#fff;text-decoration:none;font-weight:600}}
-.btn.ghost{{background:transparent;border:2px solid #fff}}
-h2{{color:var(--c)}}.grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}}
-.card{{background:#fff;padding:18px;border-radius:12px;box-shadow:0 1px 4px #0001}}
-iframe{{width:100%;height:300px;border:0;border-radius:12px}}
-.sw{{position:fixed;top:64px;right:12px;z-index:9}}.sw button{{border:0;padding:6px 10px;border-radius:6px;cursor:pointer}}
-.lang{{display:none}}.lang.on{{display:block}}
-footer{{text-align:center;color:#888;font-size:13px;padding:24px}}
-</style></head><body>
-<div class="sw"><button onclick="sw('az')">AZ</button> <button onclick="sw('ru')">RU</button></div>
-{block('az')}{block('ru')}
-<footer>© {datetime.now().year} {e(lead['name'])}</footer>
-<script>function sw(l){{document.querySelectorAll('.lang').forEach(x=>x.classList.toggle('on',x.dataset.lang==l))}}sw('az')</script>
-</body></html>"""
+def _district(p):
+    for c in p.get("addressComponents") or []:
+        t = c.get("types") or []
+        if "sublocality_level_1" in t or "sublocality" in t or "neighborhood" in t:
+            return c.get("longText", "")
+    return ""
+
+
+def _reviews(p):
+    out = []
+    for r in p.get("reviews") or []:
+        txt = ((r.get("originalText") or {}).get("text") or (r.get("text") or {}).get("text") or "").strip()
+        if len(txt) < 30 or (r.get("rating") or 0) < 4:
+            continue
+        if len(txt) > 320:
+            txt = txt[:300].rsplit(" ", 1)[0] + "…"
+        author = ((r.get("authorAttribution") or {}).get("displayName") or "").split(" ")[0]
+        out.append({"a": author or "Google", "r": r.get("rating", 5), "t": txt,
+                    "w": r.get("relativePublishTimeDescription", "")})
+    out.sort(key=lambda x: (-x["r"], -len(x["t"])))
+    return out[:3]
+
+
+NEAR_TYPES = ("shopping_mall", "subway_station", "transit_station", "tourist_attraction", "park",
+              "university", "lodging", "supermarket", "school", "hospital")
+
+
+def _near(p):
+    lms = ((p.get("addressDescriptor") or {}).get("landmarks") or [])
+    lms = [l for l in lms if (l.get("straightLineDistanceMeters") or 999) < 500]
+    for l in lms:
+        if any(t in NEAR_TYPES for t in l.get("types") or []):
+            return l["displayName"]["text"]
+    return lms[0]["displayName"]["text"] if lms else ""
+
+
+def _amenities(p):
+    a = []
+    pay = p.get("paymentOptions") or {}
+    if pay.get("acceptsCreditCards") or pay.get("acceptsDebitCards") or pay.get("acceptsNfc"):
+        a.append("card")
+    if any(p.get("parkingOptions", {}).values()):
+        a.append("parking")
+    for key, name in (("delivery", "delivery"), ("takeout", "takeout"), ("outdoorSeating", "terrace"),
+                      ("goodForChildren", "kids"), ("reservable", "reserve"), ("servesBreakfast", "breakfast")):
+        if p.get(key):
+            a.append(name)
+    acc = p.get("accessibilityOptions") or {}
+    if acc.get("wheelchairAccessibleEntrance"):
+        a.append("wheelchair")
+    return a
+
+
+def enrich(lead, p, api_key, budget):
+    """Дополняет лида данными Google (часы, отзывы, фото...). budget = {"photos": сколько ещё можно скачать}."""
+    if p.get("location"):
+        lead["loc"] = [round(p["location"]["latitude"], 6), round(p["location"]["longitude"], 6)]
+    h = _hours(p)
+    if h:
+        lead["hours"] = h
+    if p.get("formattedAddress") and len(p["formattedAddress"]) > len(lead.get("address", "")):
+        lead["address"] = p["formattedAddress"]
+    lead["district"] = _district(p) or lead.get("district", "")
+    lead["near"] = _near(p) or lead.get("near", "")
+    lead["amen"] = _amenities(p)
+    rv = _reviews(p)
+    if rv:
+        lead["rev"] = rv
+    about = (p.get("editorialSummary") or {}).get("text")
+    if about:
+        lead["about"] = about
+    lead["enriched"] = True
+    if lead.get("photos") is None and p.get("photos"):
+        want = min(PHOTOS_PER_LEAD, len(p["photos"]), budget.get("photos", 0))
+        d = os.path.join(DOCS, "sites", lead["slug"])
+        os.makedirs(d, exist_ok=True)
+        got = []
+        for i, ph in enumerate(p["photos"][:want]):
+            fn = f"p{i + 1}.jpg"
+            if fc.download_photo(api_key, ph["name"], os.path.join(d, fn)):
+                by = ", ".join(a.get("displayName", "") for a in ph.get("authorAttributions") or [])
+                got.append({"f": fn, "by": by})
+            budget["photos"] -= 1
+        if want:
+            lead["photos"] = got
+
+
+def write_demo(lead):
+    if lead.get("custom_site"):  # сайт сделан вручную (напр. Cafe Baku) — не трогаем
+        return
+    d = os.path.join(DOCS, "sites", lead["slug"])
+    os.makedirs(d, exist_ok=True)
+    with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f:
+        f.write(render_demo(lead))
+
+
+def in_azerbaijan(addr):
+    return any(w in (addr or "") for w in COUNTRY_WORDS)
 
 
 # ---------- сообщения ----------
@@ -251,12 +272,63 @@ def site_base_url(cfg):
     return ""  # локально: ссылки относительно папки docs (клиенту такую не отправишь)
 
 
+def backfill(leads, api_key, limit, budget, refetch_photos=False):
+    """Подтягивает фото/часы/отзывы старым лидам (лучшие первыми). Возвращает число запросов."""
+    order = sorted(leads.values(), key=lambda l: (bool(l["wa"]), l["reviews"] or 0), reverse=True)
+    done = 0
+    for lead in order:
+        if done >= limit:
+            break
+        if lead.get("custom_site"):
+            continue
+        need = not lead.get("enriched") or (refetch_photos and "photos" not in lead)
+        if not need:
+            continue
+        try:
+            p = fc.get_details(api_key, lead["id"])
+        except fc.DailyQuota as e:
+            print(" ", e, "- остальных догоню в следующие дни")
+            break
+        done += 1
+        if p:
+            enrich(lead, p, api_key, budget)
+            write_demo(lead)
+    return done
+
+
+def rebuild(db, cfg, details_limit):
+    """Перегенерирует все демо. Старым лидам подтягивает данные из Google (не больше details_limit запросов)."""
+    leads = db["leads"]
+    done = 0
+    if details_limit:
+        budget = {"photos": cfg.get("photo_budget_rebuild", 600)}
+        done = backfill(leads, fc.load_api_key(), details_limit, budget, refetch_photos=True)
+    for lead in leads.values():
+        write_demo(lead)
+    print(f"Перегенерировано: {len(leads)} демо, запросов подробностей: {done}")
+
+
 def main():
-    global PRICE
+    global PRICE, PHOTOS_PER_LEAD
     cfg = load_json(CONFIG, {})
     PRICE = cfg.get("price", "50 AZN")
+    PHOTOS_PER_LEAD = cfg.get("photos_per_lead", 4)
     db = load_json(DATA, {"leads": {}, "cursor": 0})
     leads = db["leads"]
+
+    # чистка: лиды не из Азербайджана (кроме вручную добавленных с личным сообщением)
+    for lid in [k for k, l in leads.items() if not in_azerbaijan(l["address"]) and not l.get("msg")]:
+        print("Убираю (не Азербайджан):", leads[lid]["name"], "·", leads[lid]["address"])
+        shutil.rmtree(os.path.join(DOCS, "sites", leads[lid]["slug"]), ignore_errors=True)
+        del leads[lid]
+
+    if "--rebuild" in sys.argv:
+        i = sys.argv.index("--rebuild")
+        limit = int(sys.argv[i + 1]) if len(sys.argv) > i + 1 and sys.argv[i + 1].isdigit() else 0
+        rebuild(db, cfg, limit)
+        save_json(DATA, db)
+        write_queue(cfg, leads)
+        return
 
     # каждый день берём следующие N пар «город + категория», по кругу
     pairs = [(c, k) for c in cfg.get("cities", ["Bakı"]) for k in cfg.get("categories", fc.DEFAULT_CATEGORIES)]
@@ -268,6 +340,7 @@ def main():
     api_key = fc.load_api_key()
     base = site_base_url(cfg)
     today = datetime.now().strftime("%Y-%m-%d")
+    budget = {"photos": cfg.get("photo_budget_per_run", 40)}
     new = 0
     for city, cat in todo:
         for p in fc.find_places(api_key, city, [cat], cfg.get("pages", 1), cfg.get("lang", "ru")):
@@ -277,7 +350,7 @@ def main():
             if site == "есть":
                 continue
             addr = p.get("formattedAddress", "")
-            if addr and not any(w in addr for w in COUNTRY_WORDS):
+            if addr and not in_azerbaijan(addr):
                 continue  # Google иногда отдаёт места из других стран (напр. «Кафе Баку» в Казахстане)
             name = (p.get("displayName") or {}).get("text", "")
             lead = {
@@ -291,25 +364,32 @@ def main():
                 "site": label or "нет", "added": today,
             }
             leads[lead["id"]] = lead
-            d = os.path.join(DOCS, "sites", lead["slug"])
-            os.makedirs(d, exist_ok=True)
-            with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f:
-                f.write(render_demo(lead))
+            enrich(lead, p, api_key, budget)
+            write_demo(lead)
             new += 1
 
+    # заодно понемногу дообогащаем старых лидов (лимит Google на Place Details в день невелик)
+    filled = backfill(leads, api_key, cfg.get("backfill_per_run", 40), budget)
+
     save_json(DATA, db)
+    write_queue(cfg, leads)
+    print(f"\nНовых бизнесов: {new}. Дообогащено старых: {filled}. Всего в базе: {len(leads)}.")
+
+
+def write_queue(cfg, leads):
+    base = site_base_url(cfg)
     os.makedirs(DOCS, exist_ok=True)
     queue_name = cfg.get("queue_file", "ochered.html")
     with open(os.path.join(DOCS, queue_name), "w", encoding="utf-8") as f:
         f.write(render_queue(leads, base))
     open(os.path.join(DOCS, ".nojekyll"), "w").close()
-    print(f"\nНовых бизнесов: {new}. Всего в базе: {len(leads)}.")
     print(f"Очередь: {os.path.join(DOCS, queue_name)}")
     if base.startswith("http"):
         print(f"Онлайн: {base}{queue_name}")
 
 
 PRICE = "50 AZN"
+PHOTOS_PER_LEAD = 4
 COUNTRY_WORDS = ("Азербайджан", "Azerbaijan", "Azərbaycan")
 
 if __name__ == "__main__":

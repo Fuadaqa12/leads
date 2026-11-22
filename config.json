@@ -9,5 +9,8 @@
   "pages": 1,
   "lang": "ru",
   "queue_file": "ochered-746598af.html",
-  "site_url": ""
+  "site_url": "",
+  "photos_per_lead": 4,
+  "photo_budget_per_run": 40,
+  "backfill_per_run": 40
 }

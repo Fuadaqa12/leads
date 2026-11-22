@@ -30,7 +30,45 @@
    "reviews": 116,
    "maps": "https://maps.google.com/?cid=2830679694477004814&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.375769,
+    49.840882
+   ],
+   "hours": [
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1080
+    ],
+    []
+   ],
+   "district": "Nəsimi",
+   "near": "\"АФ Молл\" торговый центр",
+   "amen": [
+    "card",
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJnU8JNDJ9MEARw59VD_PlWbg": {
    "id": "ChIJnU8JNDJ9MEARw59VD_PlWbg",
@@ -46,7 +84,47 @@
    "reviews": 530,
    "maps": "https://maps.google.com/?cid=13283901408003071939&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.374012,
+    49.833719
+   ],
+   "hours": [
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ]
+   ],
+   "district": "Yasamal",
+   "near": "City Park Inn Baku",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJ9cQ_9oh9MEARdxsvAK2wlMQ": {
    "id": "ChIJ9cQ_9oh9MEARdxsvAK2wlMQ",
@@ -78,7 +156,42 @@
    "reviews": 83,
    "maps": "https://maps.google.com/?cid=15713938200265548861&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.375203,
+    49.852172
+   ],
+   "hours": [
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    []
+   ],
+   "district": "Səbail",
+   "near": "Empire Hotel",
+   "amen": [],
+   "enriched": true
   },
   "ChIJ3ZjgL0Z9MEARkXKzyeGnv4k": {
    "id": "ChIJ3ZjgL0Z9MEARkXKzyeGnv4k",
@@ -94,7 +207,39 @@
    "reviews": 52,
    "maps": "https://maps.google.com/?cid=9925836691941323409&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.371189,
+    49.847171
+   ],
+   "hours": [
+    [],
+    [],
+    [
+     660,
+     1140
+    ],
+    [
+     660,
+     1140
+    ],
+    [
+     660,
+     1140
+    ],
+    [
+     660,
+     1140
+    ],
+    [
+     660,
+     1140
+    ]
+   ],
+   "district": "Səbail",
+   "near": "Бакинский бульвар",
+   "amen": [],
+   "enriched": true
   },
   "ChIJuRrsOgB9MEAROmn61Q0hCDs": {
    "id": "ChIJuRrsOgB9MEAROmn61Q0hCDs",
@@ -110,7 +255,47 @@
    "reviews": 25,
    "maps": "https://maps.google.com/?cid=4253686191359682874&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.37449,
+    49.830297
+   ],
+   "hours": [
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ]
+   ],
+   "district": "Yasamal",
+   "near": "Мечeть Тезепир",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJ-wAvRSR9MEARwlf_UNiPVpM": {
    "id": "ChIJ-wAvRSR9MEARwlf_UNiPVpM",
@@ -126,7 +311,47 @@
    "reviews": 25,
    "maps": "https://maps.google.com/?cid=10616831330807142338&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "YouTube",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.387997,
+    49.805844
+   ],
+   "hours": [
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     600,
+     1260
+    ]
+   ],
+   "district": "Yasamal",
+   "near": "Торговый центр \"Баку Молл\"",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJlX-ZXv59MEARhN65ujf5xEo": {
    "id": "ChIJlX-ZXv59MEARhN65ujf5xEo",
@@ -142,7 +367,45 @@
    "reviews": 132,
    "maps": "https://maps.google.com/?cid=5387705071993216644&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.383954,
+    49.846771
+   ],
+   "hours": [
+    [],
+    [
+     540,
+     1140
+    ],
+    [
+     540,
+     1140
+    ],
+    [
+     540,
+     1140
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1140
+    ]
+   ],
+   "district": "Nasimi",
+   "near": "Средняя школа №35",
+   "amen": [
+    "card",
+    "parking"
+   ],
+   "enriched": true
   },
   "ChIJjXEIeNh9MEARX3DnU1hyiJ4": {
    "id": "ChIJjXEIeNh9MEARX3DnU1hyiJ4",
@@ -158,7 +421,48 @@
    "reviews": 20,
    "maps": "https://maps.google.com/?cid=11423506178515628127&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.385821,
+    49.844129
+   ],
+   "hours": [
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ]
+   ],
+   "district": "Nəsimi",
+   "near": "Средняя школа №35",
+   "amen": [
+    "card",
+    "parking"
+   ],
+   "enriched": true
   },
   "ChIJi9GMFNh9MEAR7CF_5uZsk9Q": {
    "id": "ChIJi9GMFNh9MEAR7CF_5uZsk9Q",
@@ -174,7 +478,47 @@
    "reviews": 24,
    "maps": "https://maps.google.com/?cid=15317706496582558188&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.38442,
+    49.84678
+   ],
+   "hours": [
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ]
+   ],
+   "district": "Nəsimi",
+   "near": "Средняя школа №35",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJ96SW9pp9MEARJzKr0Pc2Stw": {
    "id": "ChIJ96SW9pp9MEARJzKr0Pc2Stw",
@@ -190,7 +534,48 @@
    "reviews": 381,
    "maps": "https://maps.google.com/?cid=15873560274606436903&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.385063,
+    49.824315
+   ],
+   "hours": [
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1260
+    ]
+   ],
+   "district": "Yasamal",
+   "near": "Kontinental Supermarket",
+   "amen": [
+    "card",
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJb12VmCh9MEARP8OXecUy3T4": {
    "id": "ChIJb12VmCh9MEARP8OXecUy3T4",
@@ -206,7 +591,50 @@
    "reviews": 44,
    "maps": "https://maps.google.com/?cid=4529832623934522175&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.375558,
+    49.855402
+   ],
+   "hours": [
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ]
+   ],
+   "district": "",
+   "near": "MediClub",
+   "amen": [
+    "card",
+    "parking",
+    "kids",
+    "wheelchair"
+   ],
+   "enriched": true
   },
   "ChIJj90D47B9MEARO5qggX7N-yY": {
    "id": "ChIJj90D47B9MEARO5qggX7N-yY",
@@ -222,7 +650,45 @@
    "reviews": 331,
    "maps": "https://maps.google.com/?cid=2809064735819995707&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.370955,
+    49.838775
+   ],
+   "hours": [
+    [],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ]
+   ],
+   "district": "Səbail",
+   "near": "Azərbaycan Maliyyə-İqtisad Kolleci (Финансово-экономический колледж)",
+   "amen": [
+    "card",
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJbRHfepB9MEARPyMTiU0pOwo": {
    "id": "ChIJbRHfepB9MEARPyMTiU0pOwo",
@@ -238,7 +704,48 @@
    "reviews": 484,
    "maps": "https://maps.google.com/?cid=737228376994161471&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.370556,
+    49.832375
+   ],
+   "hours": [
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1260
+    ]
+   ],
+   "district": "Səbail",
+   "near": "Merkezi Univermaq",
+   "amen": [
+    "card",
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJzYIfCgB9MEAR8IVBSvIFqKA": {
    "id": "ChIJzYIfCgB9MEAR8IVBSvIFqKA",
@@ -254,7 +761,49 @@
    "reviews": 321,
    "maps": "https://maps.google.com/?cid=11576509380341892592&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.378262,
+    49.85808
+   ],
+   "hours": [
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ]
+   ],
+   "district": "Nasimi",
+   "near": "Гостиница \"Holiday Inn\"",
+   "amen": [
+    "card",
+    "parking",
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJm_VyIy99MEARQDDi7LXoaZk": {
    "id": "ChIJm_VyIy99MEARQDDi7LXoaZk",
@@ -270,7 +819,50 @@
    "reviews": 338,
    "maps": "https://maps.google.com/?cid=11054622628418564160&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.37793,
+    49.83683
+   ],
+   "hours": [
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     660,
+     1260
+    ],
+    [
+     660,
+     1260
+    ]
+   ],
+   "district": "Nəsimi",
+   "near": "Bakı Slavyan Universitetinin Məktəb Lisey Kompleksi",
+   "amen": [
+    "card",
+    "parking",
+    "kids",
+    "wheelchair"
+   ],
+   "enriched": true
   },
   "ChIJgdD2OVd9MEARC2Rkx_rXjE8": {
    "id": "ChIJgdD2OVd9MEARC2Rkx_rXjE8",
@@ -286,7 +878,47 @@
    "reviews": 82,
    "maps": "https://maps.google.com/?cid=5732193897822839819&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Taplink",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.370082,
+    49.840497
+   ],
+   "hours": [
+    [
+     540,
+     1320
+    ],
+    [
+     540,
+     1320
+    ],
+    [
+     540,
+     1320
+    ],
+    [
+     540,
+     1320
+    ],
+    [
+     540,
+     1320
+    ],
+    [
+     540,
+     1320
+    ],
+    [
+     540,
+     1320
+    ]
+   ],
+   "district": "Səbail",
+   "near": "Бакинский бульвар",
+   "amen": [
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJNZm4d_d9MEARB3q_LHtwfgc": {
    "id": "ChIJNZm4d_d9MEARB3q_LHtwfgc",
@@ -302,7 +934,49 @@
    "reviews": 253,
    "maps": "https://maps.google.com/?cid=539992679665072647&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.377438,
+    49.838176
+   ],
+   "hours": [
+    [
+     660,
+     1260
+    ],
+    [
+     660,
+     1260
+    ],
+    [
+     660,
+     1260
+    ],
+    [
+     660,
+     1260
+    ],
+    [
+     660,
+     1260
+    ],
+    [
+     660,
+     1260
+    ],
+    [
+     660,
+     1260
+    ]
+   ],
+   "district": "Nəsimi",
+   "near": "Зимний парк (парк Физули)",
+   "amen": [
+    "card",
+    "parking",
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJbR_NQnp9MEAR07ub0bfTrOI": {
    "id": "ChIJbR_NQnp9MEAR07ub0bfTrOI",
@@ -318,7 +992,47 @@
    "reviews": 128,
    "maps": "https://maps.google.com/?cid=16333662735015066579&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.380681,
+    49.843519
+   ],
+   "hours": [
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ]
+   ],
+   "district": "Nəsimi",
+   "near": "Diplomat Hotel Baku",
+   "amen": [
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJH2K0oHt9MEAR2vAl4dHc7wg": {
    "id": "ChIJH2K0oHt9MEAR2vAl4dHc7wg",
@@ -334,7 +1048,48 @@
    "reviews": 138,
    "maps": "https://maps.google.com/?cid=643976065720905946&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.379963,
+    49.870543
+   ],
+   "hours": [
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ]
+   ],
+   "district": "Xətai",
+   "near": "Мэдиленд Госпиталь",
+   "amen": [
+    "card",
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJHZ_KOb19MEAR1G6lZRiLnKU": {
    "id": "ChIJHZ_KOb19MEAR1G6lZRiLnKU",
@@ -350,7 +1105,48 @@
    "reviews": 183,
    "maps": "https://maps.google.com/?cid=11933566049525788372&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.375358,
+    49.842925
+   ],
+   "hours": [
+    [
+     570,
+     1260
+    ],
+    [
+     570,
+     1260
+    ],
+    [
+     570,
+     1260
+    ],
+    [
+     570,
+     1260
+    ],
+    [
+     570,
+     1260
+    ],
+    [
+     570,
+     1260
+    ],
+    [
+     570,
+     1260
+    ]
+   ],
+   "district": "Nəsimi",
+   "near": "\"АФ Молл\" торговый центр",
+   "amen": [
+    "parking",
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJL09zcwB9MEAREKaj3yKtOuk": {
    "id": "ChIJL09zcwB9MEAREKaj3yKtOuk",
@@ -366,7 +1162,49 @@
    "reviews": 79,
    "maps": "https://maps.google.com/?cid=16805935324778964496&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.374545,
+    49.837524
+   ],
+   "hours": [
+    [
+     660,
+     1320
+    ],
+    [
+     660,
+     1320
+    ],
+    [
+     660,
+     1320
+    ],
+    [
+     660,
+     1320
+    ],
+    [
+     660,
+     1320
+    ],
+    [
+     660,
+     1320
+    ],
+    [
+     660,
+     1320
+    ]
+   ],
+   "district": "Насиминский район",
+   "near": "International Medical Center 1",
+   "amen": [
+    "card",
+    "parking",
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJ2QSXBgB9MEARoF_J1HaZ-f0": {
    "id": "ChIJ2QSXBgB9MEARoF_J1HaZ-f0",
@@ -382,7 +1220,48 @@
    "reviews": 46,
    "maps": "https://maps.google.com/?cid=18300827296451878816&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.375798,
+    49.817455
+   ],
+   "hours": [
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ]
+   ],
+   "district": "Ясамал",
+   "near": "ст. Элмляр Академиясы",
+   "amen": [
+    "card",
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJU6ijkON9MEARd-33NGX0ztI": {
    "id": "ChIJU6ijkON9MEARd-33NGX0ztI",
@@ -398,7 +1277,47 @@
    "reviews": 70,
    "maps": "https://maps.google.com/?cid=15190347308684799351&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.377502,
+    49.83837
+   ],
+   "hours": [
+    [],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     840,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ]
+   ],
+   "district": "Nəsimi",
+   "near": "Зимний парк (парк Физули)",
+   "amen": [
+    "card",
+    "parking",
+    "kids",
+    "wheelchair"
+   ],
+   "enriched": true
   },
   "ChIJ4w-bm7x9MEAReK50VVgGYh8": {
    "id": "ChIJ4w-bm7x9MEAReK50VVgGYh8",
@@ -414,7 +1333,47 @@
    "reviews": 5,
    "maps": "https://maps.google.com/?cid=2261376939354009208&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.372279,
+    49.830581
+   ],
+   "hours": [
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ]
+   ],
+   "district": "Yasamal",
+   "near": "Мечeть Тезепир",
+   "amen": [
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJuVZjupt9MEARwl5cupLeg9c": {
    "id": "ChIJuVZjupt9MEARwl5cupLeg9c",
@@ -430,7 +1389,44 @@
    "reviews": 46,
    "maps": "https://maps.google.com/?cid=15529500661876809410&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.380802,
+    49.829415
+   ],
+   "hours": [
+    [
+     570,
+     1200
+    ],
+    [
+     570,
+     1200
+    ],
+    [
+     570,
+     1200
+    ],
+    [
+     570,
+     1200
+    ],
+    [
+     570,
+     1200
+    ],
+    [
+     570,
+     1200
+    ],
+    []
+   ],
+   "district": "Yasamal",
+   "near": "ст. Низами",
+   "amen": [
+    "parking"
+   ],
+   "enriched": true
   },
   "ChIJfWOa6UB9MEARxQ0Zkl1b3HA": {
    "id": "ChIJfWOa6UB9MEARxQ0Zkl1b3HA",
@@ -446,7 +1442,48 @@
    "reviews": 53,
    "maps": "https://maps.google.com/?cid=8132475484565474757&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.381352,
+    49.831156
+   ],
+   "hours": [
+    [
+     630,
+     1140
+    ],
+    [
+     630,
+     1140
+    ],
+    [
+     630,
+     1140
+    ],
+    [
+     630,
+     1140
+    ],
+    [
+     630,
+     1140
+    ],
+    [
+     630,
+     1140
+    ],
+    [
+     630,
+     1140
+    ]
+   ],
+   "district": "Yasamal",
+   "near": "ст. Низами",
+   "amen": [
+    "card",
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJgdoeVQJ9MEARbT0P8Tg3Hyw": {
    "id": "ChIJgdoeVQJ9MEARbT0P8Tg3Hyw",
@@ -462,7 +1499,49 @@
    "reviews": 92,
    "maps": "https://maps.google.com/?cid=3179320579648863597&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.377705,
+    49.865741
+   ],
+   "hours": [
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ]
+   ],
+   "district": "Xətai",
+   "near": "Музей Cовременного Искусства Баку",
+   "amen": [
+    "card",
+    "parking",
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJOX4Jx-d9MEARry1h-S3AZSQ": {
    "id": "ChIJOX4Jx-d9MEARry1h-S3AZSQ",
@@ -478,7 +1557,45 @@
    "reviews": 20,
    "maps": "https://maps.google.com/?cid=2622713661703138735&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.366852,
+    49.827218
+   ],
+   "hours": [
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ]
+   ],
+   "district": "Səbail",
+   "near": "Памятник Нариману Нариманову",
+   "amen": [],
+   "enriched": true
   },
   "ChIJBVNjCTV9MEARfKAJ86uZN7g": {
    "id": "ChIJBVNjCTV9MEARfKAJ86uZN7g",
@@ -494,7 +1611,47 @@
    "reviews": 246,
    "maps": "https://maps.google.com/?cid=13274247390493778044&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.373705,
+    49.843613
+   ],
+   "hours": [
+    [
+     480,
+     1260
+    ],
+    [
+     480,
+     1260
+    ],
+    [
+     480,
+     1260
+    ],
+    [
+     480,
+     1260
+    ],
+    [
+     480,
+     1260
+    ],
+    [
+     480,
+     1260
+    ],
+    [
+     480,
+     1260
+    ]
+   ],
+   "district": "Sabayil",
+   "near": "Парк Сахиль",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJ93YwVCqHMEARSKsoV_LuXx0": {
    "id": "ChIJ93YwVCqHMEARSKsoV_LuXx0",
@@ -510,7 +1667,47 @@
    "reviews": 0,
    "maps": "https://maps.google.com/?cid=2116673074499201864&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.400266,
+    49.798855
+   ],
+   "hours": [
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ]
+   ],
+   "district": "Ясамал",
+   "near": "Национальный онкологический центр",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJ-XR84CdjMEARXhMAGzojLe8": {
    "id": "ChIJ-XR84CdjMEARXhMAGzojLe8",
@@ -606,7 +1803,17 @@
    "reviews": 1,
    "maps": "https://maps.google.com/?cid=12216487881426219802&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.418791,
+    49.794442
+   ],
+   "district": "Бинагадинский район",
+   "near": "Avtovağzal metro stansiyası",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJ3Sb48W1jMEARaKE0qOt6a34": {
    "id": "ChIJ3Sb48W1jMEARaKE0qOt6a34",
@@ -702,7 +1909,44 @@
    "reviews": 1,
    "maps": "https://maps.google.com/?cid=5818224900268026482&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.389122,
+    49.898417
+   ],
+   "hours": [
+    [
+     540,
+     1020
+    ],
+    [
+     540,
+     1020
+    ],
+    [
+     540,
+     1020
+    ],
+    [
+     540,
+     1020
+    ],
+    [
+     540,
+     1020
+    ],
+    [
+     540,
+     1020
+    ],
+    []
+   ],
+   "district": "Xətai",
+   "near": "Банкетный зал \"Монте-Карло\"",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJk2xSFQB9MEARd4SO7scCS8M": {
    "id": "ChIJk2xSFQB9MEARd4SO7scCS8M",
@@ -782,7 +2026,45 @@
    "reviews": 1,
    "maps": "https://maps.google.com/?cid=12252807861164639545&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.484409,
+    49.953367
+   ],
+   "hours": [
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ]
+   ],
+   "district": "",
+   "near": "Zəka tədris mərkəzi",
+   "amen": [],
+   "enriched": true
   },
   "ChIJS7igyjKGMEARoQGLWXxQevI": {
    "id": "ChIJS7igyjKGMEARoQGLWXxQevI",
@@ -798,23 +2080,47 @@
    "reviews": 1,
    "maps": "https://maps.google.com/?cid=17472366199345709473&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
-  },
-  "ChIJTf-iMK2lakARAJg8_qb7wGM": {
-   "id": "ChIJTf-iMK2lakARAJg8_qb7wGM",
-   "name": "Sharjakan vulkanacum",
-   "slug": "sharjakan-vulkanacum-7f4e",
-   "query": "шиномонтаж",
-   "city": "Bakı",
-   "category": "Ремонт и обслуживание автомобилей",
-   "phone": "+374 96 444848",
-   "wa": "37496444848",
-   "address": "10 Sport St, Yerevan 0031, Армения",
-   "rating": 4.6,
-   "reviews": 34,
-   "maps": "https://maps.google.com/?cid=7188021699931838464&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
-   "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.432304,
+    49.813541
+   ],
+   "hours": [
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ]
+   ],
+   "district": "Binəqədi",
+   "near": "Станция Баладжары",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJHwIVBgB9MEARZlDtsA-nZhA": {
    "id": "ChIJHwIVBgB9MEARZlDtsA-nZhA",
@@ -862,7 +2168,17 @@
    "reviews": 4,
    "maps": "https://maps.google.com/?cid=13682526133866340799&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.448291,
+    49.801249
+   ],
+   "district": "Бинагадинский район",
+   "near": "Xırman Dəyirmanı",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJU6LAMS1_MEARSBTTX-Z_NDk": {
    "id": "ChIJU6LAMS1_MEARSBTTX-Z_NDk",
@@ -990,7 +2306,48 @@
    "reviews": 8,
    "maps": "https://maps.google.com/?cid=1768436814602036232&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.397238,
+    49.791551
+   ],
+   "hours": [
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ]
+   ],
+   "district": "Ясамал",
+   "near": "YASAMAL Hospital",
+   "amen": [
+    "delivery",
+    "takeout"
+   ],
+   "enriched": true
   },
   "ChIJ9dP0QttjMEARsefzKTRW3K8": {
    "id": "ChIJ9dP0QttjMEARsefzKTRW3K8",
@@ -1038,7 +2395,47 @@
    "reviews": 17,
    "maps": "https://maps.google.com/?cid=11926845617505367711&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.382294,
+    49.856867
+   ],
+   "hours": [
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ]
+   ],
+   "district": "Nasimi",
+   "near": "Müasir İnnovasiyalar Liseyi",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJHcY_EgB_MEARvJOeWZ0_09M": {
    "id": "ChIJHcY_EgB_MEARvJOeWZ0_09M",
@@ -1086,7 +2483,47 @@
    "reviews": 3,
    "maps": "https://maps.google.com/?cid=5814422165971345844&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.355439,
+    49.967294
+   ],
+   "hours": [
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ]
+   ],
+   "district": "Xətai",
+   "near": "Парк",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJC-VidwB9MEAR9N-i7MzVI5U": {
    "id": "ChIJC-VidwB9MEAR9N-i7MzVI5U",
@@ -1150,7 +2587,39 @@
    "reviews": 1,
    "maps": "https://maps.google.com/?cid=16039329883829145400&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.39585,
+    49.827592
+   ],
+   "hours": [
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     4320
+    ],
+    [],
+    []
+   ],
+   "district": "Nəsimi",
+   "near": "Avrasiya Hospital",
+   "amen": [],
+   "enriched": true
   },
   "ChIJ8VnQAQB9MEARaCcLPlcO4IU": {
    "id": "ChIJ8VnQAQB9MEARaCcLPlcO4IU",
@@ -1198,7 +2667,44 @@
    "reviews": 820,
    "maps": "https://maps.google.com/?cid=7256479365109110540&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.402567,
+    49.863021
+   ],
+   "hours": [
+    [
+     540,
+     1140
+    ],
+    [
+     540,
+     1140
+    ],
+    [
+     540,
+     1140
+    ],
+    [
+     540,
+     1140
+    ],
+    [
+     540,
+     1140
+    ],
+    [
+     540,
+     1140
+    ],
+    []
+   ],
+   "district": "Nərimanov",
+   "near": "5 nömrəli Şəhər Klinik Xəstəxanası",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJ1-IsYPN9MEARVux0Iri-w7k": {
    "id": "ChIJ1-IsYPN9MEARVux0Iri-w7k",
@@ -1214,7 +2720,45 @@
    "reviews": 114,
    "maps": "https://maps.google.com/?cid=13385752215536594006&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.411063,
+    49.813938
+   ],
+   "hours": [
+    [
+     480,
+     1260
+    ],
+    [
+     480,
+     1260
+    ],
+    [
+     480,
+     1260
+    ],
+    [
+     480,
+     1260
+    ],
+    [
+     480,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    []
+   ],
+   "district": "Nəsimi",
+   "near": "Memar Ajami",
+   "amen": [
+    "parking",
+    "wheelchair"
+   ],
+   "enriched": true
   },
   "ChIJ20v1jRKHMEAROKBwaEZ1GHU": {
    "id": "ChIJ20v1jRKHMEAROKBwaEZ1GHU",
@@ -1294,7 +2838,45 @@
    "reviews": 36,
    "maps": "https://maps.google.com/?cid=10782053701995759953&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.38092,
+    49.866395
+   ],
+   "hours": [
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    []
+   ],
+   "district": "Xətai",
+   "near": "Leyla Medical Center",
+   "amen": [
+    "card",
+    "parking"
+   ],
+   "enriched": true
   },
   "ChIJkWGclAl9MEARi9feORaAefY": {
    "id": "ChIJkWGclAl9MEARi9feORaAefY",
@@ -1310,7 +2892,47 @@
    "reviews": 70,
    "maps": "https://maps.google.com/?cid=17760367438460802955&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.402022,
+    49.863324
+   ],
+   "hours": [
+    [
+     540,
+     1140
+    ],
+    [
+     540,
+     1140
+    ],
+    [
+     540,
+     1140
+    ],
+    [
+     540,
+     1140
+    ],
+    [
+     540,
+     1140
+    ],
+    [
+     540,
+     1020
+    ],
+    [
+     540,
+     1020
+    ]
+   ],
+   "district": "Nərimanov",
+   "near": "5 nömrəli Şəhər Klinik Xəstəxanası",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJ-cMpEAF9MEAR77WbVZGdjKo": {
    "id": "ChIJ-cMpEAF9MEAR77WbVZGdjKo",
@@ -1343,7 +2965,8 @@
    "maps": "https://maps.google.com/?cid=11196705886248777405&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
    "added": "2026-11-21",
-   "msg": "Здравствуйте! Заглянул в @cafe.baku: шашлык от 1590 ₸, долма и пенное за 800 ₸. Звучит как план на вечер 🔥\n\nНо в шапке у вас бесплатная страничка mssg.me: на ней гость не видит ни меню, ни цен, ни доставки. Поэтому я собрал для вас демо настоящего сайта: меню с ценами, заказ доставки в WhatsApp в пару касаний, бронь банкета со скидкой −15% и оба адреса на карте.\n\nПосмотрите с телефона: https://fuadaqa12.github.io/leads/sites/kafe-baku-9553/\n\nЕсли понравится, доведу его под ваше настоящее меню и фото. Интересно?"
+   "msg": "Здравствуйте! Заглянул в @cafe.baku: шашлык от 1590 ₸, долма и пенное за 800 ₸. Звучит как план на вечер 🔥\n\nНо в шапке у вас бесплатная страничка mssg.me: на ней гость не видит ни меню, ни цен, ни доставки. Поэтому я собрал для вас демо настоящего сайта: меню с ценами, заказ доставки в WhatsApp в пару касаний, бронь банкета со скидкой −15% и оба адреса на карте.\n\nПосмотрите с телефона: https://fuadaqa12.github.io/leads/sites/kafe-baku-9553/\n\nЕсли понравится, доведу его под ваше настоящее меню и фото. Интересно?",
+   "custom_site": true
   },
   "ChIJOX4NhrN9MEARM2R-YpRJi7E": {
    "id": "ChIJOX4NhrN9MEARM2R-YpRJi7E",
@@ -1359,7 +2982,54 @@
    "reviews": 316,
    "maps": "https://maps.google.com/?cid=12793400068132463667&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.367831,
+    49.841866
+   ],
+   "hours": [
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ]
+   ],
+   "district": "Səbail",
+   "near": "Бакинский бульвар",
+   "amen": [
+    "card",
+    "parking",
+    "takeout",
+    "terrace",
+    "kids",
+    "reserve",
+    "breakfast",
+    "wheelchair"
+   ],
+   "enriched": true
   },
   "ChIJydLOOvx9MEARmf8O0Rg1Qqk": {
    "id": "ChIJydLOOvx9MEARmf8O0Rg1Qqk",
@@ -1375,23 +3045,19 @@
    "reviews": 42,
    "maps": "https://maps.google.com/?cid=12196369121575632793&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
-  },
-  "ChIJ3Q5zDUqBRUIR_Aj4rGLWIzg": {
-   "id": "ChIJ3Q5zDUqBRUIR_Aj4rGLWIzg",
-   "name": "Baky",
-   "slug": "baky-876a",
-   "query": "кафе",
-   "city": "Bakı",
-   "category": "Кафе",
-   "phone": "+7 778 872 7272",
-   "wa": "77788727272",
-   "address": "ул. Таха Хусейна 2/3, Астана 010000, Казахстан",
-   "rating": 4.4,
-   "reviews": 502,
-   "maps": "https://maps.google.com/?cid=4045312609605912828&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
-   "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.388417,
+    49.846857
+   ],
+   "district": "Nəsimi",
+   "near": "Средняя школа номер 151",
+   "amen": [
+    "card",
+    "takeout",
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJJwndf7d9MEARsTi-VCV1M0E": {
    "id": "ChIJJwndf7d9MEARsTi-VCV1M0E",
@@ -1407,7 +3073,53 @@
    "reviews": 439,
    "maps": "https://maps.google.com/?cid=4698227639473551537&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.368934,
+    49.834017
+   ],
+   "hours": [
+    [
+     480,
+     1410
+    ],
+    [
+     480,
+     1410
+    ],
+    [
+     480,
+     1410
+    ],
+    [
+     480,
+     1410
+    ],
+    [
+     480,
+     1410
+    ],
+    [
+     480,
+     1410
+    ],
+    [
+     480,
+     1410
+    ]
+   ],
+   "district": "Сабаиль",
+   "near": "Merkezi Univermaq",
+   "amen": [
+    "card",
+    "parking",
+    "takeout",
+    "terrace",
+    "kids",
+    "reserve",
+    "breakfast"
+   ],
+   "enriched": true
   },
   "ChIJTUWUafRjMEARbIkDgSGgQRM": {
    "id": "ChIJTUWUafRjMEARbIkDgSGgQRM",
@@ -1455,7 +3167,53 @@
    "reviews": 115,
    "maps": "https://maps.google.com/?cid=12744396608874975331&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.385181,
+    49.885069
+   ],
+   "hours": [
+    [
+     480,
+     1380
+    ],
+    [
+     480,
+     1380
+    ],
+    [
+     480,
+     1380
+    ],
+    [
+     480,
+     1380
+    ],
+    [
+     480,
+     1380
+    ],
+    [
+     480,
+     1380
+    ],
+    [
+     480,
+     1380
+    ]
+   ],
+   "district": "Xətai",
+   "near": "Brave kids",
+   "amen": [
+    "card",
+    "parking",
+    "delivery",
+    "takeout",
+    "kids",
+    "reserve",
+    "breakfast"
+   ],
+   "enriched": true
   },
   "ChIJM3oveQ19MEAR5KTpXbXEyA4": {
    "id": "ChIJM3oveQ19MEAR5KTpXbXEyA4",
@@ -1471,7 +3229,47 @@
    "reviews": 85,
    "maps": "https://maps.google.com/?cid=1065317595116840164&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.402584,
+    49.84918
+   ],
+   "hours": [
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ]
+   ],
+   "district": "Nərimanov",
+   "near": "Diamed",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJmU_Q-Tl9MEARJwYxjr05W-A": {
    "id": "ChIJmU_Q-Tl9MEARJwYxjr05W-A",
@@ -1487,7 +3285,47 @@
    "reviews": 27,
    "maps": "https://maps.google.com/?cid=16166578773673707047&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.377041,
+    49.840946
+   ],
+   "hours": [
+    [
+     480,
+     1320
+    ],
+    [
+     480,
+     1320
+    ],
+    [
+     480,
+     1320
+    ],
+    [
+     480,
+     1320
+    ],
+    [
+     480,
+     1320
+    ],
+    [
+     480,
+     1320
+    ],
+    [
+     480,
+     1320
+    ]
+   ],
+   "district": "Nəsimi",
+   "near": "\"АФ Молл\" торговый центр",
+   "amen": [
+    "takeout"
+   ],
+   "enriched": true
   },
   "ChIJq12FdG19MEARs1q5F6Oi9KA": {
    "id": "ChIJq12FdG19MEARs1q5F6Oi9KA",
@@ -1599,7 +3437,49 @@
    "reviews": 56,
    "maps": "https://maps.google.com/?cid=13863196559840981763&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.398568,
+    49.842836
+   ],
+   "hours": [
+    [
+     480,
+     1440
+    ],
+    [
+     480,
+     1440
+    ],
+    [
+     480,
+     1440
+    ],
+    [
+     480,
+     1440
+    ],
+    [
+     480,
+     1440
+    ],
+    [
+     480,
+     1440
+    ],
+    [
+     480,
+     1440
+    ]
+   ],
+   "district": "Nərimanov",
+   "near": "Baku Health Center",
+   "amen": [
+    "card",
+    "takeout",
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJtcwIdwB9MEARwcpJzo9PvSY": {
    "id": "ChIJtcwIdwB9MEARwcpJzo9PvSY",
@@ -1615,7 +3495,48 @@
    "reviews": 2,
    "maps": "https://maps.google.com/?cid=2791474823099435713&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.404829,
+    49.866527
+   ],
+   "hours": [
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ]
+   ],
+   "district": "Nərimanov",
+   "near": "School No. 45",
+   "amen": [
+    "card",
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJnYQ2736JMEARZoRvDgAVSmg": {
    "id": "ChIJnYQ2736JMEARZoRvDgAVSmg",
@@ -1663,7 +3584,51 @@
    "reviews": 76,
    "maps": "https://maps.google.com/?cid=136440265030908701&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.372786,
+    49.826538
+   ],
+   "hours": [
+    [
+     480,
+     1440
+    ],
+    [
+     480,
+     1440
+    ],
+    [
+     480,
+     1440
+    ],
+    [
+     480,
+     1440
+    ],
+    [
+     480,
+     1440
+    ],
+    [
+     480,
+     1440
+    ],
+    [
+     480,
+     1440
+    ]
+   ],
+   "district": "Ясамал",
+   "near": "Центральный Парк",
+   "amen": [
+    "card",
+    "parking",
+    "delivery",
+    "takeout",
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJhf_S_xV9MEARYENVzZctWqo": {
    "id": "ChIJhf_S_xV9MEARYENVzZctWqo",
@@ -1679,7 +3644,47 @@
    "reviews": 55,
    "maps": "https://maps.google.com/?cid=12275173864359936864&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.383197,
+    49.826718
+   ],
+   "hours": [
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ]
+   ],
+   "district": "Yasamal",
+   "near": "31 nömrəli Tam Orta Məktəb, A. Ağaverdiyev adına",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJCxze8Xl9MEARwlGtUDAlEbA": {
    "id": "ChIJCxze8Xl9MEARwlGtUDAlEbA",
@@ -1711,7 +3716,18 @@
    "reviews": 1,
    "maps": "https://maps.google.com/?cid=13377389100528195588&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.344318,
+    49.83892
+   ],
+   "district": "Səbail",
+   "near": "49 Saylı Məktəb-Lisey",
+   "amen": [
+    "card",
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJf4GaJtJ9MEARPP7B5ouVE0s": {
    "id": "ChIJf4GaJtJ9MEARPP7B5ouVE0s",
@@ -1743,7 +3759,49 @@
    "reviews": 199,
    "maps": "https://maps.google.com/?cid=6178333470275562081&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.393166,
+    49.794942
+   ],
+   "hours": [
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ]
+   ],
+   "district": "Yasamal",
+   "near": "Brend Ucuzluq Univermaq",
+   "amen": [
+    "card",
+    "delivery",
+    "takeout"
+   ],
+   "enriched": true
   },
   "ChIJe3u2joV9MEAROba_Lff4FsU": {
    "id": "ChIJe3u2joV9MEAROba_Lff4FsU",
@@ -1759,7 +3817,17 @@
    "reviews": 26,
    "maps": "https://maps.google.com/?cid=14201812215467587129&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.37556,
+    49.853703
+   ],
+   "district": "Səbail",
+   "near": "MediClub",
+   "amen": [
+    "takeout"
+   ],
+   "enriched": true
   },
   "ChIJ1ew3buV9MEARfeLtBLhURjk": {
    "id": "ChIJ1ew3buV9MEARfeLtBLhURjk",
@@ -1775,7 +3843,21 @@
    "reviews": 176,
    "maps": "https://maps.google.com/?cid=4127079257865052797&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.364139,
+    49.833442
+   ],
+   "district": "Sabayil",
+   "near": "Сад Филармонии",
+   "amen": [
+    "card",
+    "delivery",
+    "takeout",
+    "kids",
+    "reserve"
+   ],
+   "enriched": true
   },
   "ChIJfykhh5B9MEARKTM6sEQl6Y4": {
    "id": "ChIJfykhh5B9MEARKTM6sEQl6Y4",
@@ -1791,7 +3873,46 @@
    "reviews": 45,
    "maps": "https://maps.google.com/?cid=10297802999903957801&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.361733,
+    49.83241
+   ],
+   "hours": [
+    [
+     420,
+     1080
+    ],
+    [
+     420,
+     1080
+    ],
+    [
+     420,
+     1080
+    ],
+    [
+     420,
+     1080
+    ],
+    [
+     420,
+     1080
+    ],
+    [
+     420,
+     1020
+    ],
+    []
+   ],
+   "district": "Səbail",
+   "near": "6 №-li məktəb-lisey",
+   "amen": [
+    "card",
+    "delivery",
+    "takeout"
+   ],
+   "enriched": true
   },
   "ChIJ3R6J-9p9MEARAC-o1EIs-Rg": {
    "id": "ChIJ3R6J-9p9MEARAC-o1EIs-Rg",
@@ -1807,7 +3928,49 @@
    "reviews": 267,
    "maps": "https://maps.google.com/?cid=1799518191658479360&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.37116,
+    49.841145
+   ],
+   "hours": [
+    [
+     600,
+     1440
+    ],
+    [
+     600,
+     1440
+    ],
+    [
+     600,
+     1440
+    ],
+    [
+     600,
+     1440
+    ],
+    [
+     600,
+     1440
+    ],
+    [
+     600,
+     1440
+    ],
+    [
+     600,
+     1440
+    ]
+   ],
+   "district": "Səbail",
+   "near": "Бакинский бульвар",
+   "amen": [
+    "card",
+    "delivery",
+    "takeout"
+   ],
+   "enriched": true
   },
   "ChIJ4xjeC5l9MEARYV0t6LShNZQ": {
    "id": "ChIJ4xjeC5l9MEARYV0t6LShNZQ",
@@ -1823,7 +3986,48 @@
    "reviews": 2296,
    "maps": "https://maps.google.com/?cid=10679619889740471649&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.368872,
+    49.836909
+   ],
+   "hours": [
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ]
+   ],
+   "district": "Səbail",
+   "near": "Центральная Kлиника Амбулатория",
+   "amen": [
+    "card",
+    "delivery"
+   ],
+   "enriched": true
   },
   "ChIJN_xSKKd9MEARfUWVNSIzQXQ": {
    "id": "ChIJN_xSKKd9MEARfUWVNSIzQXQ",
@@ -1855,7 +4059,50 @@
    "reviews": 54,
    "maps": "https://maps.google.com/?cid=11808271453398926037&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.408972,
+    49.847403
+   ],
+   "hours": [
+    [
+     480,
+     1380
+    ],
+    [
+     480,
+     1380
+    ],
+    [
+     480,
+     1380
+    ],
+    [
+     480,
+     1380
+    ],
+    [
+     480,
+     1380
+    ],
+    [
+     480,
+     1380
+    ],
+    [
+     480,
+     1380
+    ]
+   ],
+   "district": "Nərimanov",
+   "near": "Baku Medical Plaza Medilux filialı",
+   "amen": [
+    "card",
+    "delivery",
+    "takeout",
+    "breakfast"
+   ],
+   "enriched": true
   },
   "ChIJI_48lPx9MEARXpF7oDwGZXc": {
    "id": "ChIJI_48lPx9MEARXpF7oDwGZXc",
@@ -1871,7 +4118,48 @@
    "reviews": 24,
    "maps": "https://maps.google.com/?cid=8603289520621457758&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.402095,
+    49.849404
+   ],
+   "hours": [
+    [
+     480,
+     1290
+    ],
+    [
+     480,
+     1290
+    ],
+    [
+     480,
+     1290
+    ],
+    [
+     480,
+     1290
+    ],
+    [
+     480,
+     1290
+    ],
+    [
+     480,
+     1290
+    ],
+    [
+     480,
+     1290
+    ]
+   ],
+   "district": "Nərimanov",
+   "near": "Diamed",
+   "amen": [
+    "card",
+    "takeout"
+   ],
+   "enriched": true
   },
   "ChIJDdLXWQR9MEARzpGNTRPmLnM": {
    "id": "ChIJDdLXWQR9MEARzpGNTRPmLnM",
@@ -1887,7 +4175,48 @@
    "reviews": 34,
    "maps": "https://maps.google.com/?cid=8299824133870293454&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.363167,
+    49.820355
+   ],
+   "hours": [
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ]
+   ],
+   "district": "Yasamal",
+   "near": "20 nömrəli məktəb-lisey, A. Hüseynzadə adına",
+   "amen": [
+    "card",
+    "delivery"
+   ],
+   "enriched": true
   },
   "ChIJwSOoFQ59MEAR8yY4UOmpEfM": {
    "id": "ChIJwSOoFQ59MEAR8yY4UOmpEfM",
@@ -1903,7 +4232,52 @@
    "reviews": 369,
    "maps": "https://maps.google.com/?cid=17514967245358900979&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.380523,
+    49.884728
+   ],
+   "hours": [
+    [
+     540,
+     1560
+    ],
+    [
+     540,
+     1560
+    ],
+    [
+     540,
+     1560
+    ],
+    [
+     540,
+     1560
+    ],
+    [
+     540,
+     1560
+    ],
+    [
+     540,
+     1560
+    ],
+    [
+     540,
+     1560
+    ]
+   ],
+   "district": "Xətai",
+   "near": "Бакинская Высшая Школа Нефти",
+   "amen": [
+    "card",
+    "parking",
+    "delivery",
+    "takeout",
+    "kids",
+    "breakfast"
+   ],
+   "enriched": true
   },
   "ChIJE_V-cWV9MEARvSCchjS9Fgg": {
    "id": "ChIJE_V-cWV9MEARvSCchjS9Fgg",
@@ -1919,7 +4293,47 @@
    "reviews": 270,
    "maps": "https://maps.google.com/?cid=582861235085385917&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.382239,
+    49.873804
+   ],
+   "hours": [
+    [
+     420,
+     1350
+    ],
+    [
+     420,
+     1350
+    ],
+    [
+     420,
+     1350
+    ],
+    [
+     420,
+     1350
+    ],
+    [
+     420,
+     1350
+    ],
+    [
+     480,
+     1350
+    ],
+    [
+     600,
+     1020
+    ]
+   ],
+   "district": "Xətai",
+   "near": "Ana Harayı Abidəsi",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJ63QBZMR9MEARiE08JLYoETk": {
    "id": "ChIJ63QBZMR9MEARiE08JLYoETk",
@@ -1935,7 +4349,45 @@
    "reviews": 51,
    "maps": "https://maps.google.com/?cid=4112112697523064200&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.383882,
+    49.868412
+   ],
+   "hours": [
+    [
+     360,
+     1380
+    ],
+    [
+     360,
+     1380
+    ],
+    [
+     360,
+     1380
+    ],
+    [
+     360,
+     1380
+    ],
+    [
+     360,
+     1380
+    ],
+    [
+     360,
+     1380
+    ],
+    [
+     540,
+     1020
+    ]
+   ],
+   "district": "Xətai",
+   "near": "International SOS Baku Clinic",
+   "amen": [],
+   "enriched": true
   },
   "ChIJf2K4Dvl9MEARWOFUihRvhA8": {
    "id": "ChIJf2K4Dvl9MEARWOFUihRvhA8",
@@ -1951,7 +4403,29 @@
    "reviews": 126,
    "maps": "https://maps.google.com/?cid=1118140741505573208&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.408821,
+    49.862972
+   ],
+   "hours": [
+    [
+     0,
+     8640
+    ],
+    [],
+    [],
+    [],
+    [],
+    [],
+    []
+   ],
+   "district": "Nərimanov",
+   "near": "Milana Hospital Klinikası",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJ579WcAx9MEARDSHVZRk9uKY": {
    "id": "ChIJ579WcAx9MEARDSHVZRk9uKY",
@@ -1967,7 +4441,45 @@
    "reviews": 64,
    "maps": "https://maps.google.com/?cid=12013419185302741261&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.385227,
+    49.850347
+   ],
+   "hours": [
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    []
+   ],
+   "district": "Nərimanov",
+   "near": "Средняя школа №35",
+   "amen": [
+    "card",
+    "wheelchair"
+   ],
+   "enriched": true
   },
   "ChIJYWwvaV2HMEAR86maCmIYa7w": {
    "id": "ChIJYWwvaV2HMEAR86maCmIYa7w",
@@ -1983,7 +4495,48 @@
    "reviews": 169,
    "maps": "https://maps.google.com/?cid=13576972311002262003&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.395606,
+    49.806712
+   ],
+   "hours": [
+    [
+     360,
+     1380
+    ],
+    [
+     360,
+     1380
+    ],
+    [
+     360,
+     1380
+    ],
+    [
+     360,
+     1380
+    ],
+    [
+     360,
+     1380
+    ],
+    [
+     360,
+     1380
+    ],
+    [
+     540,
+     1380
+    ]
+   ],
+   "district": "Yasamal",
+   "near": "Şəfa Müalicəvi Diaqnostika Mərkəzi I Шафа Лечебно-Диагностический Центр I Shafa Medical Diagnostic Center",
+   "amen": [
+    "card",
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJ7332l_hiMEAR0KGtrJ_We7Q": {
    "id": "ChIJ7332l_hiMEAR0KGtrJ_We7Q",
@@ -1999,7 +4552,42 @@
    "reviews": 34,
    "maps": "https://maps.google.com/?cid=13005224330247643600&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.412824,
+    49.941703
+   ],
+   "hours": [
+    [
+     480,
+     1380
+    ],
+    [
+     480,
+     1380
+    ],
+    [
+     480,
+     1380
+    ],
+    [
+     480,
+     1380
+    ],
+    [
+     480,
+     1380
+    ],
+    [
+     480,
+     1380
+    ],
+    []
+   ],
+   "district": "Nizami rayonu",
+   "near": "MIAMED",
+   "amen": [],
+   "enriched": true
   },
   "ChIJrdPiEQF9MEARW4B3ZohoiPE": {
    "id": "ChIJrdPiEQF9MEARW4B3ZohoiPE",
@@ -2079,7 +4667,47 @@
    "reviews": 81,
    "maps": "https://maps.google.com/?cid=1455626526713560838&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.396043,
+    49.93397
+   ],
+   "hours": [
+    [
+     420,
+     1365
+    ],
+    [
+     420,
+     1365
+    ],
+    [
+     420,
+     1365
+    ],
+    [
+     420,
+     1365
+    ],
+    [
+     420,
+     1365
+    ],
+    [
+     420,
+     1305
+    ],
+    [
+     720,
+     1305
+    ]
+   ],
+   "district": "Низаминский район",
+   "near": "Отель \"Астория Баку\"",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJBZAJPY9jMEARgEf5I-oI1_o": {
    "id": "ChIJBZAJPY9jMEARgEf5I-oI1_o",
@@ -2095,7 +4723,45 @@
    "reviews": 55,
    "maps": "https://maps.google.com/?cid=18074925431193683840&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.392766,
+    49.95584
+   ],
+   "hours": [
+    [
+     510,
+     1380
+    ],
+    [
+     510,
+     1380
+    ],
+    [
+     510,
+     1380
+    ],
+    [
+     510,
+     1380
+    ],
+    [
+     510,
+     1380
+    ],
+    [
+     600,
+     1380
+    ],
+    [
+     600,
+     1020
+    ]
+   ],
+   "district": "Xətai",
+   "near": "62 Nomreli Mekteb",
+   "amen": [],
+   "enriched": true
   },
   "ChIJ2Rar13Z9MEARtY-oZNggbT0": {
    "id": "ChIJ2Rar13Z9MEARtY-oZNggbT0",
@@ -2111,7 +4777,47 @@
    "reviews": 44,
    "maps": "https://maps.google.com/?cid=4426230122548858805&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.37995,
+    49.843202
+   ],
+   "hours": [
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     600,
+     1080
+    ]
+   ],
+   "district": "Nəsimi",
+   "near": "Diplomat Hotel Baku",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJkST2LQt9MEARR-HnjIWTlnI": {
    "id": "ChIJkST2LQt9MEARR-HnjIWTlnI",
@@ -2127,7 +4833,44 @@
    "reviews": 51,
    "maps": "https://maps.google.com/?cid=8256949168634323271&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.37542,
+    49.85341
+   ],
+   "hours": [
+    [
+     420,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     600,
+     1320
+    ],
+    []
+   ],
+   "district": "Səbail",
+   "near": "Дом Правительства",
+   "amen": [
+    "parking"
+   ],
+   "enriched": true
   },
   "ChIJpQZIGnZ9MEARtiHxrOsal0M": {
    "id": "ChIJpQZIGnZ9MEARtiHxrOsal0M",
@@ -2143,7 +4886,47 @@
    "reviews": 52,
    "maps": "https://maps.google.com/?cid=4870391121545601462&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.395373,
+    49.838755
+   ],
+   "hours": [
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     960
+    ]
+   ],
+   "district": "Nasimi",
+   "near": "Referans Poliklinik Nəsimi filialı",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJPykfm1V9MEARjgMo6VBbYMo": {
    "id": "ChIJPykfm1V9MEARjgMo6VBbYMo",
@@ -2159,7 +4942,47 @@
    "reviews": 46,
    "maps": "https://maps.google.com/?cid=14582755996492891022&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.387627,
+    49.802741
+   ],
+   "hours": [
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     540,
+     1380
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     720,
+     1080
+    ]
+   ],
+   "district": "Ясамал",
+   "near": "Ясамальский телефонный узел",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJY3QpfFp9MEAR2Ejv5txHcCA": {
    "id": "ChIJY3QpfFp9MEAR2Ejv5txHcCA",
@@ -2207,7 +5030,49 @@
    "reviews": 41,
    "maps": "https://maps.google.com/?cid=11760397679675563498&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.373779,
+    49.834007
+   ],
+   "hours": [
+    [
+     540,
+     1320
+    ],
+    [
+     540,
+     1320
+    ],
+    [
+     540,
+     1320
+    ],
+    [
+     540,
+     1320
+    ],
+    [
+     540,
+     1320
+    ],
+    [
+     540,
+     1320
+    ],
+    [
+     540,
+     1320
+    ]
+   ],
+   "district": "Yasamal",
+   "near": "Passage Hotel",
+   "amen": [
+    "card",
+    "parking",
+    "delivery"
+   ],
+   "enriched": true
   },
   "ChIJJUJlXQB9MEARx8qH3U0Kg5c": {
    "id": "ChIJJUJlXQB9MEARx8qH3U0Kg5c",
@@ -2239,7 +5104,48 @@
    "reviews": 2,
    "maps": "https://maps.google.com/?cid=3221936550313288202&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.397038,
+    49.815078
+   ],
+   "hours": [
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ]
+   ],
+   "district": "Насиминский район",
+   "near": "NEPTUN Supermarket",
+   "amen": [
+    "card",
+    "delivery"
+   ],
+   "enriched": true
   },
   "ChIJcVMzm5J9MEAR4lIMEJhpAfk": {
    "id": "ChIJcVMzm5J9MEAR4lIMEJhpAfk",
@@ -2255,7 +5161,45 @@
    "reviews": 36,
    "maps": "https://maps.google.com/?cid=17942738492245955298&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.390473,
+    49.842141
+   ],
+   "hours": [
+    [
+     480,
+     1200
+    ],
+    [
+     480,
+     1200
+    ],
+    [
+     480,
+     1200
+    ],
+    [
+     480,
+     1200
+    ],
+    [
+     480,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ]
+   ],
+   "district": "Nəsimi",
+   "near": "Koroğlu parkı",
+   "amen": [],
+   "enriched": true
   },
   "ChIJ7UimdAB9MEARN-8zv5R_nCE": {
    "id": "ChIJ7UimdAB9MEARN-8zv5R_nCE",
@@ -2271,7 +5215,48 @@
    "reviews": 40,
    "maps": "https://maps.google.com/?cid=2421950976458223415&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.380942,
+    49.871885
+   ],
+   "hours": [
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ]
+   ],
+   "district": "Xətai",
+   "near": "Мэдиленд Госпиталь",
+   "amen": [
+    "card",
+    "parking"
+   ],
+   "enriched": true
   },
   "ChIJr429jMJ9MEARzciolKkjSzw": {
    "id": "ChIJr429jMJ9MEARzciolKkjSzw",
@@ -2287,7 +5272,45 @@
    "reviews": 55,
    "maps": "https://maps.google.com/?cid=4344605476779509965&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.37449,
+    49.850912
+   ],
+   "hours": [
+    [
+     540,
+     1320
+    ],
+    [
+     540,
+     1320
+    ],
+    [
+     540,
+     1320
+    ],
+    [
+     540,
+     1320
+    ],
+    [
+     540,
+     1320
+    ],
+    [
+     540,
+     1320
+    ],
+    [
+     540,
+     1320
+    ]
+   ],
+   "district": "Səbail",
+   "near": "Дом Правительства",
+   "amen": [],
+   "enriched": true
   },
   "ChIJ6QQYUKhkMEARqYvtXxWp26s": {
    "id": "ChIJ6QQYUKhkMEARqYvtXxWp26s",
@@ -2303,7 +5326,47 @@
    "reviews": 21,
    "maps": "https://maps.google.com/?cid=12383677509654121385&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.371282,
+    49.954529
+   ],
+   "hours": [
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     600,
+     1200
+    ]
+   ],
+   "district": "Xətai",
+   "near": "Megastore | Həzi Aslanov 2",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJ5X6Wpsl9MEARt5-o3zwjogc": {
    "id": "ChIJ5X6Wpsl9MEARt5-o3zwjogc",
@@ -2367,7 +5430,45 @@
    "reviews": 1,
    "maps": "https://maps.google.com/?cid=7163261149193888778&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.399049,
+    49.859232
+   ],
+   "hours": [
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     600,
+     1140
+    ]
+   ],
+   "district": "Nərimanov",
+   "near": "Smith Hotel",
+   "amen": [],
+   "enriched": true
   },
   "ChIJx7KcjoN9MEAR0gKDBN4lFDw": {
    "id": "ChIJx7KcjoN9MEAR0gKDBN4lFDw",
@@ -2447,7 +5548,49 @@
    "reviews": 33,
    "maps": "https://maps.google.com/?cid=12336661607820519250&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.377423,
+    49.848102
+   ],
+   "hours": [
+    [
+     540,
+     1170
+    ],
+    [
+     540,
+     1170
+    ],
+    [
+     540,
+     1170
+    ],
+    [
+     540,
+     1170
+    ],
+    [
+     540,
+     1170
+    ],
+    [
+     540,
+     1170
+    ],
+    [
+     540,
+     1170
+    ]
+   ],
+   "district": "Nəsimi",
+   "near": "Азербайджанский Государственный Университет Нефти И Промышленности",
+   "amen": [
+    "card",
+    "parking",
+    "wheelchair"
+   ],
+   "enriched": true
   },
   "ChIJ52HJZwBlMEARX4a9ALKgkyU": {
    "id": "ChIJ52HJZwBlMEARX4a9ALKgkyU",
@@ -2543,7 +5686,48 @@
    "reviews": 153,
    "maps": "https://maps.google.com/?cid=9908687164429754904&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.377639,
+    49.851068
+   ],
+   "hours": [
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ]
+   ],
+   "district": "Nasimi",
+   "near": "Парк Самеда Вургуна",
+   "amen": [
+    "delivery",
+    "wheelchair"
+   ],
+   "enriched": true
   },
   "ChIJNT4a1-V9MEARwoHTua1bzRg": {
    "id": "ChIJNT4a1-V9MEARwoHTua1bzRg",
@@ -2575,7 +5759,45 @@
    "reviews": 1,
    "maps": "https://maps.google.com/?cid=18070576022818035027&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.416869,
+    49.838739
+   ],
+   "hours": [
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1260
+    ]
+   ],
+   "district": "Binəqədi",
+   "near": "Tərgül",
+   "amen": [],
+   "enriched": true
   },
   "ChIJ1xhbOcx9MEARnf9kLDUfV4A": {
    "id": "ChIJ1xhbOcx9MEARnf9kLDUfV4A",
@@ -2639,7 +5861,47 @@
    "reviews": 1,
    "maps": "https://maps.google.com/?cid=13922793915667835668&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.417216,
+    49.935322
+   ],
+   "hours": [
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1260
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1140
+    ]
+   ],
+   "district": "Nizami rayonu",
+   "near": "Gara Garayev",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJSQGSta59MEARH4M2tPm0qEI": {
    "id": "ChIJSQGSta59MEARH4M2tPm0qEI",
@@ -2687,7 +5949,48 @@
    "reviews": 3,
    "maps": "https://maps.google.com/?cid=4511519264832809036&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.382161,
+    49.839197
+   ],
+   "hours": [
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ]
+   ],
+   "district": "Nasimi",
+   "near": "Təzə bazar",
+   "amen": [
+    "card",
+    "delivery"
+   ],
+   "enriched": true
   },
   "ChIJJxcm90aJMEARSfwE78X7n0A": {
    "id": "ChIJJxcm90aJMEARSfwE78X7n0A",
@@ -2719,7 +6022,39 @@
    "reviews": 57,
    "maps": "https://maps.google.com/?cid=11440367280046227063&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.377332,
+    49.857682
+   ],
+   "hours": [
+    [],
+    [
+     660,
+     1140
+    ],
+    [],
+    [
+     660,
+     1140
+    ],
+    [
+     660,
+     1140
+    ],
+    [
+     660,
+     1140
+    ],
+    [
+     660,
+     1140
+    ]
+   ],
+   "district": "Nəsimi",
+   "near": "Elitar Gimnaziya",
+   "amen": [],
+   "enriched": true
   },
   "ChIJB_82_sd9MEARUmXha1NfkFI": {
    "id": "ChIJB_82_sd9MEARUmXha1NfkFI",
@@ -2751,7 +6086,45 @@
    "reviews": 143,
    "maps": "https://maps.google.com/?cid=5093568219627857762&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.381891,
+    49.86729
+   ],
+   "hours": [
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ]
+   ],
+   "district": "Xətai",
+   "near": "Leyla Medical Center",
+   "amen": [],
+   "enriched": true
   },
   "ChIJIVQcEAB9MEAR9BlI2ZHlbpw": {
    "id": "ChIJIVQcEAB9MEAR9BlI2ZHlbpw",
@@ -2767,7 +6140,47 @@
    "reviews": 41,
    "maps": "https://maps.google.com/?cid=11272199331933329908&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.382103,
+    49.869216
+   ],
+   "hours": [
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ]
+   ],
+   "district": "Xətai",
+   "near": "Мэдиленд Госпиталь",
+   "amen": [
+    "parking"
+   ],
+   "enriched": true
   },
   "ChIJlfUg3ybhlywROjIKjSqMBVM": {
    "id": "ChIJlfUg3ybhlywROjIKjSqMBVM",
@@ -2783,7 +6196,45 @@
    "reviews": 267,
    "maps": "https://maps.google.com/?cid=5982341794414342714&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.395801,
+    49.860674
+   ],
+   "hours": [
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ]
+   ],
+   "district": "Narimanov",
+   "near": "Azerbaijan University of Languages - 2nd and 3rd corpuses",
+   "amen": [],
+   "enriched": true
   },
   "ChIJdz6zHel9MEARiBmbsD3unnw": {
    "id": "ChIJdz6zHel9MEARiBmbsD3unnw",
@@ -2815,7 +6266,45 @@
    "reviews": 157,
    "maps": "https://maps.google.com/?cid=3959086726884529386&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.403678,
+    49.850839
+   ],
+   "hours": [
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ]
+   ],
+   "district": "Nərimanov",
+   "near": "Atatürk Park",
+   "amen": [],
+   "enriched": true
   },
   "ChIJ-bXUnhZ9MEARDeKxXIRnKMI": {
    "id": "ChIJ-bXUnhZ9MEARDeKxXIRnKMI",
@@ -2831,7 +6320,42 @@
    "reviews": 40,
    "maps": "https://maps.google.com/?cid=13990546060614951437&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.378536,
+    49.870651
+   ],
+   "hours": [
+    [],
+    [
+     660,
+     1080
+    ],
+    [
+     660,
+     1080
+    ],
+    [
+     660,
+     1080
+    ],
+    [
+     660,
+     1080
+    ],
+    [
+     660,
+     1080
+    ],
+    [
+     660,
+     1080
+    ]
+   ],
+   "district": "Xətai",
+   "near": "Azərbaycan Maliyyə-İqtisad kolleci",
+   "amen": [],
+   "enriched": true
   },
   "ChIJ-X8QUhZ9MEARNHQ8xuXMovU": {
    "id": "ChIJ-X8QUhZ9MEARNHQ8xuXMovU",
@@ -2847,7 +6371,45 @@
    "reviews": 90,
    "maps": "https://maps.google.com/?cid=17699934772764898356&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.378557,
+    49.832899
+   ],
+   "hours": [
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1140
+    ]
+   ],
+   "district": "Yasamal",
+   "near": "Средняя школа #18 имени Микаила Мушфига",
+   "amen": [],
+   "enriched": true
   },
   "ChIJHZcX36V9MEARk2AVrMybHnE": {
    "id": "ChIJHZcX36V9MEARk2AVrMybHnE",
@@ -2879,7 +6441,42 @@
    "reviews": 142,
    "maps": "https://maps.google.com/?cid=866823297458206167&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.393512,
+    49.843867
+   ],
+   "hours": [
+    [
+     600,
+     1080
+    ],
+    [
+     600,
+     1080
+    ],
+    [
+     600,
+     1080
+    ],
+    [
+     600,
+     1080
+    ],
+    [
+     600,
+     1080
+    ],
+    [
+     600,
+     1080
+    ],
+    []
+   ],
+   "district": "Nəsimi",
+   "near": "Парк \"Деде Горгуд\"",
+   "amen": [],
+   "enriched": true
   },
   "ChIJAxOxM0x9MEARxIHuKt4c0F8": {
    "id": "ChIJAxOxM0x9MEARxIHuKt4c0F8",
@@ -2895,7 +6492,45 @@
    "reviews": 45,
    "maps": "https://maps.google.com/?cid=6904049969287561668&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.392086,
+    49.840091
+   ],
+   "hours": [
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ]
+   ],
+   "district": "Nəsimi",
+   "near": "Парк Зорге",
+   "amen": [],
+   "enriched": true
   },
   "ChIJzRGFE-FjMEARxotJ6Ro4Elw": {
    "id": "ChIJzRGFE-FjMEARxotJ6Ro4Elw",
@@ -2959,7 +6594,45 @@
    "reviews": 100,
    "maps": "https://maps.google.com/?cid=10030677242254123827&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.402244,
+    49.840571
+   ],
+   "hours": [
+    [
+     600,
+     1080
+    ],
+    [
+     600,
+     1080
+    ],
+    [
+     600,
+     1080
+    ],
+    [
+     600,
+     1080
+    ],
+    [
+     600,
+     1080
+    ],
+    [
+     600,
+     1080
+    ],
+    [
+     600,
+     1080
+    ]
+   ],
+   "district": "Nərimanov",
+   "near": "Briz-L Eye Clinic",
+   "amen": [],
+   "enriched": true
   },
   "ChIJjeBpAFd9MEARiNhHB8fW01g": {
    "id": "ChIJjeBpAFd9MEARiNhHB8fW01g",
@@ -2975,7 +6648,45 @@
    "reviews": 34,
    "maps": "https://maps.google.com/?cid=6400695645732591752&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.383662,
+    49.825321
+   ],
+   "hours": [
+    [
+     600,
+     1920
+    ],
+    [
+     600,
+     1920
+    ],
+    [
+     600,
+     1920
+    ],
+    [
+     600,
+     1920
+    ],
+    [
+     600,
+     1920
+    ],
+    [
+     600,
+     1920
+    ],
+    [
+     600,
+     1920
+    ]
+   ],
+   "district": "Yasamal",
+   "near": "K.Fərəcova adına Elmi-Tədqiqat Pediatriya İnstitutu - OMD",
+   "amen": [],
+   "enriched": true
   },
   "ChIJu-AtCgNjMEAR55H9QcRZMM8": {
    "id": "ChIJu-AtCgNjMEAR55H9QcRZMM8",
@@ -3023,7 +6734,45 @@
    "reviews": 25,
    "maps": "https://maps.google.com/?cid=7060706854214872296&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.398317,
+    49.791659
+   ],
+   "hours": [
+    [
+     720,
+     1200
+    ],
+    [
+     720,
+     1200
+    ],
+    [
+     720,
+     1200
+    ],
+    [
+     720,
+     1200
+    ],
+    [
+     720,
+     1200
+    ],
+    [
+     720,
+     1200
+    ],
+    [
+     720,
+     1200
+    ]
+   ],
+   "district": "Yasamal",
+   "near": "YASAMAL Hospital",
+   "amen": [],
+   "enriched": true
   },
   "ChIJqTJe7Ht9MEARsOVpZ6seh5w": {
    "id": "ChIJqTJe7Ht9MEARsOVpZ6seh5w",
@@ -3055,7 +6804,47 @@
    "reviews": 28,
    "maps": "https://maps.google.com/?cid=8261541290053339314&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Facebook",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.382939,
+    49.803536
+   ],
+   "hours": [
+    [
+     480,
+     1200
+    ],
+    [
+     480,
+     1200
+    ],
+    [
+     480,
+     1200
+    ],
+    [
+     480,
+     1200
+    ],
+    [
+     480,
+     1200
+    ],
+    [
+     480,
+     1200
+    ],
+    [
+     480,
+     1200
+    ]
+   ],
+   "district": "Ясамал",
+   "near": "Bakı Şeheri Narkoloji Dispanser",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJN1ns8MSHMEARz2JDxNhvLIg": {
    "id": "ChIJN1ns8MSHMEARz2JDxNhvLIg",
@@ -3119,7 +6908,45 @@
    "reviews": 38,
    "maps": "https://maps.google.com/?cid=6390523902037643998&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.375652,
+    49.85225
+   ],
+   "hours": [
+    [
+     540,
+     1140
+    ],
+    [
+     540,
+     1140
+    ],
+    [
+     540,
+     1140
+    ],
+    [
+     540,
+     1140
+    ],
+    [
+     540,
+     1140
+    ],
+    [
+     600,
+     1080
+    ],
+    [
+     600,
+     1080
+    ]
+   ],
+   "district": "Səbail",
+   "near": "Empire Hotel",
+   "amen": [],
+   "enriched": true
   },
   "ChIJL3vDLQB9MEARhEng7oo2VkA": {
    "id": "ChIJL3vDLQB9MEARhEng7oo2VkA",
@@ -3151,7 +6978,45 @@
    "reviews": 1,
    "maps": "https://maps.google.com/?cid=10171357685017023071&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.395062,
+    49.834352
+   ],
+   "hours": [
+    [
+     600,
+     1860
+    ],
+    [
+     600,
+     1860
+    ],
+    [
+     600,
+     1860
+    ],
+    [
+     600,
+     1860
+    ],
+    [
+     600,
+     1860
+    ],
+    [
+     600,
+     1860
+    ],
+    [
+     600,
+     1860
+    ]
+   ],
+   "district": "Nəsimi",
+   "near": "Азербайджанский Медицинский Университет",
+   "amen": [],
+   "enriched": true
   },
   "ChIJHeTIbwCHMEAR4A4uTBv6_Ps": {
    "id": "ChIJHeTIbwCHMEAR4A4uTBv6_Ps",
@@ -3167,7 +7032,15 @@
    "reviews": 6,
    "maps": "https://maps.google.com/?cid=18157662792800145120&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.437556,
+    49.808611
+   ],
+   "district": "Binəqədi",
+   "near": "299 Saylı Məktəb",
+   "amen": [],
+   "enriched": true
   },
   "ChIJJUqS7Jh9MEAR_R_SdrFwE98": {
    "id": "ChIJJUqS7Jh9MEAR_R_SdrFwE98",
@@ -3215,7 +7088,44 @@
    "reviews": 174,
    "maps": "https://maps.google.com/?cid=12708874753293078416&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.376287,
+    49.846626
+   ],
+   "hours": [
+    [],
+    [
+     660,
+     1260
+    ],
+    [
+     660,
+     1260
+    ],
+    [
+     660,
+     1260
+    ],
+    [
+     660,
+     1260
+    ],
+    [
+     660,
+     1260
+    ],
+    [
+     720,
+     1080
+    ]
+   ],
+   "district": "Насиминский район",
+   "near": "23 saylı tam orta məktəb",
+   "amen": [
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJOYP-3rB9MEAR3uyK6ZrvAjM": {
    "id": "ChIJOYP-3rB9MEAR3uyK6ZrvAjM",
@@ -3231,7 +7141,44 @@
    "reviews": 31,
    "maps": "https://maps.google.com/?cid=3675763694509944030&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.370681,
+    49.838305
+   ],
+   "hours": [
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     660,
+     1080
+    ],
+    []
+   ],
+   "district": "Səbail",
+   "near": "Национальный Музей Истории Азербайджана",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   },
   "ChIJ4_BwNAB9MEARQCi9ds0Rkh8": {
    "id": "ChIJ4_BwNAB9MEARQCi9ds0Rkh8",
@@ -3263,7 +7210,42 @@
    "reviews": 19,
    "maps": "https://maps.google.com/?cid=15475984489689392362&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.382083,
+    49.829845
+   ],
+   "hours": [
+    [
+     660,
+     1200
+    ],
+    [
+     660,
+     1200
+    ],
+    [
+     660,
+     1200
+    ],
+    [
+     660,
+     1200
+    ],
+    [
+     660,
+     1200
+    ],
+    [
+     660,
+     1080
+    ],
+    []
+   ],
+   "district": "Yasamal",
+   "near": "Amber Hotel",
+   "amen": [],
+   "enriched": true
   },
   "ChIJdc98mvt9MEARKtndWsEXLMs": {
    "id": "ChIJdc98mvt9MEARKtndWsEXLMs",
@@ -3359,7 +7341,42 @@
    "reviews": 0,
    "maps": "https://maps.google.com/?cid=18407784973353263741&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.429858,
+    49.96512
+   ],
+   "hours": [
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     840
+    ],
+    []
+   ],
+   "district": "Sabunçu",
+   "near": "2 Sayli Stomatoloji Klinika",
+   "amen": [],
+   "enriched": true
   },
   "ChIJC97re9V9MEARXqLoCCoJJPo": {
    "id": "ChIJC97re9V9MEARXqLoCCoJJPo",
@@ -3375,7 +7392,53 @@
    "reviews": 2362,
    "maps": "https://maps.google.com/?cid=18024541684786307678&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "нет",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.368558,
+    49.835708
+   ],
+   "hours": [
+    [
+     480,
+     1410
+    ],
+    [
+     480,
+     1410
+    ],
+    [
+     480,
+     1410
+    ],
+    [
+     480,
+     1410
+    ],
+    [
+     480,
+     1410
+    ],
+    [
+     480,
+     1410
+    ],
+    [
+     480,
+     1410
+    ]
+   ],
+   "district": "Səbail",
+   "near": "Музей им. Низами Гянджеви",
+   "amen": [
+    "card",
+    "parking",
+    "takeout",
+    "terrace",
+    "kids",
+    "reserve",
+    "breakfast"
+   ],
+   "enriched": true
   },
   "ChIJ6Vnz2iR9MEARWWeHHZKD2kw": {
    "id": "ChIJ6Vnz2iR9MEARWWeHHZKD2kw",
@@ -3391,7 +7454,53 @@
    "reviews": 1050,
    "maps": "https://maps.google.com/?cid=5537883355389323097&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Facebook",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.369816,
+    49.839417
+   ],
+   "hours": [
+    [
+     720,
+     1500
+    ],
+    [
+     720,
+     1500
+    ],
+    [
+     720,
+     1500
+    ],
+    [
+     720,
+     1500
+    ],
+    [
+     720,
+     1560
+    ],
+    [
+     720,
+     1560
+    ],
+    [
+     720,
+     1560
+    ]
+   ],
+   "district": "Sabayil",
+   "near": "Национальный Музей Истории Азербайджана",
+   "amen": [
+    "card",
+    "parking",
+    "delivery",
+    "takeout",
+    "terrace",
+    "kids",
+    "reserve"
+   ],
+   "enriched": true
   },
   "ChIJMbf0u1p9MEARsU0K1E_6TwM": {
    "id": "ChIJMbf0u1p9MEARsU0K1E_6TwM",
@@ -3407,7 +7516,49 @@
    "reviews": 191,
    "maps": "https://maps.google.com/?cid=238684526040731057&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.370938,
+    49.835362
+   ],
+   "hours": [
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ]
+   ],
+   "district": "Səbail",
+   "near": "Merkezi Univermaq",
+   "amen": [
+    "card",
+    "takeout",
+    "kids"
+   ],
+   "enriched": true
   },
   "ChIJVz97ALJ9MEARHNhoAnAKjgk": {
    "id": "ChIJVz97ALJ9MEARHNhoAnAKjgk",
@@ -3423,7 +7574,53 @@
    "reviews": 386,
    "maps": "https://maps.google.com/?cid=688499269227304988&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
    "site": "Instagram",
-   "added": "2026-11-21"
+   "added": "2026-11-21",
+   "loc": [
+    40.373644,
+    49.847279
+   ],
+   "hours": [
+    [
+     660,
+     1380
+    ],
+    [
+     660,
+     1380
+    ],
+    [
+     660,
+     1380
+    ],
+    [
+     660,
+     1380
+    ],
+    [
+     660,
+     1380
+    ],
+    [
+     660,
+     1380
+    ],
+    [
+     660,
+     1380
+    ]
+   ],
+   "district": "Sabayil",
+   "near": "Парк Сахиль",
+   "amen": [
+    "card",
+    "parking",
+    "delivery",
+    "takeout",
+    "kids",
+    "reserve",
+    "wheelchair"
+   ],
+   "enriched": true
   },
   "ChIJZYPHeoV9MEARBpCru7K4l-8": {
    "id": "ChIJZYPHeoV9MEARBpCru7K4l-8",
