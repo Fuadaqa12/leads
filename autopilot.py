@@ -331,11 +331,17 @@ def main():
         return
 
     # каждый день берём следующие N пар «город + категория», по кругу
-    pairs = [(c, k) for c in cfg.get("cities", ["Bakı"]) for k in cfg.get("categories", fc.DEFAULT_CATEGORIES)]
-    n = min(cfg.get("searches_per_run", 10), len(pairs))
-    start = db["cursor"] % len(pairs)
-    todo = [pairs[(start + i) % len(pairs)] for i in range(n)]
-    db["cursor"] = start + n
+    hunt = "--hunt" in sys.argv  # большой разовый поиск: все категории, больше страниц (для автописем)
+    cats = cfg.get("categories", fc.DEFAULT_CATEGORIES) + (cfg.get("hunt_extra_categories", []) if hunt else [])
+    pairs = [(c, k) for c in cfg.get("cities", ["Bakı"]) for k in cats]
+    if hunt:
+        todo, pages = pairs, cfg.get("hunt_pages", 3)
+    else:
+        n = min(cfg.get("searches_per_run", 10), len(pairs))
+        start = db["cursor"] % len(pairs)
+        todo = [pairs[(start + i) % len(pairs)] for i in range(n)]
+        db["cursor"] = start + n
+        pages = cfg.get("pages", 1)
 
     api_key = fc.load_api_key()
     base = site_base_url(cfg)
@@ -343,7 +349,7 @@ def main():
     budget = {"photos": cfg.get("photo_budget_per_run", 40)}
     new = 0
     for city, cat in todo:
-        for p in fc.find_places(api_key, city, [cat], cfg.get("pages", 1), cfg.get("lang", "ru")):
+        for p in fc.find_places(api_key, city, [cat], pages, cfg.get("lang", "ru")):
             if p["id"] in leads or p.get("businessStatus") not in (None, "OPERATIONAL"):
                 continue
             site, label = fc.classify_site(p.get("websiteUri"))
@@ -369,7 +375,7 @@ def main():
             new += 1
 
     # заодно понемногу дообогащаем старых лидов (лимит Google на Place Details в день невелик)
-    filled = backfill(leads, api_key, cfg.get("backfill_per_run", 40), budget)
+    filled = 0 if hunt else backfill(leads, api_key, cfg.get("backfill_per_run", 40), budget)
 
     save_json(DATA, db)
     write_queue(cfg, leads)

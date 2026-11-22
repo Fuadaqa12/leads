@@ -40,6 +40,7 @@ EMAIL_RE = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,24}")
 BAD_EMAIL_PARTS = ("example.", "sentry", "wixpress", "noreply", "no-reply", "@instagram.", "@facebook.",
                    "@fb.", "@meta.", "@taplink.", "@linktr.ee", "@tiktok.", "@google.", "domain.", "email.com",
                    "yourmail", "@2x", "@3x")
+SOCIAL_HOSTS = ("instagram.", "facebook.", "fb.", "tiktok.", "youtube.", "wa.me", "whatsapp.", "t.me")
 BAD_EMAIL_ENDINGS = (".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".js", ".css")
 
 
@@ -152,6 +153,13 @@ def find(limit):
                 break
             lead["site_url"] = url
         emails = emails_from_page(url) if url else []
+        host = urllib.parse.urlparse(url or "").netloc.lower()
+        if url and not emails and not any(d in host for d in SOCIAL_HOSTS):
+            base = url.split("?")[0].rstrip("/")
+            for sub in ("/contact", "/contacts", "/kontakty", "/elaqe", "/about"):
+                emails = emails_from_page(base + sub)
+                if emails:
+                    break
         if emails:
             st["found"][lead["id"]] = {"email": emails[0], "src": url, "all": emails[:3]}
             got += 1
