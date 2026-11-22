@@ -2,6 +2,7 @@ name: Письма клиентам (раз в 30-45 мин)
 on:
   schedule:
     - cron: "*/10 * * * *"   # проверка каждые 10 мин; сам скрипт шлёт не чаще раза в 30-45 мин
+    - cron: "30 8 * * *"     # 12:30 по Баку, сразу после сброса дневного лимита Google: большой поиск
   workflow_dispatch:
     inputs:
       hunt:
@@ -37,7 +38,7 @@ jobs:
           GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
         run: |
           if [ "${{ inputs.test }}" = "true" ]; then python3 email_outreach.py test; exit 0; fi
-          if [ "${{ inputs.hunt }}" = "true" ]; then pip install -q pillow || true; python3 autopilot.py --hunt; python3 email_outreach.py find 300; fi
+          if [ "${{ inputs.hunt }}" = "true" ] || [ "${{ github.event.schedule }}" = "30 8 * * *" ]; then pip install -q pillow || true; python3 autopilot.py --hunt; python3 autopilot.py --nearby; python3 email_outreach.py find 300; fi
           python3 email_outreach.py find
           python3 email_outreach.py send
       - name: Сохранить, кому уже написали

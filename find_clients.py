@@ -131,8 +131,14 @@ def search_text(api_key, query, language, page_token=None):
             return json.loads(resp.read().decode("utf-8"))
     except urllib.error.HTTPError as e:
         detail = e.read().decode("utf-8", "replace")
+        if e.code == 429:
+            raise DailyQuota("лимит поисковых запросов Google на сегодня исчерпан")
         sys.exit(f"Ошибка Google API ({e.code}):\n{detail}\n\n"
                  "Чаще всего: не включён 'Places API (New)' или не привязана карта к Billing.")
+
+
+QUOTA_HIT = False
+SEARCHES = 0  # сколько поисковых запросов сделано за запуск
 
 
 class DailyQuota(Exception):
@@ -186,7 +192,15 @@ def find_places(api_key, city, categories, pages, language):
         query = f"{cat} {city}"
         token = None
         for page in range(pages):
-            data = search_text(api_key, query, language, token)
+            global SEARCHES
+            SEARCHES += 1
+            try:
+                data = search_text(api_key, query, language, token)
+            except DailyQuota as e:
+                global QUOTA_HIT
+                QUOTA_HIT = True
+                print(" ", e, "- сохраняю то, что уже нашёл")
+                return list(seen.values())
             places = data.get("places", [])
             for p in places:
                 if p.get("id") and p["id"] not in seen:
@@ -198,6 +212,32 @@ def find_places(api_key, city, categories, pages, language):
                 break
             time.sleep(2)  # токен следующей страницы активируется не сразу
     return list(seen.values())
+
+
+NEARBY_FIELDS = ",".join(f for f in FIELDS.split(",") if f != "nextPageToken")
+
+
+def find_nearby(api_key, lat, lng, place_type, language="ru", radius=2500):
+    """Поиск рядом с точкой по типу места (отдельный лимит Google от текстового поиска)."""
+    global SEARCHES, QUOTA_HIT
+    SEARCHES += 1
+    body = {"includedTypes": [place_type], "maxResultCount": 20, "languageCode": language,
+            "locationRestriction": {"circle": {"center": {"latitude": lat, "longitude": lng}, "radius": radius}}}
+    req = urllib.request.Request("https://places.googleapis.com/v1/places:searchNearby",
+                                 data=json.dumps(body).encode("utf-8"),
+                                 headers={"Content-Type": "application/json", "X-Goog-Api-Key": api_key,
+                                          "X-Goog-FieldMask": NEARBY_FIELDS}, method="POST")
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            places = json.loads(resp.read().decode("utf-8")).get("places", [])
+    except urllib.error.HTTPError as e:
+        detail = e.read().decode("utf-8", "replace")[:300]
+        if e.code == 429:
+            QUOTA_HIT = True
+        print(f"  nearby {place_type} ({lat},{lng}): ошибка {e.code} {detail}")
+        return []
+    print(f"  рядом {lat},{lng} {place_type}: {len(places)} мест")
+    return places
 
 
 # ---------- обработка ----------
