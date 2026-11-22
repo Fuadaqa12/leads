@@ -205,6 +205,19 @@ def compose(c, lead):
     if lead.get("msg"):  # своё сообщение для особого клиента
         body = lead["msg"]
         subject = f"Сайт для «{n}»"
+    elif lead.get("weak") == "mobile":
+        host = urllib.parse.urlparse(lead.get("site_url", "")).netloc.replace("www.", "")
+        body = (
+            f"Salam! «{n}» saytına ({host}) telefondan baxdım: mobil üçün uyğunlaşdırılmayıb, "
+            f"müştərilərin çoxu isə saytı telefondan açır. Ona görə pulsuz müasir demo versiya hazırladım, baxın: {url}\n"
+            f"Bəyənsəniz, saytınızı belə yeniləyərik: telefonda rahat, Google-da görünmə, WhatsApp düyməsi. "
+            f"Qiymət {c['price']}. Maraqlıdır?\n\n"
+            f"Здравствуйте! Открыл ваш сайт ({host}) с телефона: он не адаптирован под мобильные, а большинство "
+            f"клиентов заходят именно с телефона. Поэтому бесплатно сделал современную демо-версию, ссылка выше. "
+            f"Если понравится, обновим ваш сайт так же: удобно на телефоне, видно в Google, кнопка WhatsApp. "
+            f"Цена {c['price']}. Интересно?"
+        )
+        subject = f"«{n}»: sayt telefonda / сайт на телефоне"
     else:
         body = (
             f"Salam! «{n}» üçün pulsuz kiçik sayt hazırladım, baxın: {url}\n"

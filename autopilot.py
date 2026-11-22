@@ -358,6 +358,7 @@ def main():
     today = datetime.now().strftime("%Y-%m-%d")
     budget = {"photos": cfg.get("photo_budget_per_run", 40)}
     new = 0
+    checks = {"n": 0}
     for city, cat in todo:
         if fc.QUOTA_HIT or (hunt and fc.SEARCHES + pages > hunt_max):
             break
@@ -373,8 +374,15 @@ def main():
             if p["id"] in leads or p.get("businessStatus") not in (None, "OPERATIONAL"):
                 continue
             site, label = fc.classify_site(p.get("websiteUri"))
+            weak = ""
             if site == "есть":
-                continue
+                # в большом поиске берём и тех, чей сайт не адаптирован под телефон (там часто есть почта)
+                if not hunt or checks["n"] >= cfg.get("weak_site_checks", 200):
+                    continue
+                checks["n"] += 1
+                if not fc.mobile_unfriendly(p["websiteUri"]):
+                    continue
+                weak, label = "mobile", "сайт не для телефона"
             addr = p.get("formattedAddress", "")
             if addr and not in_azerbaijan(addr):
                 continue  # Google иногда отдаёт места из других стран (напр. «Кафе Баку» в Казахстане)
@@ -389,6 +397,8 @@ def main():
                 "reviews": p.get("userRatingCount", 0), "maps": p.get("googleMapsUri", ""),
                 "site": label or "нет", "site_url": p.get("websiteUri", ""), "added": today,
             }
+            if weak:
+                lead["weak"] = weak
             leads[lead["id"]] = lead
             enrich(lead, p, api_key, budget)
             write_demo(lead)
