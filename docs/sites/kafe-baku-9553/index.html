@@ -58,6 +58,10 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;height:7
 .links a{text-decoration:none;color:var(--muted);transition:color .2s}
 .links a:hover{color:var(--gold2)}
 .nav-cta{padding:11px 20px;font-size:14px}
+.navr{display:flex;align-items:center;gap:14px}
+.lang-sw{display:flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:30px;background:rgba(20,16,13,.6)}
+.lang-sw button{border:0;background:none;color:var(--muted);font:700 12px var(--sans);letter-spacing:.06em;padding:7px 10px;border-radius:20px;cursor:pointer}
+.lang-sw button.on{background:var(--gold);color:#1a120a}
 @media(max-width:900px){.links{display:none}}
 
 /* hero */
@@ -256,7 +260,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
 <nav id="nav"><div class="wrap">
   <a href="#" class="logo" aria-label="Cafe Baku"><small>café</small>Baku<i>.</i></a>
   <div class="links"><a href="#menu">Меню</a><a href="#dostavka">Доставка</a><a href="#banket">Банкеты</a><a href="#otzyvy">Отзывы</a><a href="#kontakty">Контакты</a></div>
-  <a class="btn btn-gold nav-cta" href="tel:+77051753408">+7 705 175 34 08</a>
+  <div class="navr"><div class="lang-sw" role="group" aria-label="Язык"><button data-l="ru" class="on">RU</button><button data-l="az">AZ</button><button data-l="en">EN</button></div>
+  <a class="btn btn-gold nav-cta" href="tel:+77051753408">+7 705 175 34 08</a></div>
 </div></nav>
 
 <header class="hero">
@@ -470,6 +475,114 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
 </div></div>
 
 <script>
+// ---------- языки: RU (по умолчанию) / AZ / EN ----------
+const I18N={
+"Cafe Baku · Центр шашлыка в Семее":["Cafe Baku · Semeydə kabab mərkəzi","Cafe Baku · Shashlik House in Semey"],
+"Демо-версия сайта":["Saytın demo versiyası","Website demo"],
+"Меню":["Menyu","Menu"],"Доставка":["Çatdırılma","Delivery"],"Банкеты":["Banketlər","Banquets"],"Отзывы":["Rəylər","Reviews"],"Контакты":["Əlaqə","Contacts"],
+"Семей · с любовью из Баку":["Semey · Bakıdan sevgi ilə","Semey · with love from Baku"],
+"Центр шашлыка":["Kabab mərkəzi","Shashlik house"],"на живом огне":["canlı odda","over a live fire"],
+"Азербайджанская и восточная кухня: сочный шашлык с мангала, долма, плов и горячий тандыр-лаваш. Приходите всей семьёй или закажите доставку домой.":["Azərbaycan və Şərq mətbəxi: manqaldan şirəli kabab, dolma, plov və isti təndir lavaşı. Bütün ailə ilə gəlin və ya evə çatdırılma sifariş edin.","Azerbaijani and Oriental cuisine: juicy shashlik from the grill, dolma, plov and hot tandoor lavash. Come with the whole family or order delivery to your door."],
+"Смотреть меню":["Menyuya bax","View menu"],"Забронировать стол":["Masa sifariş et","Book a table"],
+"471 отзыв в Google":["Google-da 471 rəy","471 Google reviews"],"гостей в Instagram":["Instagram izləyicisi","Instagram followers"],"каждый день":["hər gün","every day"],"адреса в Семее":["Semeydə ünvan","locations in Semey"],
+"шашлык":["kabab","shashlik"],"от 1590 ₸":["1590 ₸-dən","from 1590 ₸"],
+"Шашлык":["Kabab","Shashlik"],"Долма":["Dolma","Dolma"],"Люля-кебаб":["Lülə kabab","Lula kebab"],"Плов шах":["Şah plov","Shah plov"],"Кутабы":["Qutablar","Qutab"],"Пити":["Piti","Piti"],"Тандыр-лаваш":["Təndir lavaşı","Tandoor lavash"],"Чай в армуды":["Armudu stəkanda çay","Tea in armudu glass"],"Джыз-быз":["Cız-bız","Jiz-biz"],
+"Почему к нам возвращаются":["Niyə bizə qayıdırlar","Why guests come back"],"Место, где всем хорошо":["Hər kəsin rahat olduğu yer","A place everyone loves"],
+"Взрослые отдыхают в уютном зале или VIP-кабинке, дети в игровой, а шашлык приносят прямо с мангала.":["Böyüklər rahat zalda və ya VIP kabinədə dincəlir, uşaqlar oyun otağında, kabab isə birbaşa manqaldan gəlir.","Adults relax in the cozy hall or a VIP booth, kids play in the playroom, and shashlik comes straight from the grill."],
+"Мангал на углях":["Kömür manqalı","Charcoal grill"],"Баранина, говядина, курица и люля-кебаб, жарим при вас, без полуфабрикатов.":["Quzu, mal əti, toyuq və lülə kabab, gözünüzün qarşısında bişiririk, yarımfabrikatsız.","Lamb, beef, chicken and lula kebab, grilled to order, no semi-finished products."],
+"Детская игровая":["Uşaq oyun otağı","Kids' playroom"],"Горки и лабиринт: дети заняты, родители спокойно ужинают.":["Sürüşkənlər və labirint: uşaqlar məşğuldur, valideynlər rahat şam edir.","Slides and a maze: kids stay busy, parents enjoy dinner."],
+"VIP-кабинки":["VIP kabinələr","VIP booths"],"Закрытые кабинки для семьи, друзей и деловых встреч, когда хочется тишины.":["Ailə, dostlar və işgüzar görüşlər üçün qapalı kabinələr.","Private booths for family, friends and business meetings when you want some quiet."],
+"Банкетный зал":["Banket zalı","Banquet hall"],"Свадьбы, юбилеи, детские праздники, поминальные обеды. Сейчас −15% на банкеты.":["Toylar, yubileylər, uşaq şənlikləri, ehsan məclisləri. İndi banketlərə −15%.","Weddings, anniversaries, kids' parties, memorial dinners. Now −15% on banquets."],
+"Музыка":["Musiqi","Music"],"Атмосферные вечера с музыкой, на которые хочется возвращаться.":["Qayıtmaq istəyəcəyiniz musiqili axşamlar.","Atmospheric evenings with music you'll want to come back for."],
+"Безналичная оплата: Kaspi, Kaspi Red и карта. И в зале, и при доставке.":["Nağdsız ödəniş: Kaspi, Kaspi Red və kart. Həm zalda, həm çatdırılmada.","Cashless payment: Kaspi, Kaspi Red and card. In the hall and for delivery."],
+"Вкус Кавказа и Востока":["Qafqaz və Şərqin dadı","Flavors of the Caucasus and the East"],"Нажмите «+», чтобы собрать заказ. Он сразу уйдёт нам в WhatsApp.":["Sifariş yığmaq üçün «+» basın. O, dərhal WhatsApp-da bizə gələcək.","Tap «+» to build your order. It goes straight to us on WhatsApp."],
+"Азербайджанская кухня":["Azərbaycan mətbəxi","Azerbaijani cuisine"],"Супы":["Şorbalar","Soups"],"Салаты и закуски":["Salatlar və qəlyanaltılar","Salads & starters"],"Напитки":["İçkilər","Drinks"],
+"Шашлык из баранины":["Quzu kababı","Lamb shashlik"],"Мякоть на углях, лук, лаваш":["Kömürdə ət, soğan, lavaş","Charcoal-grilled meat, onion, lavash"],
+"Шашлык из говядины":["Mal əti kababı","Beef shashlik"],"Маринад по-бакински":["Bakı üsulu marinad","Baku-style marinade"],
+"Шашлык куриный":["Toyuq kababı","Chicken shashlik"],"Бедро в специях":["Ədviyyatlı bud","Spiced thigh"],
+"Рубленая баранина с зеленью":["Göyərtili doğranmış quzu əti","Minced lamb with herbs"],
+"Шашлыки по-советски":["Sovet üsulu kabab","Soviet-style shashlik"],"Новинка: вкус из детства":["Yenilik: uşaqlıq dadı","New: the taste of childhood"],
+"Овощи на мангале":["Manqalda tərəvəz","Grilled vegetables"],"Томаты, перец, баклажан":["Pomidor, bibər, badımcan","Tomato, pepper, eggplant"],
+"Долма":["Dolma","Dolma"],"В виноградных листьях, с катыком":["Üzüm yarpağında, qatıqla","In grape leaves, with yogurt"],
+"Под лавашной корочкой, с сухофруктами":["Lavaş qabığı altında, quru meyvələrlə","Under a lavash crust, with dried fruit"],
+"С зеленью или мясом":["Göyərti və ya ətlə","With herbs or meat"],"Ливер и курдюк на сковороде":["Tavada ciyər və quyruq","Liver and fat on the pan"],
+"Чыхыртма":["Çığırtma","Chykhyrtma"],"Курица с яйцом и томатами":["Yumurta və pomidorla toyuq","Chicken with egg and tomatoes"],
+"Сач на компанию":["Kompaniya üçün sac","Sac for a group"],"Мясо и овощи на садже":["Sacda ət və tərəvəz","Meat and vegetables on a sac pan"],
+"В горшочке, с бараниной и нутом":["Dopuda, quzu əti və noxudla","In a clay pot, with lamb and chickpeas"],
+"Довга":["Dovğa","Dovga"],"Холодный кисломолочный с зеленью":["Göyərtili soyuq qatıq şorbası","Cold yogurt soup with herbs"],
+"Кюфта-бозбаш":["Küftə bozbaş","Kufta bozbash"],"Фрикадельки в бульоне":["Bulyonda küftə","Meatballs in broth"],
+"Лагман":["Laqman","Lagman"],"Домашняя лапша":["Ev əriştəsi","Homemade noodles"],
+"Чобан салат":["Çoban salatı","Shepherd's salad"],"Свежие овощи, зелень":["Təzə tərəvəz, göyərti","Fresh vegetables, herbs"],
+"Ачичук":["Açıq-çuçuk","Achichuk"],"Томаты, лук, зелень, базилик":["Pomidor, soğan, göyərti, reyhan","Tomato, onion, herbs, basil"],
+"Ассорти солений":["Turşu assortisi","Pickle platter"],"Домашний посол":["Ev turşusu","Homemade pickles"],
+"Горячий, из печи":["İsti, təndirdən","Hot, from the oven"],
+"Пенное разливное":["Təzə çəkilmiş pivə","Draft beer"],"Свежее, холодное":["Təzə, soyuq","Fresh and cold"],
+"Чабрец, лимон, варенье":["Kəklikotu, limon, mürəbbə","Thyme, lemon, jam"],"Компот домашний":["Ev kompotu","Homemade compote"],"Айран":["Ayran","Ayran"],
+"Демо: позиции и цены со звёздочкой примерные, на рабочем сайте подставим ваше настоящее меню. Шашлык от 1590 ₸ и пенное за 800 ₸ взяты из вашего Instagram.":["Demo: ulduzlu mövqelər və qiymətlər təxminidir, işlək saytda əsl menyunuzu qoyacağıq. 1590 ₸-dən kabab və 800 ₸ pivə Instagram-ınızdan götürülüb.","Demo: items and prices marked with an asterisk are samples; the live site will use your real menu. Shashlik from 1590 ₸ and beer for 800 ₸ are taken from your Instagram."],
+"Акции":["Aksiyalar","Offers"],"Есть повод зайти":["Gəlmək üçün səbəb var","A reason to drop by"],"на банкеты и мероприятия":["banket və tədbirlərə","on banquets and events"],
+"Свадьба, юбилей, корпоратив: позвоните, рассчитаем меню под ваш бюджет.":["Toy, yubiley, korporativ: zəng edin, menyunu büdcənizə uyğun hesablayaq.","Wedding, anniversary, corporate party: call us and we'll plan a menu for your budget."],
+"кружка свежего пенного":["bir krujka təzə pivə","a mug of fresh beer"],"Идеальная пара к шашлыку с мангала.":["Manqal kababına ideal tərəf-müqabil.","The perfect match for grilled shashlik."],
+"Тот самый вкус из детства, уже в меню.":["Həmin uşaqlıq dadı artıq menyuda.","That taste from childhood, now on the menu."],
+"Доставка по Семею":["Semey üzrə çatdırılma","Delivery across Semey"],"Горячий шашлык у вас дома":["İsti kabab evinizdə","Hot shashlik at your door"],
+"Жарим под заказ и привозим, пока горячее. Заказать можно прямо с сайта, без звонков и ожидания на линии.":["Sifarişlə bişirir, isti-isti gətiririk. Birbaşa saytdan, zəngsiz və gözləmədən sifariş edin.","Grilled to order and delivered hot. Order right from the website, no calls and no waiting on the line."],
+"Выберите блюда в меню":["Menyudan yeməkləri seçin","Pick dishes from the menu"],"Нажмите «+» у нужных позиций":["Lazımi mövqelərdə «+» basın","Tap «+» next to the items you want"],
+"Отправьте заказ в WhatsApp":["Sifarişi WhatsApp-a göndərin","Send the order on WhatsApp"],"Состав и сумма заполнятся сами":["Tərkib və məbləğ avtomatik yazılacaq","Items and total fill in automatically"],
+"Получите и оплатите":["Alın və ödəyin","Receive and pay"],"Безналично: Kaspi, Kaspi Red или картой":["Nağdsız: Kaspi, Kaspi Red və ya kartla","Cashless: Kaspi, Kaspi Red or card"],
+"Условия доставки":["Çatdırılma şərtləri","Delivery terms"],"Время":["Vaxt","Time"],"30–90 мин":["30–90 dəq","30–90 min"],"Приём заказов":["Sifariş qəbulu","Orders accepted"],
+"Минимальный заказ":["Minimum sifariş","Minimum order"],"Зона":["Ərazi","Area"],"весь Семей":["bütün Semey","all of Semey"],"Оплата только безналичная":["Ödəniş yalnız nağdsız","Cashless payment only"],
+"Заказать в WhatsApp":["WhatsApp-da sifariş et","Order on WhatsApp"],"Позвонить":["Zəng et","Call"],
+"Банкеты и VIP":["Banketlər və VIP","Banquets & VIP"],"Праздник, который запомнят":["Yaddaqalan bayram","A celebration to remember"],
+"Банкетный зал и VIP-кабинки для любого повода. Возьмём на себя меню, сервировку и шашлык на всех гостей.":["İstənilən münasibət üçün banket zalı və VIP kabinələr. Menyu, süfrə və bütün qonaqlar üçün kabab bizdən.","A banquet hall and VIP booths for any occasion. We take care of the menu, table setting and shashlik for every guest."],
+"Свадьбы, юбилеи, той и дни рождения":["Toylar, yubileylər və ad günləri","Weddings, anniversaries, toi and birthdays"],
+"Детские праздники с игровой комнатой":["Oyun otağı ilə uşaq şənlikləri","Kids' parties with a playroom"],
+"Поминальные обеды и катым":["Ehsan və hüzr məclisləri","Memorial dinners and katym"],
+"Корпоративы и деловые ужины в VIP-кабинке":["VIP kabinədə korporativlər və işgüzar şam yeməkləri","Corporate events and business dinners in a VIP booth"],
+"Банкетное меню под ваш бюджет, со скидкой −15%":["Büdcənizə uyğun banket menyusu, −15% endirimlə","A banquet menu for your budget, with 15% off"],
+"◎ 3D-тур по залу":["◎ Zala 3D tur","◎ 3D tour of the hall"],"3D-тур":["3D tur","3D tour"],
+"Заявка на бронь":["Rezerv sorğusu","Booking request"],"Имя":["Ad","Name"],"Дата":["Tarix","Date"],"Гостей":["Qonaq sayı","Guests"],"Формат":["Format","Format"],
+"VIP-кабинка":["VIP kabinə","VIP booth"],"Столик в зале":["Zalda masa","Table in the hall"],"Отправить заявку в WhatsApp":["Sorğunu WhatsApp-a göndər","Send request on WhatsApp"],
+"Атмосфера":["Atmosfer","Atmosphere"],"Загляните к нам":["Bizə baş çəkin","Take a look inside"],"Летние беседки":["Yay besedkaları","Summer gazebos"],"С мангала":["Manqaldan","From the grill"],
+"Нам доверяют сотни гостей":["Yüzlərlə qonaq bizə güvənir","Trusted by hundreds of guests"],
+"471 отзыв · Google Карты, ул. Бол. Момышулы 83А":["471 rəy · Google Xəritə, B. Momışulı küç. 83A","471 reviews · Google Maps, Bol. Momyshuly St. 83A"],
+"254 отзыва · Google Карты, Шоже Каржаубайулы 93":["254 rəy · Google Xəritə, Şoje Karjaubayulı 93","254 reviews · Google Maps, Shozhe Karzhaubayuly 93"],
+"Шашлык сочный, долма как в Баку. Дети не вылезали из игровой.":["Kabab şirəlidir, dolma Bakıdakı kimi. Uşaqlar oyun otağından çıxmırdı.","Juicy shashlik, dolma just like in Baku. The kids wouldn't leave the playroom."],
+"Пример отзыва":["Rəy nümunəsi","Sample review"],
+"Отмечали юбилей в банкетном зале, всё организовали отлично.":["Banket zalında yubiley qeyd etdik, hər şey əla təşkil olunmuşdu.","We celebrated an anniversary in the banquet hall, everything was perfectly organized."],
+"Заказываем доставку домой, привозят горячим. Оплата через Kaspi, удобно.":["Evə çatdırılma sifariş edirik, isti gətirirlər. Kaspi ilə ödəniş rahatdır.","We order delivery home and it arrives hot. Paying with Kaspi is convenient."],
+"Демо: здесь будут ваши настоящие отзывы из Google и Instagram.":["Demo: burada Google və Instagram-dan əsl rəyləriniz olacaq.","Demo: your real Google and Instagram reviews will go here."],
+"Ждём вас каждый день":["Sizi hər gün gözləyirik","We're open every day"],
+"ул. Каржаубай улы, 93":["Karjaubay ulı küç., 93","Karzhaubay uly St., 93"],"ул. Бол. Момышулы, 83А":["B. Momışulı küç., 83A","Bol. Momyshuly St., 83A"],
+"Семей · 14:00–01:00 ежедневно · главный адрес":["Semey · hər gün 14:00–01:00 · əsas ünvan","Semey · daily 14:00–01:00 · main location"],
+"Семей · 14:00–01:00 ежедневно":["Semey · hər gün 14:00–01:00","Semey · daily 14:00–01:00"],
+"Администратор, WhatsApp:":["Administrator, WhatsApp:","Manager, WhatsApp:"],"Телефон кафе:":["Kafenin telefonu:","Cafe phone:"],
+"Доставка: 14:00–23:00 · от 10 000 ₸ · только безнал":["Çatdırılma: 14:00–23:00 · 10 000 ₸-dən · yalnız nağdsız","Delivery: 14:00–23:00 · from 10 000 ₸ · cashless only"],
+"Написать в WhatsApp":["WhatsApp-a yaz","Message on WhatsApp"],
+"Азербайджанская и восточная кухня · Семей":["Azərbaycan və Şərq mətbəxi · Semey","Azerbaijani & Oriental cuisine · Semey"],
+"Ваш заказ":["Sifarişiniz","Your order"],"Итого":["Cəmi","Total"],"Отправить заказ в WhatsApp":["Sifarişi WhatsApp-a göndər","Send order on WhatsApp"],
+"Шашлык, долма и закуски Cafe Baku":["Cafe Baku kababı, dolması və qəlyanaltıları","Cafe Baku shashlik, dolma and starters"],"Шашлык и пенное":["Kabab və pivə","Shashlik and beer"],
+"Ваше имя":["Adınız","Your name"],"Летняя беседка":["Yay besedkası","Summer gazebo"],"Шашлык и закуски":["Kabab və qəlyanaltılar","Shashlik and starters"],"Закрыть":["Bağla","Close"],"Адрес доставки":["Çatdırılma ünvanı","Delivery address"],
+"Пока пусто. Добавьте блюда из меню.":["Hələ boşdur. Menyudan yemək əlavə edin.","Empty for now. Add dishes from the menu."],"Добавить":["Əlavə et","Add"],
+"хит":["hit","hit"],"акция":["aksiya","deal"],"от":["","from"],"шт":["əd","pcs"],"г":["q","g"],"кг":["kq","kg"],"л":["l","l"],"чайник":["çaydan","pot"],
+"Cafe Baku в Семее: азербайджанская и восточная кухня, шашлык на мангале от 1590 ₸, доставка, банкетный зал, VIP-кабинки, детская игровая. Каждый день 14:00–01:00.":["Cafe Baku Semeydə: Azərbaycan və Şərq mətbəxi, 1590 ₸-dən kabab, çatdırılma, banket zalı, VIP kabinələr, uşaq oyun otağı. Hər gün 14:00–01:00.","Cafe Baku in Semey: Azerbaijani & Oriental cuisine, shashlik from 1590 ₸, delivery, banquet hall, VIP booths, kids' playroom. Daily 14:00–01:00."]
+};
+let LANG="ru";
+const t=s=>{if(LANG==="ru"||s==null)return s;const v=I18N[s];return v?v[LANG==="az"?0:1]:s};
+const unit=w=>w.replace(/[А-Яа-яё]+/g,m=>t(m));
+const TXT=[],ATT=[];
+function collectI18n(){
+  const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;
+  while(n=w.nextNode()){if(n.parentElement.closest("script,style,#items,#cl"))continue;const s=n.nodeValue.trim();if(s&&I18N[s])TXT.push([n,n.nodeValue,s])}
+  document.querySelectorAll("[placeholder],[aria-label],[alt]").forEach(e=>["placeholder","aria-label","alt"].forEach(a=>{const v=e.getAttribute(a);if(v&&I18N[v])ATT.push([e,a,v])}));
+}
+function setLang(l){
+  LANG=l;document.documentElement.lang=l;
+  TXT.forEach(([n,orig,s])=>n.nodeValue=orig.replace(s,t(s)));
+  ATT.forEach(([e,a,v])=>e.setAttribute(a,t(v)));
+  document.title=t(TITLE);const md=document.querySelector('meta[name=description]');md.content=t(DESC);
+  document.querySelectorAll(".lang-sw button").forEach(b=>b.classList.toggle("on",b.dataset.l===l));
+  show(CUR);upd();try{localStorage.setItem("cb_lang",l)}catch(e){}
+}
+
 const WA="77051753408";
 // s:true = примерная цена (демо)
 const MENU={
@@ -507,13 +620,14 @@ const fmt=n=>n.toLocaleString("ru-RU").replace(/,/g," ")+" ₸";
 const cart={};
 const tabs=document.getElementById("tabs"),items=document.getElementById("items");
 Object.keys(MENU).forEach((k,i)=>{const b=document.createElement("button");b.className="tab"+(i?"":" on");b.textContent=k;b.onclick=()=>{document.querySelectorAll(".tab").forEach(t=>t.classList.remove("on"));b.classList.add("on");show(k)};tabs.appendChild(b)});
-function show(k){items.innerHTML=MENU[k].map((m,i)=>`<div class="it" style="animation-delay:${i*40}ms"><div class="t"><div class="row"><h4>${m[0]}${m[6]?`<span class="badge">${m[6]}</span>`:""}</h4><span class="dots"></span><span class="pr">${m[5]?m[5]+" ":""}${fmt(m[3])}${m[4]?"<sup>*</sup>":""}</span></div><p>${m[1]}<span class="w">${m[2]}</span></p></div><button class="add" data-n="${m[0]}" data-p="${m[3]}" aria-label="Добавить ${m[0]}">+</button></div>`).join("")}
+let CUR;
+function show(k){CUR=k;items.innerHTML=MENU[k].map((m,i)=>`<div class="it" style="animation-delay:${i*40}ms"><div class="t"><div class="row"><h4>${t(m[0])}${m[6]?`<span class="badge">${t(m[6])}</span>`:""}</h4><span class="dots"></span><span class="pr">${m[5]&&t(m[5])?t(m[5])+" ":""}${fmt(m[3])}${m[4]?"<sup>*</sup>":""}</span></div><p>${t(m[1])}<span class="w">${unit(m[2])}</span></p></div><button class="add" data-n="${m[0]}" data-p="${m[3]}" aria-label="${t("Добавить")} ${t(m[0])}">+</button></div>`).join("")}
 show(Object.keys(MENU)[0]);
 items.addEventListener("click",e=>{const b=e.target.closest(".add");if(!b)return;const n=b.dataset.n;cart[n]=cart[n]||{p:+b.dataset.p,q:0};cart[n].q++;b.classList.add("ok");b.textContent="✓";setTimeout(()=>{b.classList.remove("ok");b.textContent="+"},900);upd()});
 function upd(){const e=Object.entries(cart).filter(([,v])=>v.q>0);const c=e.reduce((s,[,v])=>s+v.q,0),sum=e.reduce((s,[,v])=>s+v.q*v.p,0);
  document.getElementById("cc").textContent=c;document.getElementById("cartbtn").classList.toggle("show",c>0);
  document.getElementById("sum").textContent=fmt(sum);
- document.getElementById("cl").innerHTML=e.length?e.map(([n,v])=>`<div class="ci"><div class="n">${n}<small>${fmt(v.p)}</small></div><div class="q"><button data-d="${n}">−</button>${v.q}<button data-i="${n}">+</button></div></div>`).join(""):'<p style="color:var(--muted)">Пока пусто. Добавьте блюда из меню.</p>';}
+ document.getElementById("cl").innerHTML=e.length?e.map(([n,v])=>`<div class="ci"><div class="n">${t(n)}<small>${fmt(v.p)}</small></div><div class="q"><button data-d="${n}">−</button>${v.q}<button data-i="${n}">+</button></div></div>`).join(""):'<p style="color:var(--muted)">'+t("Пока пусто. Добавьте блюда из меню.")+'</p>';}
 document.getElementById("cl").addEventListener("click",e=>{const d=e.target.dataset.d,i=e.target.dataset.i;if(d)cart[d].q--;if(i)cart[i].q++;upd()});
 const dr=document.getElementById("drawer");
 document.getElementById("cartbtn").onclick=()=>dr.classList.add("open");
@@ -535,6 +649,10 @@ const em=document.getElementById("embers");for(let i=0;i<22;i++){const s=documen
 const nav=document.getElementById("nav");addEventListener("scroll",()=>nav.classList.toggle("scrolled",scrollY>30),{passive:true});
 const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add("in");io.unobserve(x.target)}}),{threshold:.12});
 document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+const TITLE=document.title,DESC=document.querySelector("meta[name=description]").content;
+collectI18n();
+document.querySelectorAll(".lang-sw button").forEach(b=>b.onclick=()=>setLang(b.dataset.l));
+{let l=new URLSearchParams(location.search).get("lang");if(!l)try{l=localStorage.getItem("cb_lang")}catch(e){}if(l==="az"||l==="en")setLang(l)}
 document.getElementById("fd").valueAsDate=new Date(Date.now()+864e5*3);
 </script>
 </body>
