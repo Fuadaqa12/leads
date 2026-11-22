@@ -41,6 +41,8 @@ BAD_EMAIL_PARTS = ("example.", "sentry", "wixpress", "noreply", "no-reply", "@in
                    "@fb.", "@meta.", "@taplink.", "@linktr.ee", "@tiktok.", "@google.", "domain.", "email.com",
                    "yourmail", "@2x", "@3x")
 SOCIAL_HOSTS = ("instagram.", "facebook.", "fb.", "tiktok.", "youtube.", "wa.me", "whatsapp.", "t.me")
+GOOD_TLDS = {"com", "net", "org", "az", "ru", "info", "biz", "co", "io", "me", "tr", "ua", "uk", "de", "edu",
+             "gov", "pro", "store", "shop", "online", "site", "studio", "ge", "kz", "uz", "by", "eu", "us", "ae"}
 BAD_EMAIL_ENDINGS = (".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".js", ".css")
 
 
@@ -85,12 +87,15 @@ def cfg():
 # ---------- поиск email ----------
 
 def clean_emails(text):
-    text = html.unescape(urllib.parse.unquote(text or ""))
+    text = (text or "").replace("\\u002f", "/").replace("\\u002F", "/").replace("\\u0040", "@").replace("\\/", "/")
+    text = html.unescape(urllib.parse.unquote(text))
     out = []
     for m in EMAIL_RE.findall(text):
         e = m.strip(".").lower()
         if any(b in e for b in BAD_EMAIL_PARTS) or e.endswith(BAD_EMAIL_ENDINGS):
             continue
+        if e.rsplit(".", 1)[-1] not in GOOD_TLDS or re.match(r"u00[0-9a-f]{2}", e):
+            continue  # «u002f@iron.bulls» и прочий мусор из кода страниц
         if e not in out:
             out.append(e)
     return out

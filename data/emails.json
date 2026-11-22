@@ -5561,11 +5561,12 @@
    "checked": "2026-11-22"
   },
   "ChIJ86oMqBiHMEARbzziHIB9vzY": {
-   "email": "u002f@iron.bulls",
+   "email": "",
    "src": "https://www.tiktok.com/@iron.bulls?_t=8f19Hbcfrf7&_r=1",
    "all": [
     "u002f@iron.bulls"
-   ]
+   ],
+   "checked": "2026-11-22"
   },
   "ChIJ9eQNRgB_MEARBCx6BPt2EJg": {
    "email": "",
@@ -6848,12 +6849,6 @@
    "checked": "2026-11-22"
   }
  },
- "sent": {
-  "u002f@iron.bulls": {
-   "id": "ChIJ86oMqBiHMEARbzziHIB9vzY",
-   "name": "Mercedes-benz işlənmiş original ehtiyyat hissələri (ölüxana)",
-   "at": "2026-11-22T17:28+04:00"
-  }
- },
- "next_at": "2026-11-22T18:04+04:00"
+ "sent": {},
+ "next_at": ""
 }
