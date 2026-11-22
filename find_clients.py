@@ -214,6 +214,32 @@ def find_places(api_key, city, categories, pages, language):
     return list(seen.values())
 
 
+NEARBY_FIELDS = ",".join(f for f in FIELDS.split(",") if f != "nextPageToken")
+
+
+def find_nearby(api_key, lat, lng, place_type, language="ru", radius=2500):
+    """Поиск рядом с точкой по типу места (отдельный лимит Google от текстового поиска)."""
+    global SEARCHES, QUOTA_HIT
+    SEARCHES += 1
+    body = {"includedTypes": [place_type], "maxResultCount": 20, "languageCode": language,
+            "locationRestriction": {"circle": {"center": {"latitude": lat, "longitude": lng}, "radius": radius}}}
+    req = urllib.request.Request("https://places.googleapis.com/v1/places:searchNearby",
+                                 data=json.dumps(body).encode("utf-8"),
+                                 headers={"Content-Type": "application/json", "X-Goog-Api-Key": api_key,
+                                          "X-Goog-FieldMask": NEARBY_FIELDS}, method="POST")
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            places = json.loads(resp.read().decode("utf-8")).get("places", [])
+    except urllib.error.HTTPError as e:
+        detail = e.read().decode("utf-8", "replace")[:300]
+        if e.code == 429:
+            QUOTA_HIT = True
+        print(f"  nearby {place_type} ({lat},{lng}): ошибка {e.code} {detail}")
+        return []
+    print(f"  рядом {lat},{lng} {place_type}: {len(places)} мест")
+    return places
+
+
 # ---------- обработка ----------
 
 def classify_site(url):
