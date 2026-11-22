@@ -240,6 +240,18 @@ def find_nearby(api_key, lat, lng, place_type, language="ru", radius=2500):
     return places
 
 
+def mobile_unfriendly(url):
+    """True, если свой сайт открывается, но не адаптирован под телефон (нет meta viewport)."""
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (Linux; Android 13) Mobile"})
+        with urllib.request.urlopen(req, timeout=12) as r:
+            page = r.read(300_000).decode("utf-8", "replace").lower()
+    except Exception:  # noqa: BLE001  не открылся — почту там всё равно не найти
+        return False
+    return len(page) > 500 and 'name="viewport"' not in page and "name=viewport" not in page \
+        and "name='viewport'" not in page
+
+
 # ---------- обработка ----------
 
 def classify_site(url):

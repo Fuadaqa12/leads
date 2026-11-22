@@ -9,6 +9,10 @@ on:
         description: "Сначала большой поиск новых клиентов (все категории, 3 страницы) и их почты"
         type: boolean
         default: false
+      drip:
+        description: "Работать несколько часов подряд: каждые 5 мин проверять, не пора ли отправить следующее письмо"
+        type: boolean
+        default: false
       test:
         description: "Только проверить пароль: отправить тестовое письмо самому себе"
         type: boolean
@@ -21,7 +25,7 @@ concurrency:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 350
     steps:
       - name: Есть ли пароль приложения Gmail?
         id: gate
@@ -43,11 +47,26 @@ jobs:
           python3 email_outreach.py send
       - name: Сохранить, кому уже написали
         if: steps.gate.outputs.on == '1'
+        env:
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
         run: |
+          save() {
+            git add data docs
+            git diff --cached --quiet && return 0
+            git commit -q -m "Письма: $(date -u +%F' '%H:%M) UTC"
+            for i in 1 2 3; do git pull --rebase -q && git push -q && return 0; sleep 5; done
+            return 1
+          }
           git config user.name "autopilot"
           git config user.email "autopilot@users.noreply.github.com"
-          git add data docs
-          git diff --cached --quiet && exit 0
-          git commit -m "Письма: $(date -u +%F' '%H:%M) UTC"
-          for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 5; done
-          exit 1
+          save
+          if [ "${{ inputs.drip }}" = "true" ]; then
+            end=$(( $(date +%s) + 330*60 ))
+            while [ "$(date +%s)" -lt "$end" ]; do
+              sleep 300
+              git pull --rebase -q || true
+              python3 email_outreach.py find || true
+              python3 email_outreach.py send || true
+              save || true
+            done
+          fi
