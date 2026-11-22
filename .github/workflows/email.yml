@@ -1,0 +1,41 @@
+name: Письма клиентам (раз в 30-45 мин)
+on:
+  schedule:
+    - cron: "*/10 * * * *"   # проверка каждые 10 мин; сам скрипт шлёт не чаще раза в 30-45 мин
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: leads-data          # не пересекаться с ежедневным поиском (оба пишут в data/)
+  cancel-in-progress: false
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Есть ли пароль приложения Gmail?
+        id: gate
+        env:
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: |
+          if [ -n "$GMAIL_APP_PASSWORD" ]; then echo "on=1" >> "$GITHUB_OUTPUT"; else echo "Секрета GMAIL_APP_PASSWORD нет: письма выключены."; fi
+      - uses: actions/checkout@v4
+        if: steps.gate.outputs.on == '1'
+      - name: Найти почту у пары лидов и отправить одно письмо
+        if: steps.gate.outputs.on == '1'
+        env:
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+        run: |
+          python3 email_outreach.py find
+          python3 email_outreach.py send
+      - name: Сохранить, кому уже написали
+        if: steps.gate.outputs.on == '1'
+        run: |
+          git config user.name "autopilot"
+          git config user.email "autopilot@users.noreply.github.com"
+          git add data/emails.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Письма: $(date -u +%F' '%H:%M) UTC"
+          for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 5; done
+          exit 1
