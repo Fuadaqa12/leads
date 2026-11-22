@@ -3,6 +3,11 @@ on:
   schedule:
     - cron: "*/10 * * * *"   # проверка каждые 10 мин; сам скрипт шлёт не чаще раза в 30-45 мин
   workflow_dispatch:
+    inputs:
+      test:
+        description: "Только проверить пароль: отправить тестовое письмо самому себе"
+        type: boolean
+        default: false
 permissions:
   contents: write
 concurrency:
@@ -27,6 +32,7 @@ jobs:
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
         run: |
+          if [ "${{ inputs.test }}" = "true" ]; then python3 email_outreach.py test; exit 0; fi
           python3 email_outreach.py find
           python3 email_outreach.py send
       - name: Сохранить, кому уже написали

@@ -275,6 +275,23 @@ def send():
           f"В очереди ещё: {len(queue) - 1}")
 
 
+def test():
+    """Проверка пароля: одно письмо самому себе (на адрес отправителя)."""
+    pwd = os.environ.get("GMAIL_APP_PASSWORD", "").replace(" ", "").strip()
+    if not pwd:
+        sys.exit("GMAIL_APP_PASSWORD не задан")
+    c = cfg()
+    msg = EmailMessage()
+    msg["From"] = formataddr((c["from_name"], c["from"]))
+    msg["To"] = c["from"]
+    msg["Subject"] = "Проверка автописем: пароль работает"
+    msg.set_content("Это тестовое письмо от GitHub Actions. Если вы его видите, отправка писем клиентам работает.")
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=ssl.create_default_context(), timeout=30) as s:
+        s.login(c["from"], pwd)
+        s.send_message(msg)
+    print("Тестовое письмо отправлено на", c["from"])
+
+
 def preview():
     c = cfg()
     st = load_state()
@@ -291,6 +308,8 @@ if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "send"
     if cmd == "find":
         find(int(sys.argv[2]) if len(sys.argv) > 2 else cfg()["find_per_run"])
+    elif cmd == "test":
+        test()
     elif cmd == "preview":
         preview()
     else:
