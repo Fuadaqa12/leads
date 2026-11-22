@@ -131,8 +131,14 @@ def search_text(api_key, query, language, page_token=None):
             return json.loads(resp.read().decode("utf-8"))
     except urllib.error.HTTPError as e:
         detail = e.read().decode("utf-8", "replace")
+        if e.code == 429:
+            raise DailyQuota("лимит поисковых запросов Google на сегодня исчерпан")
         sys.exit(f"Ошибка Google API ({e.code}):\n{detail}\n\n"
                  "Чаще всего: не включён 'Places API (New)' или не привязана карта к Billing.")
+
+
+QUOTA_HIT = False
+SEARCHES = 0  # сколько поисковых запросов сделано за запуск
 
 
 class DailyQuota(Exception):
@@ -186,7 +192,15 @@ def find_places(api_key, city, categories, pages, language):
         query = f"{cat} {city}"
         token = None
         for page in range(pages):
-            data = search_text(api_key, query, language, token)
+            global SEARCHES
+            SEARCHES += 1
+            try:
+                data = search_text(api_key, query, language, token)
+            except DailyQuota as e:
+                global QUOTA_HIT
+                QUOTA_HIT = True
+                print(" ", e, "- сохраняю то, что уже нашёл")
+                return list(seen.values())
             places = data.get("places", [])
             for p in places:
                 if p.get("id") and p["id"] not in seen:
