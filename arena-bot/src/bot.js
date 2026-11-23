@@ -23,6 +23,22 @@ const LEGEND = [
   '<i>А ещё говорят, где-то в Говсан Гугл запомнил чью-то припаркованную тачку...</i>',
 ].join('\n');
 
+export const SHORT = '🚗 Гоняй по улицам Говсан, замыкай круги и отжимай районы у друзей. Кто держит больше — тот король.';
+export const DESCRIPTION = [
+  '🏁 Добро пожаловать в Говсан!',
+  '',
+  'Это война за район. Садишься в тачку и гоняешь по настоящим улицам Говсан вместе с друзьями на одной карте.',
+  '',
+  '🎨 За тобой тянется след: замкнул круг — всё внутри твоего цвета',
+  '😈 Отжимай чужие кварталы',
+  '💥 На своей земле лоб в лоб — чужак улетает',
+  '✂️ Переехал чужой след — его хозяин в кювете',
+  '👑 Кто держит больше района — король Говсан',
+  '🏅 Соло-гонки, медали и 8 пасхалок',
+  '',
+  'Жми «Старт» и погнали 👇',
+].join('\n');
+
 export function createBot({ token, publicUrl, miniAppShort, arena }) {
   let lastError = null;
   const api = async (method, body = {}) => {
@@ -152,8 +168,8 @@ export function createBot({ token, publicUrl, miniAppShort, arena }) {
       { command: 'help', description: '❓ Помощь' },
     ] });
     res.menu = await api('setChatMenuButton', { menu_button: { type: 'web_app', text: 'Играть', web_app: { url: publicUrl } } });
-    res.description = await api('setMyDescription', { description: '🚗 Захват Говсан: гоняй по улицам, замыкай круги и отжимай кварталы у друзей. Одна карта на всех, топ, медали и пасхалки. Жми «Играть»!' });
-    res.short = await api('setMyShortDescription', { short_description: '🚗 Гонки-захват по улицам Говсан. Топ, медали, пасхалки.' });
+    res.description = await api('setMyDescription', { description: DESCRIPTION });
+    res.short = await api('setMyShortDescription', { short_description: SHORT });
     res.bot = me;
     return res;
   }
