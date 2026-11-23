@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Арена Хаоса</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="cv"></canvas>
+
+<!-- Главное меню -->
+<div id="menu" class="screen">
+  <div class="sea-bg"></div>
+  <div class="wrap">
+    <div id="logo" class="logo">
+      <div class="flag">🏴‍☠️</div>
+      <h1>АРЕНА<br><span>ХАОСА</span></h1>
+    </div>
+    <div class="card me" id="meCard">
+      <div class="me-top">
+        <div class="me-name" id="meName">Загрузка...</div>
+        <div class="me-rank" id="meRank">#-</div>
+      </div>
+      <div class="me-title" id="meTitle"></div>
+      <div class="stats">
+        <div><b id="meTrophies">0</b><span>🏆 кубки</span></div>
+        <div><b id="meMedals">0</b><span>🏅 медали</span></div>
+        <div><b id="meEggs">0/7</b><span>🥚 пасхалки</span></div>
+      </div>
+    </div>
+    <button class="btn big primary" id="btnArena">⚔️ Онлайн-арена<small id="onlineCount">одно море на всех, тут решается топ</small></button>
+    <div class="row">
+      <button class="btn" id="btnSolo">🌪 Соло: Шторм<small>медали 🏅</small></button>
+      <button class="btn" id="btnDaily">📅 Испытание<small id="dailyName">дня</small></button>
+    </div>
+    <div class="row">
+      <button class="btn" id="btnTop">🏆 Топ</button>
+      <button class="btn" id="btnShip">🎨 Корабль</button>
+      <button class="btn" id="btnHelp">❓ Как играть</button>
+    </div>
+  </div>
+</div>
+
+<!-- Топ -->
+<div id="topScr" class="screen hidden">
+  <div class="sea-bg"></div>
+  <div class="wrap">
+    <h2>🏆 Топ Арены</h2>
+    <p class="muted">Место решают кубки 🏆 из онлайн-арены. Медали 🏅 из соло показаны рядом, но на место не влияют.</p>
+    <div id="topList" class="list"></div>
+    <button class="btn" data-back>← Назад</button>
+  </div>
+</div>
+
+<!-- Корабль -->
+<div id="shipScr" class="screen hidden">
+  <div class="sea-bg"></div>
+  <div class="wrap">
+    <h2>🎨 Твой корабль</h2>
+    <p class="muted">Цвет паруса и корпуса в онлайн-арене.</p>
+    <div id="skins" class="skins"></div>
+    <h2 style="margin-top:18px">🏅 Медали</h2>
+    <div id="medalList" class="list small"></div>
+    <button class="btn" data-back>← Назад</button>
+  </div>
+</div>
+
+<!-- Помощь -->
+<div id="helpScr" class="screen hidden">
+  <div class="sea-bg"></div>
+  <div class="wrap">
+    <h2>❓ Как играть</h2>
+    <div class="card help">
+      <p>🕹 <b>Левая половина экрана</b>: веди пальцем, корабль плывёт туда.</p>
+      <p>💣 <b>Кнопка справа</b>: держи, чтобы стрелять. Пушки сами целятся в ближайшего врага.</p>
+      <p>💰 <b>Золото</b> качает корабль: больше HP и урона. Когда тонешь, половина золота падает в море.</p>
+      <p>⚔️ <b>Онлайн-арена</b>: потопил друга +10 🏆, утонул от друга −5 🏆, бот +1 🏆. Серии убийств дают бонус. Раз в несколько минут приплывает босс <b>Пират Fuadaqa12</b>: всем, кто его бил, +10 🏆, добившему +30 🏆.</p>
+      <p>🌪 <b>Шторм</b>: соло против волн ботов. За 3, 5, 8, 12, 16, 20... волн даются медали 🏅. Испытание дня: особые правила, переживи 5 волн и получи медаль дня.</p>
+      <p>🥚 <b>Пасхалки</b>: их 7, каждая даёт медаль. Подсказки в боте: /eggs</p>
+      <p>⌨️ На компе: стрелки/WASD плыть, пробел стрелять.</p>
+    </div>
+    <button class="btn" data-back>← Назад</button>
+  </div>
+</div>
+
+<!-- Игровой HUD -->
+<div id="hud" class="hidden">
+  <div class="hud-tl">
+    <div class="hpbar"><div id="hpFill"></div><span id="hpText">100</span></div>
+    <div class="hud-line"><span id="hudGold">💰 0</span> <span id="hudLvl">⭐ 1</span> <span id="hudKills">💥 0</span></div>
+    <div class="hud-line" id="hudMode"></div>
+  </div>
+  <canvas id="mini" width="120" height="120"></canvas>
+  <div id="board" class="board"></div>
+  <div id="feed" class="feed"></div>
+  <div id="toasts" class="toasts"></div>
+  <button id="btnExit" class="exit">✕</button>
+  <div id="joy" class="joy hidden"><div id="joyKnob"></div></div>
+  <button id="fireBtn" class="fire">💣</button>
+  <div id="deathMsg" class="death hidden"></div>
+</div>
+
+<!-- Результат соло -->
+<div id="resultScr" class="screen hidden">
+  <div class="sea-bg"></div>
+  <div class="wrap center">
+    <div class="flag">⚓</div>
+    <h2 id="resTitle">Корабль затонул</h2>
+    <div id="resBody" class="card"></div>
+    <button class="btn big primary" id="btnAgain">🔁 Ещё раз</button>
+    <button class="btn" data-back>В меню</button>
+  </div>
+</div>
+
+<script type="module" src="game.js"></script>
+</body>
+</html>
