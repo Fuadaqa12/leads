@@ -1,46 +1,71 @@
-// Онлайн-арена: одна общая карта для всех, сервер считает физику и раздаёт кубки
-import { createWorld, addShip, removeShip, setInput, step, snapshot, spawnBoss, BOT_NAMES, CFG, PLAYER_SKINS } from '../public/sim.js';
+// Онлайн-режим «Захват Говсан»: одна карта на всех, территория сохраняется навсегда
+import { createGame, addCar, removeCar, setInput, step, clearOwner, gridToRLE, gridFromRLE, runs, cellAt, N, pct } from '../public/grid.js';
 import * as store from './store.js';
 
 const TICK = 1 / 30;
-const BOSS_EVERY = +process.env.BOSS_EVERY || 420; // сек. онлайна между боссами
+const BOSS_EVERY = +process.env.BOSS_EVERY || 420; // секунд онлайна между появлениями Пирата
+const BOSS_STAY = 120;
+const BOT_NAMES = ['Не Fuad (точно)', 'Таксист Рамиз', 'Дядя на Жигулях', 'Мопед Самира', 'Курьер Вольт', 'Сосед с BMW'];
+const BOT_COLORS = ['#8e8e93', '#a2845e', '#6e6e73', '#7d6b5d', '#5e7d6b', '#6b5e7d'];
+export const PALETTE = ['#ff3b30', '#0a84ff', '#30d158', '#bf5af2', '#ff9f0a', '#ff375f', '#64d2ff', '#5e5ce6', '#ac8e68', '#66d4cf', '#ff6b35', '#a3e635', '#e879f9', '#f472b6'];
+export const FUAD_COLOR = '#ffd60a';
 
 export class Arena {
   constructor({ onAnnounce } = {}) {
-    this.w = createWorld();
-    this.clients = new Map(); // ws -> { p, ship }
-    this.byShip = new Map(); // shipId -> client
+    const m = store.meta;
+    m.ownerTable ||= [''];                       // индекс -> 'p:<id>' или 'bot:<имя>'
+    const owners = gridFromRLE(m.grid || '');
+    // боты и пират не держат землю, пока никого нет
+    for (let i = 0; i < N; i++) if ((m.ownerTable[owners[i]] || '').startsWith('bot:')) owners[i] = 0;
+    this.g = createGame({ owners });
+    this.clients = new Map(); // ws -> { p, car }
+    this.byCar = new Map();
     this.onAnnounce = onAnnounce || (() => {});
-    this.tickN = 0;
-    this.bossClock = BOSS_EVERY * 0.5;
-    this.rosterDirty = true;
-    this.timer = null;
+    this.tickN = 0; this.timer = null;
+    this.bossClock = BOSS_EVERY * 0.6; this.boss = null;
+    this.paints = []; this.gridDirty = false;
   }
 
-  // цикл крутится только пока в море есть люди
+  ownerIdx(key) {
+    const t = store.meta.ownerTable;
+    let i = t.indexOf(key);
+    if (i < 0) { i = t.length; t.push(key); store.save(); }
+    return i;
+  }
+  ownerKey(i) { return store.meta.ownerTable[i] || ''; }
+  // кто есть кто на карте (для цветов и подписей), включая тех, кто не в сети
+  people() {
+    const out = {};
+    for (const [o] of this.g.counts) {
+      const key = this.ownerKey(o);
+      if (key.startsWith('p:')) { const p = store.findPlayer(key.slice(2)); if (p) out[o] = [p.creator ? '👑 Fuad' : p.name, colorOf(p)]; }
+    }
+    for (const c of this.g.cars.values()) out[c.owner] = [c.name, c.color];
+    return out;
+  }
+  pctOf(p) { const i = store.meta.ownerTable.indexOf('p:' + p.id); return i > 0 ? pct(this.g, i) : 0; }
+  humans() { return this.clients.size; }
+
   loop() {
     if (this.humans() > 0 && !this.timer) this.timer = setInterval(() => this.tick(), TICK * 1000);
     if (this.humans() === 0 && this.timer) { clearInterval(this.timer); this.timer = null; }
   }
 
-  humans() { return this.clients.size; }
-
   join(ws, user) {
     const p = store.getPlayer(user);
-    // один корабль на игрока: старое подключение закрываем
-    for (const [oldWs, c] of this.clients) if (c.p.id === p.id) { try { oldWs.close(4000, 'opened elsewhere'); } catch { /* уже закрыт */ } this.leave(oldWs); }
-    const skin = p.creator ? 'gold' : (p.eggs.includes('flag') && p.skin === 'pirate') ? 'pirate' : PLAYER_SKINS.includes(p.skin) ? p.skin : 'red';
-    const name = p.creator ? '👑 Fuad' : p.name || 'Пират';
-    const ship = addShip(this.w, { name, skin, uid: p.id });
-    const c = { ws, p, ship };
-    this.clients.set(ws, c);
-    this.byShip.set(ship.id, c);
-    this.rosterDirty = true;
+    for (const [oldWs, c] of this.clients) if (c.p.id === p.id) { try { oldWs.close(4000, 'opened elsewhere'); } catch { /* */ } this.leave(oldWs); }
+    ensureColor(p);
+    const owner = this.ownerIdx('p:' + p.id);
+    const car = addCar(this.g, { owner, name: p.creator ? '👑 Fuad' : p.name || 'Гонщик', color: colorOf(p), uid: p.id });
+    const c = { ws, p, car };
+    this.clients.set(ws, c); this.byCar.set(car.id, c);
+    this.flushEvents();
     this.send(ws, {
-      t: 'welcome', id: ship.id, world: CFG.world, islands: this.w.islands,
-      me: this.profile(p),
+      t: 'welcome', id: car.id, owner, grid: gridToRLE(this.g.owners), people: this.people(),
+      trails: [...this.g.cars.values()].map(x => [x.id, x.trail]), me: this.profile(p),
     });
-    if (p.creator) this.broadcast({ t: 'toast', text: '👑 На арену зашёл сам Создатель! Все на палубу!' });
+    this.broadcast({ t: 'people', people: this.people() });
+    if (p.creator) this.broadcast({ t: 'toast', text: '👑 В Говсан заехал сам Создатель! Берегите районы!', big: true });
     this.syncBots();
     this.loop();
     return c;
@@ -49,132 +74,164 @@ export class Arena {
   leave(ws) {
     const c = this.clients.get(ws);
     if (!c) return;
-    this.clients.delete(ws);
-    this.byShip.delete(c.ship.id);
-    removeShip(this.w, c.ship.id);
-    this.rosterDirty = true;
+    this.clients.delete(ws); this.byCar.delete(c.car.id);
+    removeCar(this.g, c.car.id);
     this.syncBots();
     this.loop();
   }
 
-  input(ws, msg) {
-    const c = this.clients.get(ws);
-    if (c) setInput(c.ship, msg.a, msg.m, msg.f);
-  }
+  input(ws, msg) { const c = this.clients.get(ws); if (c) setInput(c.car, msg.a); }
 
   profile(p) {
-    return { trophies: p.trophies, medals: p.medals, title: store.titleFor(p), rank: store.rankOf(p), eggs: p.eggs.length };
+    const list = this.top();
+    return { pct: +this.pctOf(p).toFixed(2), medals: p.medals, title: store.titleFor(p, this.pctOf(p)), rank: (list.findIndex(x => x.p.id === p.id) + 1) || list.length + 1, eggs: p.eggs.length };
+  }
+
+  top() {
+    return store.allPlayers().map(p => ({ p, pct: this.pctOf(p) }))
+      .filter(x => x.pct > 0 || x.p.medals > 0)
+      .sort((a, b) => b.pct - a.pct || b.p.medals - a.p.medals);
   }
 
   syncBots() {
     const h = this.humans();
-    const want = h === 0 ? 0 : Math.min(8, Math.max(5, h + 3)) - h;
-    const bots = [...this.w.ships.values()].filter(s => s.isBot && !s.isBoss);
+    const want = h === 0 ? 0 : Math.max(0, 3 - h);
+    const bots = [...this.g.cars.values()].filter(c => c.isBot && !c.isBoss);
     for (let i = bots.length; i < want; i++) {
-      const used = new Set(bots.map(b => b.name.replace('🤖 ', '')));
-      const free = BOT_NAMES.filter(n => !used.has(n));
-      const name = (i === 0 && !used.has(BOT_NAMES[0])) ? BOT_NAMES[0] : free[Math.floor(Math.random() * free.length)] || 'Бот';
-      bots.push(addShip(this.w, { name: '🤖 ' + name, skin: 'bot', isBot: true }));
+      const used = new Set(bots.map(b => b.botName));
+      const name = BOT_NAMES.find(n => !used.has(n));
+      const k = BOT_NAMES.indexOf(name);
+      const car = addCar(this.g, { owner: this.ownerIdx('bot:' + name), name: '🤖 ' + name, color: BOT_COLORS[k], isBot: true });
+      car.botName = name;
+      bots.push(car);
     }
-    while (bots.length > want) removeShip(this.w, bots.pop().id);
-    if (h === 0) for (const s of [...this.w.ships.values()]) if (s.isBoss) removeShip(this.w, s.id);
-    this.rosterDirty = true;
+    while (bots.length > want) { const b = bots.pop(); removeCar(this.g, b.id); clearOwner(this.g, b.owner); }
+    if (h === 0 && this.boss) { removeCar(this.g, this.boss.id); clearOwner(this.g, this.boss.owner); this.boss = null; }
+    this.flushEvents();
+    this.broadcast({ t: 'people', people: this.people() });
   }
 
-  send(ws, obj) { try { ws.send(JSON.stringify(obj)); } catch { /* сокет закрыт */ } }
+  send(ws, obj) { try { ws.send(JSON.stringify(obj)); } catch { /* закрыт */ } }
   broadcast(obj) { const s = JSON.stringify(obj); for (const ws of this.clients.keys()) { try { ws.send(s); } catch { /* закрыт */ } } }
-  toast(ship, text) { const c = this.byShip.get(ship?.id); if (c) this.send(c.ws, { t: 'toast', text }); }
-  meUpdate(c, delta, reason) { this.send(c.ws, { t: 'me', me: this.profile(c.p), delta, reason }); }
+  toCar(car, obj) { const c = this.byCar.get(car?.id); if (c) this.send(c.ws, obj); }
+  meUpdate(c) { this.send(c.ws, { t: 'me', me: this.profile(c.p) }); }
 
   tick() {
-    if (this.humans() === 0) return; // никого нет: экономим процессор
-    step(this.w, TICK);
-    this.bossClock -= TICK;
-    if (this.bossClock <= 0 && ![...this.w.ships.values()].some(s => s.isBoss)) {
-      this.bossClock = BOSS_EVERY;
-      spawnBoss(this.w);
-      this.rosterDirty = true;
-      this.broadcast({ t: 'toast', text: '☠️ Пират Fuadaqa12 вышел в море! Топите его вместе!', big: true });
-      this.onAnnounce('☠️ На Арене Хаоса появился босс <b>Пират Fuadaqa12</b>! Кто в море, бейте его, за него дают кучу кубков 🏆');
-    }
-    this.handleEvents();
-    if (this.onTick) this.onTick();
+    if (this.humans() === 0) return;
+    step(this.g, TICK);
+    this.bossTick();
+    this.flushEvents();
     if (++this.tickN % 2 === 0) {
-      if (this.rosterDirty) {
-        this.rosterDirty = false;
-        this.broadcast({ t: 'roster', list: [...this.w.ships.values()].map(s => [s.id, s.name, s.skin]) });
-      }
-      const snap = snapshot(this.w);
-      snap.fx = this.fx; this.fx = [];
-      this.broadcast(snap);
+      const cars = [...this.g.cars.values()].map(c => [c.id, Math.round(c.x), Math.round(c.y), +c.a.toFixed(2), (c.alive ? 1 : 0) | (c.shield > 0 ? 2 : 0) | (c.boostT > 0 ? 4 : 0) | (c.isBot ? 8 : 0) | (c.isBoss ? 16 : 0), c.owner]);
+      const L = this.g.letter;
+      this.broadcast({ t: 's', cars, letter: L ? [Math.round(L.x), Math.round(L.y), L.ch] : null });
+    }
+    if (this.gridDirty && this.tickN % 60 === 0) {
+      this.gridDirty = false;
+      store.meta.grid = gridToRLE(this.g.owners); store.save();
+      if (this.onSave) this.onSave();
     }
   }
 
-  handleEvents() {
-    this.fx ||= [];
-    for (const e of this.w.events) {
-      if (e.type === 'hit' || e.type === 'splash' || e.type === 'boom') this.fx.push([e.type[0], Math.round(e.x), Math.round(e.y)]);
-      else if (e.type === 'kill') this.onKill(e);
-      else if (e.type === 'egg') this.onEgg(this.byShip.get(e.id), e.egg);
-      else if (e.type === 'letter') this.toast(this.w.ships.get(e.id), `✨ Буква «${e.ch}»! Собрано: ${['F', 'U', 'A', 'D'].map(ch => e.have.includes(ch) ? ch : '_').join(' ')}`);
-      else if (e.type === 'chest') this.toast(this.w.ships.get(e.id), '💰 Сундук с Острова Fuad! +15 золота');
-      else if (e.type === 'lvl') this.toast(this.w.ships.get(e.id), `⬆️ Корабль прокачан до ${e.lvl} уровня!`);
+  bossTick() {
+    this.bossClock -= TICK;
+    if (this.boss) {
+      this.boss.stay -= TICK;
+      if (this.boss.stay <= 0 || !this.boss.alive) {
+        removeCar(this.g, this.boss.id); clearOwner(this.g, this.boss.owner); this.boss = null;
+        this.broadcast({ t: 'toast', text: '🏴‍☠️ Пират Fuadaqa12 уехал. Его земля снова ничья!' });
+        this.broadcast({ t: 'people', people: this.people() });
+      }
+    } else if (this.bossClock <= 0) {
+      this.bossClock = BOSS_EVERY;
+      this.boss = addCar(this.g, { owner: this.ownerIdx('bot:pirate'), name: '☠️ Пират Fuadaqa12', color: '#1c1c1e', isBot: true, isBoss: true, botSpeed: 1.15 });
+      this.boss.stay = BOSS_STAY; this.boss.noRespawn = true;
+      this.broadcast({ t: 'people', people: this.people() });
+      this.broadcast({ t: 'toast', text: '☠️ В Говсан ворвался Пират Fuadaqa12! Перережь его след!', big: true });
+      this.onAnnounce('☠️ В Говсан ворвался <b>Пират Fuadaqa12</b> и захватывает дворы! Кто первый перережет его след, получит пасхалку 🥚');
     }
-    this.w.events.length = 0;
+  }
+
+  flushEvents() {
+    const g = this.g;
+    for (const e of g.events) {
+      if (e.type === 'paint') this.onPaint(e);
+      else if (e.type === 'kill') this.onKill(e);
+      else if (e.type === 'egg') this.onEgg(this.byCar.get(e.car.id), e.egg);
+      else if (e.type === 'boost') this.toCar(e.car, { t: 'toast', text: '🚌 Автобусная остановка: турбо!' });
+      else if (e.type === 'bump') this.broadcast({ t: 'fx', k: 'bump', x: Math.round(e.x), y: Math.round(e.y) });
+      else if (e.type === 'letter') this.toCar(e.car, { t: 'toast', text: `✨ Буква «${e.ch}»! Собрано: ${['F', 'U', 'A', 'D'].map(ch => e.have.includes(ch) ? ch : '_').join(' ')}` });
+    }
+    g.events.length = 0;
+  }
+
+  onPaint(e) {
+    this.gridDirty = true;
+    this.broadcast({ t: 'paint', o: e.o, r: runs(e.cells), car: e.car?.id ?? null });
+    const c = e.car && this.byCar.get(e.car.id);
+    if (!c) return;
+    const gained = e.cells.length / N * 100;
+    if (gained >= 0.3) this.send(c.ws, { t: 'gain', pct: +gained.toFixed(2) });
+    this.meUpdate(c);
+    // у кого отжали землю
+    for (const [o, n] of e.victims || []) {
+      const vc = [...this.clients.values()].find(x => x.car.owner === o);
+      if (vc && n > 20) { this.send(vc.ws, { t: 'toast', text: `😱 ${c.car.name} отжал у тебя ${(n / N * 100).toFixed(1)}% района!` }); this.meUpdate(vc); }
+    }
+    if (gained >= 5) this.onAnnounce(`🚗 <b>${esc(c.car.name)}</b> одним кругом захватил ${gained.toFixed(1)}% Говсан!`);
+    this.checkLeader();
+  }
+
+  checkLeader() {
+    const lead = this.top()[0];
+    if (!lead || lead.pct < 3) return;
+    if (store.meta.leader !== lead.p.id) {
+      const prev = store.meta.leader; store.meta.leader = lead.p.id; store.save();
+      if (prev) {
+        this.broadcast({ t: 'toast', text: `👑 Новый хозяин Говсан: ${lead.p.name}!`, big: true });
+        this.onAnnounce(`👑 Новый хозяин Говсан: <b>${esc(lead.p.name)}</b> (${lead.pct.toFixed(1)}% района)`);
+      }
+    }
   }
 
   onEgg(c, egg) {
     if (!c) return;
     if (store.giveEgg(c.p, egg)) {
       this.send(c.ws, { t: 'toast', text: `🥚 ПАСХАЛКА: «${store.EGGS[egg].name}»! +1 медаль 🏅`, big: true });
-      this.meUpdate(c, 0);
+      this.meUpdate(c);
     }
   }
 
   onKill(e) {
-    const k = e.killerShip, v = e.victimShip;
-    const kc = k && this.byShip.get(k.id), vc = this.byShip.get(v.id);
-    let killText = `${k ? k.name : 'Море'} 💥 ${v.name}`;
-    if (v.isBoss) {
-      // всем, кто бил босса: +10, добивший: +30
-      for (const [sid, dmg] of e.dmgBy) {
-        const c = this.byShip.get(sid);
-        if (!c || dmg < 30) continue;
-        const bonus = sid === k?.id ? 30 : 10;
-        store.addTrophies(c.p, bonus);
-        c.p.bossKills += sid === k?.id ? 1 : 0;
-        this.onEgg(c, 'boss');
-        this.meUpdate(c, bonus, 'Босс повержен');
-      }
-      killText = `☠️ ${k ? k.name : '???'} потопил Пирата Fuadaqa12!`;
-      this.broadcast({ t: 'toast', text: killText, big: true });
-      if (kc) this.onAnnounce(`🏴‍☠️ <b>${esc(kc.p.name)}</b> добил Пирата Fuadaqa12 на Арене Хаоса! +30 🏆`);
-    } else if (kc && vc) {
-      store.addTrophies(kc.p, 10); kc.p.kills++;
-      store.addTrophies(vc.p, -5); vc.p.deaths++;
-      this.meUpdate(kc, 10, `Потопил ${v.name}`);
-      this.meUpdate(vc, -5, `Тебя потопил ${k.name}`);
-      if (k.streak === 3 || k.streak === 5 || k.streak === 10) {
-        store.addTrophies(kc.p, 5);
-        this.broadcast({ t: 'toast', text: `🔥 ${k.name}: серия ${k.streak}! Остановите его!` });
-        this.meUpdate(kc, 5, 'Серия');
-      }
-    } else if (kc && v.isBot) {
-      store.addTrophies(kc.p, 1); kc.p.kills++;
-      this.meUpdate(kc, 1, `Потопил бота`);
-      if (v.name.includes('Не Fuad')) {
-        this.send(kc.ws, { t: 'toast', text: '🤨 «Это был не я!» — сказал Не Fuad, уходя на дно...' });
-        this.onEgg(kc, 'not_fuad');
-      }
-    } else if (vc) {
-      store.addTrophies(vc.p, -2); vc.p.deaths++;
-      this.meUpdate(vc, -2, `Тебя потопил ${k ? k.name : 'шторм'}`);
+    const v = e.victim, k = e.killer;
+    const vc = this.byCar.get(v.id), kc = k && this.byCar.get(k.id);
+    const how = e.kind === 'cut' ? '✂️ перерезал след' : '💥 поглотил';
+    this.broadcast({ t: 'feed', text: `${k ? k.name : '???'} ${how} ${v.name}` });
+    this.broadcast({ t: 'fx', k: 'boom', x: Math.round(e.x), y: Math.round(e.y), id: v.id });
+    if (vc) {
+      vc.p.deaths++; store.save(vc.p);
+      this.send(vc.ws, { t: 'dead', by: k ? k.name : '', kind: e.kind });
     }
-    if (vc) this.send(vc.ws, { t: 'dead', by: k ? k.name : '' });
-    this.broadcast({ t: 'feed', text: killText });
-    if (kc) store.save(kc.p);
-    if (vc) store.save(vc.p);
+    if (kc) {
+      kc.p.kills++; store.save(kc.p);
+      this.send(kc.ws, { t: 'toast', text: e.kind === 'cut' ? `✂️ Ты перерезал след ${v.name}!` : `💥 Ты поглотил ${v.name} на своей земле!` });
+      if (v.isBoss) {
+        this.onEgg(kc, 'boss');
+        kc.p.bossKills++;
+        this.broadcast({ t: 'toast', text: `☠️ ${k.name} остановил Пирата Fuadaqa12!`, big: true });
+        this.onAnnounce(`🏴‍☠️ <b>${esc(kc.p.name)}</b> остановил Пирата Fuadaqa12 в Говсан!`);
+      }
+      if (v.botName === 'Не Fuad (точно)') { this.send(kc.ws, { t: 'toast', text: '🤨 «Это был не я!» — сказал Не Fuad, улетая в кювет...' }); this.onEgg(kc, 'not_fuad'); }
+    }
   }
 }
 
+function ensureColor(p) {
+  if (p.creator) return;
+  if (p.color && PALETTE.includes(p.color)) return;
+  const used = new Set(store.allPlayers().map(x => x.color));
+  p.color = PALETTE.find(c => !used.has(c)) || PALETTE[Math.floor(Math.random() * PALETTE.length)];
+  store.save(p);
+}
+export function colorOf(p) { return p.creator ? FUAD_COLOR : p.color || '#ff3b30'; }
 export function esc(s) { return String(s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])); }

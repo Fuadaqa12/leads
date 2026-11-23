@@ -3,23 +3,24 @@ import * as store from './store.js';
 import { esc } from './arena.js';
 
 const PIRATE_CODE = [
-  '🏴‍☠️ <b>Пиратский кодекс Арены Хаоса</b>',
-  '1. Кто не стреляет, тот кормит рыб.',
-  '2. Золото выпадает из всех, кроме Фуада. У Фуада золото в сердце.',
-  '3. Если видишь букву в море, плыви к ней. F-U-A-D, запомни.',
-  '4. Босса бьют толпой. Одному его не утопить, проверено.',
-  '5. Ныть в чат после смерти разрешено не более 3 сообщений.',
+  '🏴‍☠️ <b>Пиратский кодекс Говсан</b>',
+  '1. Кто не замкнул круг, тот ничего не захватил.',
+  '2. Свой квартал защищай лбом: на своей земле ты поглощаешь любого.',
+  '3. Чужой след переехал — человек улетел. Не оставляй свой след надолго.',
+  '4. Видишь букву на дороге — бери. F-U-A-D, запомни.',
+  '5. Пират Fuadaqa12 приезжает без предупреждения. Режь его след.',
+  '6. Ныть в чат после аварии разрешено не более 3 сообщений.',
 ].join('\n');
 
 const LEGEND = [
   '📜 <b>Легенда о Fuadaqa12</b>',
   '',
-  'Говорят, давным-давно капитан по имени Фуад собрал этот корабль своими руками.',
-  'Он дал ключ от него одному боту и сказал: «Сделай что-то пиздатое».',
-  'С тех пор в водах Арены бродит призрак Пирата Fuadaqa12,',
-  'а у северо-восточного острова зарыт клад, который мало кто нашёл.',
+  'Говорят, давным-давно парень по имени Фуад собрал этого бота своими руками.',
+  'Он дал ключ от него одному ИИ и сказал: «Сделай что-то пиздатое».',
+  'ИИ сделал пиратское море, но Фуад сказал: «Не, давай Говсан».',
+  'С тех пор по улицам Говсан носится Пират Fuadaqa12 и отжимает дворы.',
   '',
-  '<i>Ищи там, где песок встречается с морем...</i>',
+  '<i>А ещё говорят, где-то в Говсан Гугл запомнил чью-то припаркованную тачку...</i>',
 ].join('\n');
 
 export function createBot({ token, publicUrl, miniAppShort, arena }) {
@@ -44,7 +45,7 @@ export function createBot({ token, publicUrl, miniAppShort, arena }) {
     if (miniAppShort) return `https://t.me/${me.username}/${miniAppShort}?startapp=arena`;
     return `https://t.me/${me.username}?start=play`;
   };
-  const playKeyboard = (chat, text = '⚔️ Играть') => {
+  const playKeyboard = (chat, text = '🚗 Играть') => {
     if (chat.type === 'private') return { inline_keyboard: [[{ text, web_app: { url: publicUrl } }]] };
     return { inline_keyboard: [[{ text, url: playUrlFor(chat) }]] };
   };
@@ -54,26 +55,27 @@ export function createBot({ token, publicUrl, miniAppShort, arena }) {
   });
 
   function topText() {
-    const list = store.leaderboard(15);
-    if (!list.length) return '🏆 Топ пока пуст. Выходи в море первым!';
-    const medalsIcon = ['🥇', '🥈', '🥉'];
-    const lines = list.map((p, i) => {
-      const nm = esc(p.creator ? '👑 ' + (p.name || 'Fuad') : p.name || 'Пират');
-      return `${medalsIcon[i] || `${i + 1}.`} <b>${nm}</b>  🏆 ${p.trophies}  ·  🏅 ${p.medals}\n      <i>${store.titleFor(p)}</i>`;
+    const list = arena.top().slice(0, 15);
+    if (!list.length) return '🏆 Топ пока пуст. Захвати первый квартал!';
+    const icons = ['🥇', '🥈', '🥉'];
+    const lines = list.map(({ p, pct }, i) => {
+      const nm = esc(p.creator ? '👑 ' + (p.name || 'Fuad') : p.name || 'Гонщик');
+      return `${icons[i] || `${i + 1}.`} <b>${nm}</b>  🏘 ${pct.toFixed(1)}%  ·  🏅 ${p.medals}\n      <i>${store.titleFor(p, pct)}</i>`;
     });
-    return `🏴‍☠️ <b>ТОП АРЕНЫ ХАОСА</b>\n<i>место решают кубки 🏆 из онлайн-арены, медали 🏅 из соло идут бонусом</i>\n\n${lines.join('\n')}`;
+    return `🚗 <b>ТОП ГОВСАН</b>\n<i>место решает, какая часть района твоя 🏘. Медали 🏅 из соло идут бонусом</i>\n\n${lines.join('\n')}`;
   }
 
   function meText(p) {
-    const eggs = Object.keys(store.EGGS);
+    const pct = arena.pctOf(p), list = arena.top();
+    const rank = (list.findIndex(x => x.p.id === p.id) + 1) || '—';
     return [
-      `🧭 <b>${esc(p.name || 'Пират')}</b>  ${store.titleFor(p)}`,
-      `Место в топе: <b>#${store.rankOf(p)}</b>`,
-      `🏆 Кубки: <b>${p.trophies}</b>`,
+      `🧭 <b>${esc(p.name || 'Гонщик')}</b>  ${store.titleFor(p, pct)}`,
+      `Место в топе: <b>#${rank}</b>`,
+      `🏘 Твоя часть Говсан: <b>${pct.toFixed(1)}%</b>`,
       `🏅 Медали: <b>${p.medals}</b>`,
-      `💥 Потоплено: ${p.kills}  ·  ☠️ Утонул: ${p.deaths}  ·  👹 Боссов: ${p.bossKills}`,
-      `🌊 Рекорд в соло: волна ${p.soloBest}`,
-      `🥚 Пасхалки: ${p.eggs.length}/${eggs.length}`,
+      `💥 Разбил: ${p.kills}  ·  🚑 Разбился: ${p.deaths}  ·  ☠️ Пиратов: ${p.bossKills}`,
+      `⏱ Рекорд соло: ${p.soloBest || 0}%`,
+      `🥚 Пасхалки: ${p.eggs.length}/${Object.keys(store.EGGS).length}`,
     ].join('\n');
   }
 
@@ -92,17 +94,17 @@ export function createBot({ token, publicUrl, miniAppShort, arena }) {
       case 'start':
       case 'help':
         if (arg === 'play' || cmd === 'start' && msg.chat.type === 'private') {
-          return reply(msg, `🏴‍☠️ <b>Арена Хаоса</b>\n\nОнлайн-море, где все плавают на одной карте одновременно. Топи друзей, собирай золото, качай корабль. За победы капают кубки 🏆, по ним строится топ.\n\nВ соло-режиме «Шторм» отбивайся от волн и собирай медали 🏅.\n\nА ещё тут спрятаны пасхалки 🥚 Найдёшь все?\n\nЖми кнопку 👇`, { reply_markup: playKeyboard(msg.chat, '⚔️ Выйти в море') });
+          return reply(msg, `🚗 <b>Захват Говсан</b>\n\nВсе гоняют по улицам Говсан на одной карте одновременно. За машиной тянется след: замкнул круг — всё внутри стало твоего цвета. Чужие кварталы тоже можно отжать.\n\nНа своей земле ты сильнее: врежешься лоб в лоб с чужаком — он улетает. Переехал чужой след — его хозяин разбился.\n\nКто держит больше района, тот выше в топе. В соло «Гонка» добываешь медали 🏅. И пасхалки 🥚 тоже есть.\n\nЖми кнопку 👇`, { reply_markup: playKeyboard(msg.chat, '🚗 Погнали') });
         }
-        return reply(msg, `🏴‍☠️ <b>Арена Хаоса</b>\n\n/arena — кнопка входа в игру\n/top — топ игроков\n/me — мой профиль\n/medals — мои медали\n/eggs — подсказки к пасхалкам\n/announce — вкл/выкл анонсы боссов в этом чате`, { reply_markup: playKeyboard(msg.chat) });
+        return reply(msg, `🚗 <b>Захват Говсан</b>\n\n/arena — кнопка входа в игру\n/top — топ игроков\n/me — мой профиль\n/medals — мои медали\n/eggs — подсказки к пасхалкам\n/announce — вкл/выкл анонсы в этом чате`, { reply_markup: playKeyboard(msg.chat) });
       case 'arena': case 'play': case 'game': case 'играть': case 'арена':
-        return reply(msg, `⚔️ <b>Море ждёт!</b>\nСейчас в море: ${arena.humans()} ${plural(arena.humans(), 'пират', 'пирата', 'пиратов')}`, { reply_markup: playKeyboard(msg.chat, '⚔️ Выйти в море') });
+        return reply(msg, `🚗 <b>Говсан ждёт!</b>\nСейчас на улицах: ${arena.humans()} ${plural(arena.humans(), 'гонщик', 'гонщика', 'гонщиков')}`, { reply_markup: playKeyboard(msg.chat, '🚗 Погнали') });
       case 'top': case 'топ':
         return reply(msg, topText(), { reply_markup: playKeyboard(msg.chat) });
       case 'me': case 'profile': case 'я':
         return reply(msg, meText(p));
       case 'medals': case 'медали': {
-        if (!p.medalList.length) return reply(msg, '🏅 Медалей пока нет. Иди в соло-режим «Шторм» и переживи 3 волны!');
+        if (!p.medalList.length) return reply(msg, '🏅 Медалей пока нет. Иди в соло «Гонка» и захвати 10% района!');
         return reply(msg, `🏅 <b>Медали ${esc(p.name)}</b> (${p.medals})\n\n` + p.medalList.map(x => '• ' + esc(x.l)).join('\n'));
       }
       case 'eggs': case 'пасхалки': {
@@ -121,7 +123,7 @@ export function createBot({ token, publicUrl, miniAppShort, arena }) {
         const c = store.chat(msg.chat.id);
         if (!c) return reply(msg, 'Анонсы работают только в группах.');
         c.announce = !c.announce; store.save();
-        return reply(msg, c.announce ? '📣 Анонсы боссов включены.' : '🔕 Анонсы боссов выключены.');
+        return reply(msg, c.announce ? '📣 Анонсы включены.' : '🔕 Анонсы выключены.');
       }
     }
   }
@@ -141,7 +143,7 @@ export function createBot({ token, publicUrl, miniAppShort, arena }) {
     const res = {};
     res.webhook = await api('setWebhook', { url: webhookUrl, secret_token: secret, allowed_updates: ['message'], drop_pending_updates: false });
     res.commands = await api('setMyCommands', { commands: [
-      { command: 'arena', description: '⚔️ Выйти в море' },
+      { command: 'arena', description: '🚗 Погнали' },
       { command: 'top', description: '🏆 Топ игроков' },
       { command: 'me', description: '🧭 Мой профиль' },
       { command: 'medals', description: '🏅 Мои медали' },
@@ -149,8 +151,8 @@ export function createBot({ token, publicUrl, miniAppShort, arena }) {
       { command: 'help', description: '❓ Помощь' },
     ] });
     res.menu = await api('setChatMenuButton', { menu_button: { type: 'web_app', text: 'Играть', web_app: { url: publicUrl } } });
-    res.description = await api('setMyDescription', { description: '🏴‍☠️ Арена Хаоса: пиратская онлайн-битва для вашей группы. Одно море на всех, кубки, медали, босс и пасхалки. Жми «Играть»!' });
-    res.short = await api('setMyShortDescription', { short_description: '🏴‍☠️ Онлайн-битва пиратов для групп. Топ, медали, пасхалки.' });
+    res.description = await api('setMyDescription', { description: '🚗 Захват Говсан: гоняй по улицам, замыкай круги и отжимай кварталы у друзей. Одна карта на всех, топ, медали и пасхалки. Жми «Играть»!' });
+    res.short = await api('setMyShortDescription', { short_description: '🚗 Гонки-захват по улицам Говсан. Топ, медали, пасхалки.' });
     res.bot = me;
     return res;
   }
@@ -165,7 +167,7 @@ export function createBot({ token, publicUrl, miniAppShort, arena }) {
     announce(html) {
       if (!me) return;
       const jobs = [];
-      for (const c of store.chats()) if (c.announce) jobs.push(api('sendMessage', { chat_id: c.id, text: html, parse_mode: 'HTML', reply_markup: playKeyboard({ type: 'group' }, '⚔️ В бой') }));
+      for (const c of store.chats()) if (c.announce) jobs.push(api('sendMessage', { chat_id: c.id, text: html, parse_mode: 'HTML', reply_markup: playKeyboard({ type: 'group' }, '🚗 В Говсан') }));
       return Promise.all(jobs);
     },
   };

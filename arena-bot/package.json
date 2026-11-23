@@ -2,7 +2,7 @@
   "name": "arena-haosa",
   "version": "1.0.0",
   "private": true,
-  "description": "Арена Хаоса: пиратская онлайн-игра для Telegram-группы",
+  "description": "Захват Говсан: онлайн-гонки с захватом территории для Telegram-группы",
   "type": "module",
   "scripts": {
     "start": "node src/server.js",
