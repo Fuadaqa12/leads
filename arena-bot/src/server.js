@@ -105,9 +105,9 @@ const server = http.createServer(async (req, res) => {
       if (req.headers['x-telegram-bot-api-secret-token'] !== HOOK_SECRET) return send(res, 403, 'nope', 'text/plain');
       const u = await readBody(req);
       // Телеграму всегда отвечаем 200, иначе он будет слать апдейт повторно
-      await bot.handleUpdate(u).catch(e => console.error('update', e));
+      const out = await bot.handleUpdate(u).catch(e => { console.error('update', e); return null; });
       scheduleFlush();
-      return send(res, 200, 'ok', 'text/plain');
+      return out ? send(res, 200, out) : send(res, 200, 'ok', 'text/plain');
     }
     if (p.startsWith('/api/')) {
       if (req.method !== 'POST') return send(res, 405, { error: 'POST only' });

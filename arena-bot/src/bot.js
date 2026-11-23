@@ -1,3 +1,4 @@
+import { AsyncLocalStorage } from 'node:async_hooks';
 import crypto from 'node:crypto';
 // Телеграм-бот: команды в группе и в личке, кнопка запуска игры, анонсы
 import * as store from './store.js';
@@ -47,6 +48,7 @@ export function createBot({ token, publicUrl, miniAppShort, arena }) {
     try {
       const r = await fetch(`https://api.telegram.org/bot${token}/${method}`, {
         method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body),
+        signal: AbortSignal.timeout(20000),
       });
       const j = await r.json().catch(() => ({}));
       // 429: Телеграм просит подождать, ждём сколько сказал и пробуем снова
@@ -67,6 +69,7 @@ export function createBot({ token, publicUrl, miniAppShort, arena }) {
 
   const playUrlFor = (chat) => {
     if (chat.type === 'private') return null;
+    if (!me) return publicUrl;
     if (miniAppShort === 'main') return `https://t.me/${me.username}?startapp=arena`;
     if (miniAppShort) return `https://t.me/${me.username}/${miniAppShort}?startapp=arena`;
     return `https://t.me/${me.username}?start=play`;
@@ -75,10 +78,18 @@ export function createBot({ token, publicUrl, miniAppShort, arena }) {
     if (chat.type === 'private') return { inline_keyboard: [[{ text, web_app: { url: publicUrl } }]] };
     return { inline_keyboard: [[{ text, url: playUrlFor(chat) }]] };
   };
-  const reply = (msg, text, extra = {}) => api('sendMessage', {
-    chat_id: msg.chat.id, text, parse_mode: 'HTML', disable_web_page_preview: true,
-    reply_parameters: { message_id: msg.message_id, allow_sending_without_reply: true }, ...extra,
-  });
+  // Первый ответ на апдейт отдаём прямо в ответе на вебхук: так бот отвечает,
+  // даже если исходящие запросы к Телеграму сейчас упираются в лимит
+  const slots = new AsyncLocalStorage();
+  const reply = (msg, text, extra = {}) => {
+    const body = {
+      chat_id: msg.chat.id, text, parse_mode: 'HTML', disable_web_page_preview: true,
+      reply_parameters: { message_id: msg.message_id, allow_sending_without_reply: true }, ...extra,
+    };
+    const slot = slots.getStore();
+    if (slot && !slot.body) { slot.body = { method: 'sendMessage', ...body }; return Promise.resolve(true); }
+    return api('sendMessage', body, 1);
+  };
 
   function topText() {
     const list = arena.top().slice(0, 15);
@@ -154,12 +165,16 @@ export function createBot({ token, publicUrl, miniAppShort, arena }) {
     }
   }
 
+  let meP = null;
   async function ensureMe() {
     if (me) return me;
     if (store.meta.bot) return (me = store.meta.bot);
-    me = await api('getMe');
-    if (me) { store.meta.bot = { id: me.id, username: me.username }; store.save(); }
-    return me;
+    meP ||= api('getMe').then(r => {
+      meP = null;
+      if (r) { me = r; store.meta.bot = { id: r.id, username: r.username }; store.save(); }
+      return me;
+    });
+    return meP;
   }
 
   // Разовая настройка: вебхук, команды, кнопка меню
@@ -188,9 +203,12 @@ export function createBot({ token, publicUrl, miniAppShort, arena }) {
     return res;
   }
 
+  // возвращает метод, который сервер отдаст Телеграму прямо в ответе на вебхук
   async function handleUpdate(u) {
-    await ensureMe();
-    if (u.message) await handle(u.message).catch(e => console.error('handle', e));
+    ensureMe().catch(() => {}); // не ждём: при лимите getMe ждал бы минуту
+    const slot = {};
+    if (u.message) await slots.run(slot, () => handle(u.message)).catch(e => console.error('handle', e));
+    return slot.body || null;
   }
 
   return {
