@@ -1,0 +1,12 @@
+{
+  "name": "arena-haosa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Арена Хаоса: пиратская онлайн-игра для Telegram-группы (Cloudflare Workers)",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --var DEV_MODE:1",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": { "wrangler": "4.166.0" }
+}
