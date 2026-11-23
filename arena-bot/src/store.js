@@ -25,22 +25,24 @@ export async function flush(storage) {
 }
 export function save(p) { if (p && p.id) dirtyPlayers.add(p.id); else dirtyRest = true; }
 
+// звание зависит от доли района, которой ты владеешь сейчас
 export const TITLES = [
-  [0, '🐣 Юнга'], [50, '⚓ Матрос'], [150, '🪝 Боцман'], [300, '💣 Канонир'],
-  [600, '🏴‍☠️ Капитан'], [1000, '🎖 Адмирал'], [2000, '🐉 Легенда морей'],
+  [0, '🚶 Пешеход'], [1, '🛵 Курьер'], [3, '🚕 Таксист'], [7, '🏎 Гонщик'],
+  [12, '🏘 Хозяин квартала'], [20, '👑 Король Говсан'], [35, '🐉 Легенда Говсан'],
 ];
-export function titleFor(p) {
-  if (p.creator) return '👑 Создатель Арены';
+export function titleFor(p, pct = 0) {
+  if (p.creator) return '👑 Создатель Говсан';
   let t = TITLES[0][1];
-  for (const [min, name] of TITLES) if (p.trophies >= min) t = name;
+  for (const [min, name] of TITLES) if (pct >= min) t = name;
   return t;
 }
 
 export const EGGS = {
-  treasure: { name: 'Клад Фуада', hint: 'Где-то у Острова Fuad зарыт клад...' },
-  fuad_word: { name: 'Слово силы F-U-A-D', hint: 'Собери четыре светящиеся буквы' },
-  boss: { name: 'Встреча с Пиратом', hint: 'Подстрели босса, когда он приплывёт' },
-  not_fuad: { name: 'Это точно был не Фуад', hint: 'Утопи одного подозрительного бота' },
+  fish: { name: 'Свежая рыба', hint: 'Проедь мимо самой известной рыбной лавки Говсан' },
+  parking: { name: 'Вы припарковались здесь', hint: 'Найди место, где Гугл запомнил твою тачку' },
+  fuad_word: { name: 'Слово силы F-U-A-D', hint: 'Собери на дорогах четыре светящиеся буквы' },
+  boss: { name: 'Встреча с Пиратом', hint: 'Перережь след или поглоти Пирата Fuadaqa12' },
+  not_fuad: { name: 'Это точно был не Фуад', hint: 'Разбей одну подозрительную машину' },
   flag: { name: 'Чёрный флаг', hint: 'Логотип игры любит, когда по нему много тыкают' },
   pirate_cmd: { name: 'Пиратский кодекс', hint: 'Спроси у бота про пирата' },
   legend: { name: 'Легенда о Fuadaqa12', hint: 'Спроси у бота про создателя' },
@@ -51,8 +53,8 @@ export function getPlayer(user) {
   let p = db.players[id];
   if (!p) {
     p = db.players[id] = {
-      id, name: '', username: '', trophies: 0, medals: 0, medalList: [], eggs: [],
-      kills: 0, deaths: 0, bossKills: 0, soloBest: 0, dailyDone: '', skin: 'red', created: Date.now(),
+      id, name: '', username: '', medals: 0, medalList: [], eggs: [], color: '',
+      kills: 0, deaths: 0, bossKills: 0, soloBest: 0, created: Date.now(),
     };
   }
   if (user.first_name || user.name) p.name = (user.first_name || user.name).slice(0, 24);
@@ -63,8 +65,6 @@ export function getPlayer(user) {
 }
 export function findPlayer(id) { return db.players[String(id)] || null; }
 export function allPlayers() { return Object.values(db.players); }
-
-export function addTrophies(p, n) { p.trophies = Math.max(0, p.trophies + n); save(p); }
 
 // Медаль выдаётся один раз за ключ. Возвращает true, если медаль новая.
 export function giveMedal(p, key, label) {
@@ -79,17 +79,6 @@ export function giveEgg(p, egg) {
   p.eggs.push(egg);
   giveMedal(p, 'egg:' + egg, '🥚 ' + EGGS[egg].name);
   return true;
-}
-
-export function leaderboard(limit = 15) {
-  return allPlayers()
-    .filter(p => p.trophies > 0 || p.medals > 0)
-    .sort((a, b) => b.trophies - a.trophies || b.medals - a.medals)
-    .slice(0, limit);
-}
-export function rankOf(p) {
-  const list = allPlayers().sort((a, b) => b.trophies - a.trophies || b.medals - a.medals);
-  return list.findIndex(x => x.id === p.id) + 1;
 }
 
 export function rememberChat(chat) {

@@ -1,11 +1,11 @@
-// Сервер Арены Хаоса (Node.js): раздаёт игру, держит онлайн-арену по WebSocket, принимает вебхук Телеграма.
+// Сервер «Захват Говсан» (Node.js): раздаёт игру, держит онлайн-арену по WebSocket, принимает вебхук Телеграма.
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { WebSocketServer } from 'ws';
-import { Arena } from './arena.js';
+import { Arena, PALETTE, colorOf } from './arena.js';
 import { createBot } from './bot.js';
 import { checkInitData, devUser } from './auth.js';
 import { FileKV, GistKV } from './storage.js';
@@ -19,7 +19,7 @@ const PUBLIC_URL = (process.env.PUBLIC_URL || process.env.RENDER_EXTERNAL_URL ||
 const DEV = process.env.DEV_MODE === '1';
 // Секрет вебхука выводится из токена, чтобы не заводить лишних ключей
 const HOOK_SECRET = crypto.createHash('sha256').update('arena-hook:' + TOKEN).digest('hex').slice(0, 40);
-const MILESTONES = [3, 5, 8, 12, 16, 20, 25, 30];
+const MILESTONES = [10, 20, 35, 50, 70];
 
 // ---------- база ----------
 const kv = process.env.GH_GIST_TOKEN ? new GistKV(process.env.GH_GIST_TOKEN) : new FileKV(path.join(ROOT, 'data', 'db.json'));
@@ -38,7 +38,8 @@ process.on('SIGTERM', shutdown); process.on('SIGINT', shutdown);
 // ---------- игра и бот ----------
 let bot;
 const arena = new Arena({ onAnnounce: (html) => bot?.announce(html) });
-arena.onTick = scheduleFlush;
+arena.onSave = scheduleFlush;
+setInterval(scheduleFlush, 5000).unref();
 bot = createBot({ token: TOKEN, publicUrl: PUBLIC_URL, miniAppShort: process.env.MINIAPP_SHORT || '', arena });
 
 function userFrom(init, dev) {
@@ -47,23 +48,25 @@ function userFrom(init, dev) {
 }
 
 function profile(p) {
+  const pct = arena.pctOf(p), list = arena.top();
   return {
-    name: p.name, creator: p.creator, trophies: p.trophies, medals: p.medals, title: store.titleFor(p),
-    rank: store.rankOf(p), eggs: p.eggs, soloBest: p.soloBest, skin: p.skin, medalList: p.medalList.slice(-30),
-    online: arena.humans(),
+    name: p.name, creator: p.creator, pct: +pct.toFixed(2), medals: p.medals, title: store.titleFor(p, pct),
+    rank: (list.findIndex(x => x.p.id === p.id) + 1) || list.length + 1, eggs: p.eggs, eggsTotal: Object.keys(store.EGGS).length,
+    soloBest: p.soloBest || 0, color: colorOf(p), medalList: p.medalList.slice(-30), online: arena.humans(),
+    kills: p.kills, deaths: p.deaths,
   };
 }
 
 function api(route, p, body) {
   switch (route) {
     case '/api/me': {
-      const top = store.leaderboard(20).map(x => ({ name: x.creator ? '👑 ' + x.name : x.name, trophies: x.trophies, medals: x.medals, title: store.titleFor(x), me: x.id === p.id }));
-      return { me: profile(p), top };
+      const top = arena.top().slice(0, 20).map(({ p: x, pct }) => ({ name: x.creator ? '👑 ' + x.name : x.name, pct: +pct.toFixed(1), medals: x.medals, title: store.titleFor(x, pct), color: colorOf(x), me: x.id === p.id }));
+      return { me: profile(p), top, palette: PALETTE };
     }
-    case '/api/skin': {
-      const ok = ['red', 'blue', 'green', 'purple', 'orange', 'pink', 'teal'].includes(body.skin) || (body.skin === 'pirate' && p.eggs.includes('flag'));
-      if (ok) { p.skin = body.skin; store.save(p); }
-      return { me: profile(p) };
+    case '/api/color': {
+      const taken = store.allPlayers().some(x => x.id !== p.id && x.color === body.color);
+      if (PALETTE.includes(body.color) && !taken && !p.creator) { p.color = body.color; store.save(p); }
+      return { me: profile(p), taken };
     }
     case '/api/egg': {
       // с клиента можно получить только «флаг» (7 тапов по логотипу)
@@ -71,14 +74,14 @@ function api(route, p, body) {
       return { fresh, me: profile(p) };
     }
     case '/api/solo': {
-      const wave = Math.floor(+body.wave || 0), time = +body.time || 0;
-      // защита от читов: волна не может пройти быстрее ~6 секунд
-      if (wave < 0 || wave > 60 || time < wave * 6) return { error: 'странный результат 🤨' };
+      const res = Math.round((+body.pct || 0) * 10) / 10, time = +body.time || 0;
+      // защита от читов: гонка длится 3 минуты
+      if (res < 0 || res > 100 || time < 150) return { error: 'странный результат 🤨' };
       const got = [];
-      if (wave > p.soloBest) { p.soloBest = wave; store.save(p); }
-      for (const m of MILESTONES) if (wave >= m && store.giveMedal(p, 'solo:' + m, `🌊 Шторм: пережил ${m} волн`)) got.push(`🌊 Шторм: пережил ${m} волн`);
+      if (res > (p.soloBest || 0)) { p.soloBest = res; store.save(p); }
+      for (const m of MILESTONES) if (res >= m && store.giveMedal(p, 'solo:' + m, `⏱ Гонка: захватил ${m}% района`)) got.push(`⏱ Гонка: захватил ${m}% района`);
       const today = new Date().toISOString().slice(0, 10);
-      if (body.daily === today && wave >= 5 && store.giveMedal(p, 'daily:' + today, `📅 Испытание дня ${today}`)) got.push(`📅 Испытание дня ${today}`);
+      if (body.daily === today && res >= 20 && store.giveMedal(p, 'daily:' + today, `📅 Испытание дня ${today}`)) got.push(`📅 Испытание дня ${today}`);
       return { got, me: profile(p) };
     }
   }
@@ -149,7 +152,7 @@ server.on('upgrade', (req, socket, head) => {
 setInterval(() => { for (const ws of wss.clients) { if (!ws.isAlive) ws.terminate(); else { ws.isAlive = false; ws.ping(); } } }, 30000).unref();
 
 server.listen(PORT, async () => {
-  console.log(`Арена Хаоса запущена: ${PUBLIC_URL} (порт ${PORT})`);
+  console.log(`Захват Говсан запущен: ${PUBLIC_URL} (порт ${PORT})`);
   if (TOKEN && PUBLIC_URL.startsWith('https://')) {
     const r = await bot.setup(PUBLIC_URL + '/tg', HOOK_SECRET).catch(e => ({ error: e.message }));
     console.log('Бот:', r?.bot?.username ? '@' + r.bot.username : 'не подключился', '| вебхук:', r?.webhook);

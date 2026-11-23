@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Арена Хаоса</title>
+<title>Захват Говсан</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -15,8 +15,8 @@
   <div class="sea-bg"></div>
   <div class="wrap">
     <div id="logo" class="logo">
-      <div class="flag">🏴‍☠️</div>
-      <h1>АРЕНА<br><span>ХАОСА</span></h1>
+      <div class="flag">🚗</div>
+      <h1>ЗАХВАТ<br><span>ГОВСАН</span></h1>
     </div>
     <div class="card me" id="meCard">
       <div class="me-top">
@@ -25,19 +25,19 @@
       </div>
       <div class="me-title" id="meTitle"></div>
       <div class="stats">
-        <div><b id="meTrophies">0</b><span>🏆 кубки</span></div>
+        <div><b id="mePct">0%</b><span>🏘 района</span></div>
         <div><b id="meMedals">0</b><span>🏅 медали</span></div>
-        <div><b id="meEggs">0/7</b><span>🥚 пасхалки</span></div>
+        <div><b id="meEggs">0/8</b><span>🥚 пасхалки</span></div>
       </div>
     </div>
-    <button class="btn big primary" id="btnArena">⚔️ Онлайн-арена<small id="onlineCount">одно море на всех, тут решается топ</small></button>
+    <button class="btn big primary" id="btnArena">🚗 Онлайн: Говсан<small id="onlineCount">одна карта на всех, тут решается топ</small></button>
     <div class="row">
-      <button class="btn" id="btnSolo">🌪 Соло: Шторм<small>медали 🏅</small></button>
+      <button class="btn" id="btnSolo">⏱ Соло: Гонка<small>медали 🏅</small></button>
       <button class="btn" id="btnDaily">📅 Испытание<small id="dailyName">дня</small></button>
     </div>
     <div class="row">
       <button class="btn" id="btnTop">🏆 Топ</button>
-      <button class="btn" id="btnShip">🎨 Корабль</button>
+      <button class="btn" id="btnShip">🎨 Цвет</button>
       <button class="btn" id="btnHelp">❓ Как играть</button>
     </div>
   </div>
@@ -47,8 +47,8 @@
 <div id="topScr" class="screen hidden">
   <div class="sea-bg"></div>
   <div class="wrap">
-    <h2>🏆 Топ Арены</h2>
-    <p class="muted">Место решают кубки 🏆 из онлайн-арены. Медали 🏅 из соло показаны рядом, но на место не влияют.</p>
+    <h2>🏆 Топ Говсан</h2>
+    <p class="muted">Место решает, какая часть района твоя 🏘. Медали 🏅 из соло показаны рядом, но на место не влияют.</p>
     <div id="topList" class="list"></div>
     <button class="btn" data-back>← Назад</button>
   </div>
@@ -58,8 +58,8 @@
 <div id="shipScr" class="screen hidden">
   <div class="sea-bg"></div>
   <div class="wrap">
-    <h2>🎨 Твой корабль</h2>
-    <p class="muted">Цвет паруса и корпуса в онлайн-арене.</p>
+    <h2>🎨 Твой цвет</h2>
+    <p class="muted">Этим цветом красится твоя машина, след и захваченная земля. У каждого свой.</p>
     <div id="skins" class="skins"></div>
     <h2 style="margin-top:18px">🏅 Медали</h2>
     <div id="medalList" class="list small"></div>
@@ -73,14 +73,16 @@
   <div class="wrap">
     <h2>❓ Как играть</h2>
     <div class="card help">
-      <p>🕹 <b>Левая половина экрана</b>: веди пальцем, корабль плывёт туда.</p>
-      <p>💣 <b>Кнопка справа</b>: держи, чтобы стрелять. Пушки сами целятся в ближайшего врага.</p>
-      <p>💰 <b>Золото</b> качает корабль: больше HP и урона. Когда тонешь, половина золота падает в море.</p>
-      <p>⚔️ <b>Онлайн-арена</b>: потопил друга +10 🏆, утонул от друга −5 🏆, бот +1 🏆. Серии убийств дают бонус. Раз в несколько минут приплывает босс <b>Пират Fuadaqa12</b>: всем, кто его бил, +10 🏆, добившему +30 🏆.</p>
-      <p>🌪 <b>Шторм</b>: соло против волн ботов. За 3, 5, 8, 12, 16, 20... волн даются медали 🏅. Испытание дня: особые правила, переживи 5 волн и получи медаль дня.</p>
-      <p>🥚 <b>Пасхалки</b>: их 7, каждая даёт медаль. Подсказки в боте: /eggs</p>
-      <p>⌨️ На компе: стрелки/WASD плыть, пробел стрелять.</p>
-    </div>
+      <p>🚗 Машина сама едет по улице. <b>Веди пальцем по экрану</b> в сторону, куда свернуть на ближайшем перекрёстке. Потянешь назад — развернёшься.</p>
+      <p>🎨 За тобой тянется <b>след</b>. Вернулся на свою землю и замкнул круг — всё, что внутри, стало твоего цвета.</p>
+      <p>😈 Чужие кварталы тоже можно отжать: просто обведи их.</p>
+      <p>💥 <b>Лоб в лоб</b>: на своей земле ты поглощаешь чужака, он улетает. На ничьей земле машины отскакивают.</p>
+      <p>✂️ Переехал чужой <b>след</b> — его хозяин разбился. Так что долго не катайся вне своей земли.</p>
+      <p>🚌 Остановки дают турбо. Иногда приезжает <b>Пират Fuadaqa12</b> и отжимает дворы, режь его след!</p>
+      <p>🏆 Топ: у кого больше района. Земля остаётся твоей, даже когда ты не в игре, но её могут отжать.</p>
+      <p>⏱ <b>Гонка</b>: соло против ботов 3 минуты. Медали 🏅 за 10, 20, 35, 50, 70% района.</p>
+      <p>🥚 Пасхалок 8, каждая даёт медаль. Подсказки в боте: /eggs</p>
+      <p>⌨️ На компе: стрелки или WASD.</div>
     <button class="btn" data-back>← Назад</button>
   </div>
 </div>
@@ -88,8 +90,8 @@
 <!-- Игровой HUD -->
 <div id="hud" class="hidden">
   <div class="hud-tl">
-    <div class="hpbar"><div id="hpFill"></div><span id="hpText">100</span></div>
-    <div class="hud-line"><span id="hudGold">💰 0</span> <span id="hudLvl">⭐ 1</span> <span id="hudKills">💥 0</span></div>
+    
+    <div class="hud-line"><span id="hudPct">🏘 0%</span> <span id="hudKills">💥 0</span> <span id="hudTime"></span></div>
     <div class="hud-line" id="hudMode"></div>
   </div>
   <canvas id="mini" width="120" height="120"></canvas>
@@ -98,7 +100,6 @@
   <div id="toasts" class="toasts"></div>
   <button id="btnExit" class="exit">✕</button>
   <div id="joy" class="joy hidden"><div id="joyKnob"></div></div>
-  <button id="fireBtn" class="fire">💣</button>
   <div id="deathMsg" class="death hidden"></div>
 </div>
 
@@ -106,8 +107,8 @@
 <div id="resultScr" class="screen hidden">
   <div class="sea-bg"></div>
   <div class="wrap center">
-    <div class="flag">⚓</div>
-    <h2 id="resTitle">Корабль затонул</h2>
+    <div class="flag">🏁</div>
+    <h2 id="resTitle">Финиш</h2>
     <div id="resBody" class="card"></div>
     <button class="btn big primary" id="btnAgain">🔁 Ещё раз</button>
     <button class="btn" data-back>В меню</button>
