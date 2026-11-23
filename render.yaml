@@ -1,0 +1,23 @@
+# Render Blueprint для игрового бота «Арена Хаоса» (папка arena-bot)
+services:
+  - type: web
+    name: arena-haosa
+    runtime: node
+    plan: free
+    region: frankfurt
+    rootDir: arena-bot
+    branch: main
+    buildCommand: npm install --omit=dev
+    startCommand: node src/server.js
+    healthCheckPath: /health
+    autoDeploy: true
+    buildFilter:
+      paths:
+        - arena-bot/**
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: BOT_TOKEN
+        sync: false
+      - key: GH_GIST_TOKEN
+        sync: false

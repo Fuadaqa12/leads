@@ -9,21 +9,24 @@
 - Команды бота: `/arena` `/top` `/me` `/medals` `/eggs` `/announce` (и секретные).
 
 ## Как устроено
-Cloudflare Workers (бесплатно, 24/7): `src/worker.js` раздаёт игру из `public/`, принимает вебхук Телеграма
-и держит Durable Object `Game`, где живут арена (`src/arena.js`), бот (`src/bot.js`) и база игроков (`src/store.js`).
-Физика общая для сервера и соло-режима: `public/sim.js`.
+Node.js-сервер `src/server.js`: раздаёт игру из `public/`, держит онлайн-арену по WebSocket (`src/arena.js`),
+принимает вебхук Телеграма (`src/bot.js`). Физика общая для сервера и соло-режима: `public/sim.js`.
+База игроков (`src/store.js`) хранится в секретном GitHub Gist (`src/storage.js`), локально в `data/db.json`.
 
-## Деплой
-Автоматически через GitHub Actions (`.github/workflows/arena-deploy.yml`) при пуше в `main`.
-Нужны секреты репозитория: `CLOUDFLARE_API_TOKEN` (шаблон «Edit Cloudflare Workers») и `ARENA_BOT_TOKEN` (токен от BotFather).
-Токен бота в код не попадает.
+## Хостинг: Render (бесплатно, вход через GitHub)
+`render.yaml` в корне репо описывает сервис. В Render: New → Blueprint → репо `leads` → заполнить:
+- `BOT_TOKEN` — токен от BotFather;
+- `GH_GIST_TOKEN` — GitHub-токен с правом `gist` (для базы).
 
-Кнопка «Играть» в группах: после деплоя в BotFather → Bot Settings → Configure Mini App → включить и вставить адрес игры,
-затем в `wrangler.jsonc` поставить `"MINIAPP_SHORT": "main"`.
+Вебхук, команды и кнопка «Играть» настраиваются сами при старте. Токены в код не попадают.
+Сервер сам пингует себя раз в 10 минут, чтобы бесплатный Render не засыпал.
+
+Кнопка «Играть» прямо в группе: в BotFather → Bot Settings → Configure Mini App → включить и вставить адрес игры,
+затем в Render добавить переменную `MINIAPP_SHORT=main`.
 
 ## Локально
 ```
 npm i
-npx wrangler dev --var DEV_MODE:1 --var BOT_TOKEN:test
-# открыть http://localhost:8787/?dev=имя
+npm run dev
+# открыть http://localhost:8080/?dev=имя
 ```

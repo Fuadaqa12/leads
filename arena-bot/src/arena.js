@@ -71,7 +71,7 @@ export class Arena {
     const want = h === 0 ? 0 : Math.min(8, Math.max(5, h + 3)) - h;
     const bots = [...this.w.ships.values()].filter(s => s.isBot && !s.isBoss);
     for (let i = bots.length; i < want; i++) {
-      const used = new Set(bots.map(b => b.name));
+      const used = new Set(bots.map(b => b.name.replace('🤖 ', '')));
       const free = BOT_NAMES.filter(n => !used.has(n));
       const name = (i === 0 && !used.has(BOT_NAMES[0])) ? BOT_NAMES[0] : free[Math.floor(Math.random() * free.length)] || 'Бот';
       bots.push(addShip(this.w, { name: '🤖 ' + name, skin: 'bot', isBot: true }));
