@@ -24,16 +24,17 @@ const LEGEND = [
 ].join('\n');
 
 export function createBot({ token, publicUrl, miniAppShort, arena }) {
+  let lastError = null;
   const api = async (method, body = {}) => {
     try {
       const r = await fetch(`https://api.telegram.org/bot${token}/${method}`, {
         method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body),
       });
       const j = await r.json().catch(() => ({}));
-      if (!j.ok) console.warn('TG', method, j.description);
+      if (!j.ok) { console.warn('TG', method, j.description); lastError = `${method}: ${j.description}`; }
       return j.result;
     } catch (e) {
-      console.warn('TG fail', method, e.message);
+      console.warn('TG fail', method, e.message); lastError = `${method}: ${e.message}`;
       return null;
     }
   };
@@ -164,6 +165,8 @@ export function createBot({ token, publicUrl, miniAppShort, arena }) {
 
   return {
     setup, handleUpdate,
+    webhookInfo: () => api('getWebhookInfo'),
+    get lastError() { return lastError; },
     announce(html) {
       if (!me) return;
       const jobs = [];

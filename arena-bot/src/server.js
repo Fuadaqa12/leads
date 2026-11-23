@@ -100,7 +100,7 @@ const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, PUBLIC_URL);
   const p = url.pathname;
   try {
-    if (p === '/health') return send(res, 200, { ok: true, online: arena.humans() });
+    if (p === '/health') return send(res, 200, { ok: true, online: arena.humans(), hasToken: !!TOKEN, url: PUBLIC_URL, bot: botStatus });
     if (p === '/tg' && req.method === 'POST') {
       if (req.headers['x-telegram-bot-api-secret-token'] !== HOOK_SECRET) return send(res, 403, 'nope', 'text/plain');
       const u = await readBody(req);
@@ -151,12 +151,26 @@ server.on('upgrade', (req, socket, head) => {
 // выкидываем «мёртвые» соединения
 setInterval(() => { for (const ws of wss.clients) { if (!ws.isAlive) ws.terminate(); else { ws.isAlive = false; ws.ping(); } } }, 30000).unref();
 
+// подключение бота к Телеграму; результат виден на /health
+let botStatus = { state: 'ещё не подключался' };
+async function connectBot() {
+  try {
+    const info = await bot.webhookInfo();
+    if (info?.url === PUBLIC_URL + '/tg' && !info.last_error_message) { botStatus = { state: 'ok', username: store.meta.bot?.username, pending: info.pending_update_count }; return; }
+    const r = await bot.setup(PUBLIC_URL + '/tg', HOOK_SECRET);
+    const after = await bot.webhookInfo();
+    botStatus = { state: r?.webhook ? 'ok' : 'ошибка', username: r?.bot?.username, webhook: r?.webhook, lastError: after?.last_error_message, tgError: bot.lastError };
+    console.log('Бот:', JSON.stringify(botStatus));
+    scheduleFlush();
+  } catch (e) { botStatus = { state: 'ошибка', error: e.message }; console.error('connectBot', e); }
+}
+
 server.listen(PORT, async () => {
   console.log(`Захват Говсан запущен: ${PUBLIC_URL} (порт ${PORT})`);
   if (TOKEN && PUBLIC_URL.startsWith('https://')) {
-    const r = await bot.setup(PUBLIC_URL + '/tg', HOOK_SECRET).catch(e => ({ error: e.message }));
-    console.log('Бот:', r?.bot?.username ? '@' + r.bot.username : 'не подключился', '| вебхук:', r?.webhook);
-    scheduleFlush();
+    await connectBot();
+    // проверяем вебхук раз в 10 минут и чиним, если слетел
+    setInterval(connectBot, 10 * 60 * 1000);
     // бесплатный хостинг засыпает без запросов: раз в 10 минут стучимся сами в себя
     setInterval(() => fetch(PUBLIC_URL + '/health').catch(() => {}), 10 * 60 * 1000);
   }
