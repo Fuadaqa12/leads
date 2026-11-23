@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 // Телеграм-бот: команды в группе и в личке, кнопка запуска игры, анонсы
 import * as store from './store.js';
 import { esc } from './arena.js';
@@ -41,12 +42,20 @@ export const DESCRIPTION = [
 
 export function createBot({ token, publicUrl, miniAppShort, arena }) {
   let lastError = null;
-  const api = async (method, body = {}) => {
+  const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+  const api = async (method, body = {}, tries = 3) => {
     try {
       const r = await fetch(`https://api.telegram.org/bot${token}/${method}`, {
         method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body),
       });
       const j = await r.json().catch(() => ({}));
+      // 429: Телеграм просит подождать, ждём сколько сказал и пробуем снова
+      if (j.error_code === 429 && tries > 1) {
+        const wait = Math.min((j.parameters?.retry_after || 5) + 1, 90);
+        console.warn('TG', method, 'ждём', wait, 'сек');
+        await sleep(wait * 1000);
+        return api(method, body, tries - 1);
+      }
       if (!j.ok) { console.warn('TG', method, j.description); lastError = `${method}: ${j.description}`; }
       return j.result;
     } catch (e) {
@@ -158,7 +167,11 @@ export function createBot({ token, publicUrl, miniAppShort, arena }) {
     me = null; delete store.meta.bot;
     await ensureMe();
     const res = {};
+    // сначала главное: вебхук, без него бот молчит
     res.webhook = await api('setWebhook', { url: webhookUrl, secret_token: secret, allowed_updates: ['message'], drop_pending_updates: false });
+    // остальное ставим только если поменялось, чтобы не ловить лимиты Телеграма
+    const sig = crypto.createHash('sha1').update(JSON.stringify([publicUrl, DESCRIPTION, SHORT, 2])).digest('hex');
+    if (res.webhook && store.meta.setupSig === sig) { res.bot = me; return res; }
     res.commands = await api('setMyCommands', { commands: [
       { command: 'arena', description: '🚗 Погнали' },
       { command: 'top', description: '🏆 Топ игроков' },
@@ -170,6 +183,7 @@ export function createBot({ token, publicUrl, miniAppShort, arena }) {
     res.menu = await api('setChatMenuButton', { menu_button: { type: 'web_app', text: 'Играть', web_app: { url: publicUrl } } });
     res.description = await api('setMyDescription', { description: DESCRIPTION });
     res.short = await api('setMyShortDescription', { short_description: SHORT });
+    if (res.webhook && res.commands && res.menu) { store.meta.setupSig = sig; store.save(); }
     res.bot = me;
     return res;
   }
