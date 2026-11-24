@@ -10,10 +10,12 @@ import { createBot } from './bot.js';
 import { checkInitData, devUser } from './auth.js';
 import { FileKV, GistKV } from './storage.js';
 import * as store from './store.js';
+import * as gift from './giveaway.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PUBLIC = path.join(ROOT, 'public');
-const PORT = +process.env.PORT || 8080;
+// bot-hosting.net отдаёт порт в SERVER_PORT, Render — в PORT
+const PORT = +process.env.SERVER_PORT || +process.env.PORT || 8080;
 const TOKEN = process.env.BOT_TOKEN || '';
 const PUBLIC_URL = (process.env.PUBLIC_URL || process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`).replace(/\/$/, '');
 const DEV = process.env.DEV_MODE === '1';
@@ -22,7 +24,7 @@ const HOOK_SECRET = crypto.createHash('sha256').update('arena-hook:' + TOKEN).di
 const MILESTONES = [10, 20, 35, 50, 70];
 
 // ---------- база ----------
-const kv = process.env.GH_GIST_TOKEN ? new GistKV(process.env.GH_GIST_TOKEN) : new FileKV(path.join(ROOT, 'data', 'db.json'));
+const kv = process.env.GH_GIST_TOKEN ? new GistKV(process.env.GH_GIST_TOKEN) : new FileKV(path.join(process.env.DATA_DIR || path.join(ROOT, 'data'), 'db.json'));
 if (kv.init) await kv.init();
 await store.load(kv);
 let flushT = null;
@@ -61,7 +63,9 @@ function api(route, p, body) {
   switch (route) {
     case '/api/me': {
       const top = arena.top().slice(0, 20).map(({ p: x, pct }) => ({ name: x.creator ? '👑 ' + x.name : x.name, pct: +pct.toFixed(1), medals: x.medals, title: store.titleFor(x, pct), color: colorOf(x), me: x.id === p.id }));
-      return { me: profile(p), top, palette: PALETTE };
+      const gi = gift.info(arena);
+      const strip = (x) => x && { name: x.name, pct: x.pct, week: x.week };
+      return { me: profile(p), top, palette: PALETTE, gift: { next: gi.next, first: gi.first, leader: strip(gi.leader), last: strip(gi.last), mine: gi.leader?.id === p.id } };
     }
     case '/api/color': {
       const taken = store.allPlayers().some(x => x.id !== p.id && x.color === body.color);
@@ -87,6 +91,22 @@ function api(route, p, body) {
   }
   return { error: 'unknown' };
 }
+
+// ---------- розыгрыш подарка ----------
+async function giftTick() {
+  const w = gift.check(arena);
+  if (!w) return;
+  scheduleFlush();
+  if (w.none) { bot.announce(`🎁 Розыгрыш недели ${w.week}: топ-1 пустой, подарок переносится. Захватывайте Говсан!`); return; }
+  console.log('Розыгрыш:', JSON.stringify(w));
+  const esc = (s) => String(s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  await bot.announce(`🎁 <b>Розыгрыш недели!</b>\nTelegram-подарок от создателя забирает <b>${esc(w.name)}</b>: топ-1 Говсан с ${w.pct}% района 👑\n\nСледующий розыгрыш: ${gift.fmtDate(gift.nextDraw())}`);
+  await bot.send(w.id, `🎁 <b>Ты выиграл розыгрыш недели!</b>\nТы был топ-1 Говсан (${w.pct}% района). Создатель скоро пришлёт тебе Telegram-подарок 🎉`);
+  const creator = store.allPlayers().find(x => x.creator);
+  const p = store.findPlayer(w.id);
+  if (creator) await bot.send(creator.id, `🎁 Розыгрыш ${w.week}: победил <b>${esc(w.name)}</b>${p?.username ? ' (@' + esc(p.username) + ')' : ''}, ${w.pct}% района. Не забудь отправить подарок 😉`);
+}
+setInterval(() => giftTick().catch(e => console.error('gift', e)), 60 * 1000).unref();
 
 // ---------- HTTP ----------
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.svg': 'image/svg+xml', '.ico': 'image/x-icon' };
@@ -165,7 +185,7 @@ async function connectBot() {
   } catch (e) { botStatus = { state: 'ошибка', error: e.message }; console.error('connectBot', e); }
 }
 
-server.listen(PORT, async () => {
+server.listen(PORT, '0.0.0.0', async () => {
   console.log(`Захват Говсан запущен: ${PUBLIC_URL} (порт ${PORT})`);
   if (TOKEN && PUBLIC_URL.startsWith('https://')) {
     await connectBot();

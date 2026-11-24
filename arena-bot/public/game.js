@@ -15,12 +15,12 @@ async function api(path, body = {}) {
   const r = await fetch(path, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ init: INIT, dev: DEV, ...body }) });
   return r.json();
 }
-let ME = null, TOP = [], PALETTE = [];
+let ME = null, TOP = [], PALETTE = [], GIFT = null, giftOffset = 0;
 async function refresh() {
   try {
     const r = await api('/api/me');
     if (r.error) { $('meName').textContent = r.error === 'auth' ? 'Открой игру через бота в Телеграме' : 'Ошибка: ' + r.error; return; }
-    ME = r.me; TOP = r.top; PALETTE = r.palette; renderMe();
+    ME = r.me; TOP = r.top; PALETTE = r.palette; GIFT = r.gift || null; renderMe(); renderGift();
   } catch { $('meName').textContent = 'Нет связи с сервером 😢'; }
 }
 function renderMe() {
@@ -33,6 +33,28 @@ function renderMe() {
   $('meEggs').textContent = ME.eggs.length + '/' + ME.eggsTotal;
   $('onlineCount').textContent = ME.online ? `сейчас на улицах: ${ME.online} 🟢` : 'одна карта на всех, тут решается топ';
 }
+
+// ---------- розыгрыш подарка ----------
+const MONTHS = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+const bakuDate = (t) => { const d = new Date(t + 4 * 3600e3); return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`; };
+function renderGift() {
+  if (!GIFT) { $('giftCard').classList.add('hidden'); return; }
+  $('giftCard').classList.remove('hidden');
+  $('giftWhen').textContent = (GIFT.next === GIFT.first ? 'Первый розыгрыш ' : 'Розыгрыш ') + bakuDate(GIFT.next) + ', 20:00';
+  const L = GIFT.leader, mine = GIFT.mine;
+  let html = L ? (mine ? `👑 <span class="you">Сейчас подарок твой!</span> Удержи топ-1 до розыгрыша` : `👑 Сейчас забирает: <b>${esc(L.name)}</b> · ${L.pct}%`)
+    : '👑 Топ-1 свободен. Захвати район и подарок твой!';
+  if (GIFT.last) html += `<div class="muted" style="margin-top:4px">Прошлый победитель: ${esc(GIFT.last.name)}</div>`;
+  $('giftLeader').innerHTML = html;
+  tickGift();
+}
+function tickGift() {
+  if (!GIFT) return;
+  let s = Math.max(0, Math.floor((GIFT.next - Date.now()) / 1000));
+  const d = Math.floor(s / 86400); s %= 86400; const h = Math.floor(s / 3600); s %= 3600; const m = Math.floor(s / 60); s %= 60;
+  $('giftLeft').textContent = d ? `${d}д ${h}ч ${m}м` : `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
+setInterval(tickGift, 1000);
 
 // ---------- экраны ----------
 const screens = ['menu', 'topScr', 'shipScr', 'helpScr', 'resultScr'];
@@ -101,7 +123,7 @@ const cv = $('cv'), ctx = cv.getContext('2d');
 let VW = 0, VH = 0, DPR = 1;
 function resize() { DPR = Math.min(2, devicePixelRatio || 1); VW = innerWidth; VH = innerHeight; cv.width = VW * DPR; cv.height = VH * DPR; }
 addEventListener('resize', resize); resize();
-const ZOOM = () => Math.min(1, Math.max(0.36, Math.min(VW, VH) / 920));
+const ZOOM = () => Math.min(1.1, Math.max(0.5, Math.min(VW, VH) / 700));
 const mapImg = new Image(); mapImg.src = 'hovsan.jpg';
 
 // слой территорий: 1 пиксель = 1 клетка
@@ -284,13 +306,13 @@ function startSolo(dailyCfg) {
   people = { 1: [ME?.creator ? '👑 Fuad' : ME?.name || 'Ты', ME?.color || '#ff3b30'] };
   const me = addCar(g, { owner: 1, name: people[1][0], color: people[1][1] });
   const botNames = ['Таксист Рамиз', 'Дядя на Жигулях', 'Мопед Самира', 'Курьер Вольт', 'Сосед с BMW'];
-  const botColors = ['#8e8e93', '#a2845e', '#5e7d6b', '#6b5e7d', '#7d6b5d'];
+  const botColors = ['#9ca3af', '#b45309', '#0f766e', '#7c2d12', '#334155'];
   const nBots = 3 + (mods.extraBots || 0);
   for (let i = 0; i < nBots; i++) { people[i + 2] = ['🤖 ' + botNames[i], botColors[i]]; addCar(g, { owner: i + 2, name: people[i + 2][0], color: botColors[i], isBot: true }); }
   if (mods.boss) { people[9] = ['☠️ Пират Fuadaqa12', '#1c1c1e']; addCar(g, { owner: 9, name: people[9][0], color: '#1c1c1e', isBot: true, isBoss: true, botSpeed: 1.15 }); }
   repaintAll();
   game = { mode: 'solo', g, myId: me.id, myOwner: 1, timeLeft: SOLO_TIME, t0: performance.now(), daily: dailyCfg, mods, over: false };
-  $('hudMode').textContent = dailyCfg ? `📅 ${dailyCfg.name}: ${dailyCfg.desc}` : '⏱ Гонка: захвати как можно больше за 3 минуты';
+  $('hudMode').textContent = dailyCfg ? `📅 ${dailyCfg.name}` : '⏱ Гонка против ботов';
   if (dailyCfg) toast(`📅 Испытание дня: ${dailyCfg.name}. Захвати 20%!`, true);
 }
 
@@ -365,6 +387,10 @@ function draw(dt, t) {
   if (md) { cam.x += (md.x - cam.x) * Math.min(1, dt * 6); cam.y += (md.y - cam.y) * Math.min(1, dt * 6); }
   else if (!game) { cam.x = W / 2 + Math.cos(t * 0.05) * 700; cam.y = H / 2 + Math.sin(t * 0.07) * 600; }
   const z = game ? ZOOM() : ZOOM() * 0.8;
+  // камера не уезжает за край карты (там пустота)
+  const hw = VW / 2 / z, hh = VH / 2 / z;
+  cam.x = W > hw * 2 ? Math.min(W - hw, Math.max(hw, cam.x)) : W / 2;
+  cam.y = H > hh * 2 ? Math.min(H - hh, Math.max(hh, cam.y)) : H / 2;
   ctx.fillStyle = '#101418'; ctx.fillRect(0, 0, VW, VH);
   ctx.save();
   ctx.translate(VW / 2, VH / 2); ctx.scale(z, z); ctx.translate(-cam.x, -cam.y);
@@ -373,9 +399,9 @@ function draw(dt, t) {
   ctx.fillStyle = 'rgba(10,15,25,0.22)'; ctx.fillRect(0, 0, W, H);
   // территории
   if (terrDirty) { tctx.putImageData(tdata, 0, 0); terrDirty = false; }
-  ctx.imageSmoothingEnabled = false;
+  // мягкие края территорий смотрятся лучше пиксельной лесенки
+  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
   ctx.drawImage(terr, 0, 0, W, H);
-  ctx.imageSmoothingEnabled = true;
   // особые места
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   for (const s of SPOTS) { ctx.font = '34px serif'; ctx.fillText(s.emoji, s.x, s.y - 30 + Math.sin(t * 3 + s.x) * 3); }
@@ -428,7 +454,8 @@ function drawFx(dt) {
 }
 
 function drawCar(c, d, t, mine) {
-  const col = colorOfOwner(c.owner), L = c.isBoss ? 40 : 32, Wd = c.isBoss ? 22 : 18;
+  const col = colorOfOwner(c.owner), L = c.isBoss ? 44 : 36, Wd = c.isBoss ? 24 : 20;
+  const z = ZOOM();
   const name = people[c.owner]?.[0] || '?';
   ctx.save(); ctx.translate(d.x, d.y);
   if (mine) { ctx.fillStyle = 'rgba(255,255,255,0.18)'; circle(0, 0, 30 + Math.sin(t * 4) * 3); ctx.fill(); }
@@ -445,10 +472,12 @@ function drawCar(c, d, t, mine) {
   ctx.restore();
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   if (c.isBoss) { ctx.font = '20px serif'; ctx.fillText('☠️', 0, 0); }
-  if (col === '#ffd60a' && !c.isBot) { ctx.font = '20px serif'; ctx.fillText('👑', 0, -34 + Math.sin(t * 3) * 2); }
-  ctx.font = `bold ${mine ? 14 : 13}px system-ui`; ctx.textBaseline = 'alphabetic';
-  ctx.lineWidth = 3.5; ctx.strokeStyle = 'rgba(0,0,0,0.75)'; ctx.strokeText(name, 0, -20);
-  ctx.fillStyle = mine ? '#ffe08a' : '#fff'; ctx.fillText(name, 0, -20);
+  if (col === '#ffd60a' && !c.isBot) { ctx.font = `${18 / z}px serif`; ctx.fillText('👑', 0, -L / 2 - 22 / z + Math.sin(t * 3) * 2); }
+  // подпись одного размера на экране при любом зуме
+  const fs = (mine ? 13 : 12) / z, ny = -L / 2 - 4 / z;
+  ctx.font = `800 ${fs}px system-ui`; ctx.textBaseline = 'alphabetic';
+  ctx.lineWidth = 3.5 / z; ctx.strokeStyle = 'rgba(0,0,0,0.8)'; ctx.strokeText(name, 0, ny);
+  ctx.fillStyle = mine ? '#ffe08a' : '#fff'; ctx.fillText(name, 0, ny);
   ctx.restore();
 }
 

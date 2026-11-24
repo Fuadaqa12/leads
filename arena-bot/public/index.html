@@ -12,8 +12,7 @@
 
 <!-- Главное меню -->
 <div id="menu" class="screen">
-  <div class="sea-bg"></div>
-  <div class="wrap">
+    <div class="wrap">
     <div id="logo" class="logo">
       <div class="flag">🚗</div>
       <h1>ЗАХВАТ<br><span>ГОВСАН</span></h1>
@@ -35,6 +34,11 @@
       <button class="btn" id="btnSolo">⏱ Соло: Гонка<small>медали 🏅</small></button>
       <button class="btn" id="btnDaily">📅 Испытание<small id="dailyName">дня</small></button>
     </div>
+    <div class="card gift" id="giftCard">
+      <div class="gift-head"><span class="gift-ico">🎁</span><div><b>Подарок от создателя</b><small>каждую неделю топ-1 получает Telegram-подарок от Fuad</small></div></div>
+      <div class="gift-timer"><span id="giftWhen">Первый розыгрыш 1 декабря</span><b id="giftLeft">—</b></div>
+      <div class="gift-leader" id="giftLeader"></div>
+    </div>
     <div class="row">
       <button class="btn" id="btnTop">🏆 Топ</button>
       <button class="btn" id="btnShip">🎨 Цвет</button>
@@ -45,8 +49,7 @@
 
 <!-- Топ -->
 <div id="topScr" class="screen hidden">
-  <div class="sea-bg"></div>
-  <div class="wrap">
+    <div class="wrap">
     <h2>🏆 Топ Говсан</h2>
     <p class="muted">Место решает, какая часть района твоя 🏘. Медали 🏅 из соло показаны рядом, но на место не влияют.</p>
     <div id="topList" class="list"></div>
@@ -56,8 +59,7 @@
 
 <!-- Корабль -->
 <div id="shipScr" class="screen hidden">
-  <div class="sea-bg"></div>
-  <div class="wrap">
+    <div class="wrap">
     <h2>🎨 Твой цвет</h2>
     <p class="muted">Этим цветом красится твоя машина, след и захваченная земля. У каждого свой.</p>
     <div id="skins" class="skins"></div>
@@ -69,8 +71,7 @@
 
 <!-- Помощь -->
 <div id="helpScr" class="screen hidden">
-  <div class="sea-bg"></div>
-  <div class="wrap">
+    <div class="wrap">
     <h2>❓ Как играть</h2>
     <div class="card help">
       <p>🚗 Машина сама едет по улице. <b>Веди пальцем по экрану</b> в сторону, куда свернуть на ближайшем перекрёстке. Потянешь назад — развернёшься.</p>
@@ -105,8 +106,7 @@
 
 <!-- Результат соло -->
 <div id="resultScr" class="screen hidden">
-  <div class="sea-bg"></div>
-  <div class="wrap center">
+    <div class="wrap center">
     <div class="flag">🏁</div>
     <h2 id="resTitle">Финиш</h2>
     <div id="resBody" class="card"></div>

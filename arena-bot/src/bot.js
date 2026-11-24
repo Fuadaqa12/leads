@@ -2,6 +2,7 @@ import { AsyncLocalStorage } from 'node:async_hooks';
 import crypto from 'node:crypto';
 // Телеграм-бот: команды в группе и в личке, кнопка запуска игры, анонсы
 import * as store from './store.js';
+import * as gift from './giveaway.js';
 import { esc } from './arena.js';
 
 const PIRATE_CODE = [
@@ -102,6 +103,20 @@ export function createBot({ token, publicUrl, miniAppShort, arena }) {
     return `🚗 <b>ТОП ГОВСАН</b>\n<i>место решает, какая часть района твоя 🏘. Медали 🏅 из соло идут бонусом</i>\n\n${lines.join('\n')}`;
   }
 
+  function giftText() {
+    const i = gift.info(arena);
+    const lines = [
+      `🎁 <b>Розыгрыш от создателя</b>`,
+      ``,
+      `Каждую неделю Fuad дарит <b>Telegram-подарок</b> тому, кто держит <b>топ-1</b> в общем рейтинге на момент розыгрыша.`,
+      ``,
+      `⏰ Ближайший: <b>${gift.fmtDate(i.next)}</b> (по Баку)`,
+      i.leader ? `👑 Сейчас забирает: <b>${esc(i.leader.name)}</b> (${i.leader.pct}% района)` : `👑 Топ-1 пока свободен, займи его!`,
+    ];
+    if (i.winners.length) lines.push('', '🏆 Прошлые победители:', ...i.winners.map(w => `• ${w.week}: <b>${esc(w.name)}</b> (${w.pct}%)`));
+    return lines.join('\n');
+  }
+
   function meText(p) {
     const pct = arena.pctOf(p), list = arena.top();
     const rank = (list.findIndex(x => x.p.id === p.id) + 1) || '—';
@@ -131,9 +146,9 @@ export function createBot({ token, publicUrl, miniAppShort, arena }) {
       case 'start':
       case 'help':
         if (arg === 'play' || cmd === 'start' && msg.chat.type === 'private') {
-          return reply(msg, `🚗 <b>Захват Говсан</b>\n\nВсе гоняют по улицам Говсан на одной карте одновременно. За машиной тянется след: замкнул круг — всё внутри стало твоего цвета. Чужие кварталы тоже можно отжать.\n\nНа своей земле ты сильнее: врежешься лоб в лоб с чужаком — он улетает. Переехал чужой след — его хозяин разбился.\n\nКто держит больше района, тот выше в топе. В соло «Гонка» добываешь медали 🏅. И пасхалки 🥚 тоже есть.\n\nЖми кнопку 👇`, { reply_markup: playKeyboard(msg.chat, '🚗 Погнали') });
+          return reply(msg, `🚗 <b>Захват Говсан</b>\n\nВсе гоняют по улицам Говсан на одной карте одновременно. За машиной тянется след: замкнул круг — всё внутри стало твоего цвета. Чужие кварталы тоже можно отжать.\n\nНа своей земле ты сильнее: врежешься лоб в лоб с чужаком — он улетает. Переехал чужой след — его хозяин разбился.\n\nКто держит больше района, тот выше в топе. В соло «Гонка» добываешь медали 🏅. И пасхалки 🥚 тоже есть.\n\n🎁 Каждую неделю топ-1 получает Telegram-подарок от создателя. Подробнее: /gift\n\nЖми кнопку 👇`, { reply_markup: playKeyboard(msg.chat, '🚗 Погнали') });
         }
-        return reply(msg, `🚗 <b>Захват Говсан</b>\n\n/arena — кнопка входа в игру\n/top — топ игроков\n/me — мой профиль\n/medals — мои медали\n/eggs — подсказки к пасхалкам\n/announce — вкл/выкл анонсы в этом чате`, { reply_markup: playKeyboard(msg.chat) });
+        return reply(msg, `🚗 <b>Захват Говсан</b>\n\n/arena — кнопка входа в игру\n/top — топ игроков\n/me — мой профиль\n/medals — мои медали\n/eggs — подсказки к пасхалкам\n/gift — розыгрыш подарка от создателя 🎁\n/announce — вкл/выкл анонсы в этом чате`, { reply_markup: playKeyboard(msg.chat) });
       case 'arena': case 'play': case 'game': case 'играть': case 'арена':
         return reply(msg, `🚗 <b>Говсан ждёт!</b>\nСейчас на улицах: ${arena.humans()} ${plural(arena.humans(), 'гонщик', 'гонщика', 'гонщиков')}`, { reply_markup: playKeyboard(msg.chat, '🚗 Погнали') });
       case 'top': case 'топ':
@@ -156,6 +171,8 @@ export function createBot({ token, publicUrl, miniAppShort, arena }) {
         const fresh = store.giveEgg(p, 'legend');
         return reply(msg, LEGEND + (fresh ? '\n\n🥚 <b>Пасхалка найдена!</b> +1 медаль 🏅' : ''));
       }
+      case 'gift': case 'подарок': case 'розыгрыш':
+        return reply(msg, giftText(), { reply_markup: playKeyboard(msg.chat, '🚗 Бороться за топ-1') });
       case 'announce': {
         const c = store.chat(msg.chat.id);
         if (!c) return reply(msg, 'Анонсы работают только в группах.');
@@ -193,11 +210,11 @@ export function createBot({ token, publicUrl, miniAppShort, arena }) {
       { command: 'me', description: '🧭 Мой профиль' },
       { command: 'medals', description: '🏅 Мои медали' },
       { command: 'eggs', description: '🥚 Пасхалки' },
+      { command: 'gift', description: '🎁 Розыгрыш подарка' },
       { command: 'help', description: '❓ Помощь' },
     ] });
     res.menu = await api('setChatMenuButton', { menu_button: { type: 'web_app', text: 'Играть', web_app: { url: publicUrl } } });
-    res.description = await api('setMyDescription', { description: DESCRIPTION });
-    res.short = await api('setMyShortDescription', { short_description: SHORT });
+    // имя, аву и описания Fuad заполняет сам в BotFather, их не трогаем
     if (res.webhook && res.commands && res.menu) { store.meta.setupSig = sig; store.save(); }
     res.bot = me;
     return res;
@@ -215,6 +232,8 @@ export function createBot({ token, publicUrl, miniAppShort, arena }) {
     setup, handleUpdate,
     webhookInfo: () => api('getWebhookInfo'),
     get lastError() { return lastError; },
+    send: (chatId, html, extra = {}) => api('sendMessage', { chat_id: chatId, text: html, parse_mode: 'HTML', disable_web_page_preview: true, ...extra }, 2),
+    giftText,
     announce(html) {
       if (!me) return;
       const jobs = [];

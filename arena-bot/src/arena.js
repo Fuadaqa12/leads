@@ -6,7 +6,7 @@ const TICK = 1 / 30;
 const BOSS_EVERY = +process.env.BOSS_EVERY || 420; // секунд онлайна между появлениями Пирата
 const BOSS_STAY = 120;
 const BOT_NAMES = ['Не Fuad (точно)', 'Таксист Рамиз', 'Дядя на Жигулях', 'Мопед Самира', 'Курьер Вольт', 'Сосед с BMW'];
-const BOT_COLORS = ['#8e8e93', '#a2845e', '#6e6e73', '#7d6b5d', '#5e7d6b', '#6b5e7d'];
+const BOT_COLORS = ['#9ca3af', '#b45309', '#0f766e', '#7c2d12', '#334155', '#a16207'];
 export const PALETTE = ['#ff3b30', '#0a84ff', '#30d158', '#bf5af2', '#ff9f0a', '#ff375f', '#64d2ff', '#5e5ce6', '#ac8e68', '#66d4cf', '#ff6b35', '#a3e635', '#e879f9', '#f472b6'];
 export const FUAD_COLOR = '#ffd60a';
 

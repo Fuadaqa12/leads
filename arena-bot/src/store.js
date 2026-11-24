@@ -57,7 +57,9 @@ export function getPlayer(user) {
       kills: 0, deaths: 0, bossKills: 0, soloBest: 0, created: Date.now(),
     };
   }
-  if (user.first_name || user.name) p.name = (user.first_name || user.name).slice(0, 24);
+  // имя берём из профиля Телеграма: имя + фамилия, как их видят друзья
+  const full = [user.first_name || user.name, user.last_name].filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
+  if (full) p.name = full.slice(0, 24);
   if (user.username !== undefined) p.username = user.username || '';
   p.creator = /^fuadaqa12$/i.test(p.username || '');
   save(p);
