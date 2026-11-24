@@ -6,6 +6,8 @@ export const YT_SONGS = ['6JsTG-NYXRE', 'da17wlItCK0', 'RIX9wLnr9FA', 'wTZ03Wfja
 const muted = false;
 let started = false, mode = null, audio = null, files = [], idx = 0, yt = null, ytReady = false;
 
+// первая песня всегда одна и та же, остальные вперемешку
+const firstThenShuffle = (a) => [a[0], ...shuffle(a.slice(1))].filter(Boolean);
 const shuffle = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
 async function loadFiles() {
@@ -31,7 +33,7 @@ async function startYT() {
   box.style.cssText = 'position:fixed;left:-10px;bottom:-10px;width:1px;height:1px;opacity:0.01;pointer-events:none;z-index:-1;overflow:hidden';
   const el = document.createElement('div'); el.id = 'ytp'; box.appendChild(el); document.body.appendChild(box);
   await loadYT();
-  const list = shuffle(YT_SONGS);
+  const list = firstThenShuffle(YT_SONGS);
   yt = new YT.Player('ytp', {
     width: 200, height: 200, videoId: list[0],
     playerVars: { autoplay: 1, playsinline: 1, controls: 0, loop: 1, playlist: list.join(','), rel: 0 },
@@ -47,7 +49,8 @@ async function startYT() {
 export async function start() {
   if (started) { resume(); return; }
   started = true;
-  files = shuffle(await loadFiles());
+  // из файлов первой играет та, что первая по алфавиту (назови её с 01)
+  files = firstThenShuffle((await loadFiles()).sort());
   if (files.length) {
     mode = 'mp3';
     audio = new Audio(); audio.volume = 0.6; audio.muted = muted;
