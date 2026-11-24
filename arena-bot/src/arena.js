@@ -57,6 +57,8 @@ export class Arena {
     ensureColor(p);
     const owner = this.ownerIdx('p:' + p.id);
     const car = addCar(this.g, { owner, name: p.creator ? '👑 Fuad' : p.name || 'Гонщик', color: colorOf(p), uid: p.id });
+    // собранные буквы F-U-A-D помним между заходами; кто уже собрал слово, тому буквы не нужны
+    car.letters = new Set(p.eggs.includes('fuad_word') ? ['F', 'U', 'A', 'D'] : p.letters || []);
     const c = { ws, p, car };
     this.clients.set(ws, c); this.byCar.set(car.id, c);
     this.flushEvents();
@@ -159,7 +161,8 @@ export class Arena {
       else if (e.type === 'egg') this.onEgg(this.byCar.get(e.car.id), e.egg);
       else if (e.type === 'boost') this.toCar(e.car, { t: 'toast', text: '🚌 Автобусная остановка: турбо!' });
       else if (e.type === 'bump') this.broadcast({ t: 'fx', k: 'bump', x: Math.round(e.x), y: Math.round(e.y) });
-      else if (e.type === 'letter') this.toCar(e.car, { t: 'toast', text: `✨ Буква «${e.ch}»! Собрано: ${['F', 'U', 'A', 'D'].map(ch => e.have.includes(ch) ? ch : '_').join(' ')}` });
+      else if (e.type === 'letter') { const lc = this.byCar.get(e.car.id); if (lc) { lc.p.letters = e.have; store.save(lc.p); } }
+      if (e.type === 'letter') this.toCar(e.car, { t: 'toast', text: `✨ Буква «${e.ch}»! Собрано: ${['F', 'U', 'A', 'D'].map(ch => e.have.includes(ch) ? ch : '_').join(' ')}` });
     }
     g.events.length = 0;
   }

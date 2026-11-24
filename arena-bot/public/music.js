@@ -33,14 +33,21 @@ async function startYT() {
   box.style.cssText = 'position:fixed;left:-10px;bottom:-10px;width:1px;height:1px;opacity:0.01;pointer-events:none;z-index:-1;overflow:hidden';
   const el = document.createElement('div'); el.id = 'ytp'; box.appendChild(el); document.body.appendChild(box);
   await loadYT();
-  const list = firstThenShuffle(YT_SONGS);
+  // сами ведём очередь: по одному видео, после конца — следующее, после последнего — снова первое
+  let list = firstThenShuffle(YT_SONGS), k = 0, fails = 0;
+  const next = () => {
+    k++;
+    if (k >= list.length) { k = 0; list = firstThenShuffle(YT_SONGS); }
+    yt.loadVideoById(list[k]);
+  };
   yt = new YT.Player('ytp', {
     width: 200, height: 200, videoId: list[0],
-    playerVars: { autoplay: 1, playsinline: 1, controls: 0, loop: 1, playlist: list.join(','), rel: 0 },
+    playerVars: { autoplay: 1, playsinline: 1, controls: 0, rel: 0 },
     events: {
-      onReady: (e) => { ytReady = true; e.target.setVolume(70); if (muted) e.target.mute(); e.target.playVideo(); },
-      onStateChange: (e) => { if (e.data === 0) e.target.playVideo(); }, // на всякий случай: если плейлист закончился
-      onError: (e) => { try { e.target.nextVideo(); } catch {} },
+      onReady: (e) => { ytReady = true; e.target.setVolume(70); e.target.playVideo(); },
+      onStateChange: (e) => { if (e.data === 0) { fails = 0; next(); } else if (e.data === 1) fails = 0; },
+      // видео не играет — пропускаем его, но не крутимся бесконечно, если не играет ничего
+      onError: () => { if (++fails <= YT_SONGS.length) setTimeout(next, 800); },
     },
   });
 }

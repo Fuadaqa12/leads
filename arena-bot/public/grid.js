@@ -260,11 +260,12 @@ export function step(g, dt) {
       if (s.kind === 'bus') { if (c.boostT <= 0) g.events.push({ type: 'boost', car: c }); c.boostT = CFG.boostTime; }
       else if (!c.found.has(s.kind)) { c.found.add(s.kind); g.events.push({ type: 'egg', car: c, egg: s.kind }); }
     }
-    if (g.letter && !c.isBot && Math.hypot(g.letter.x - c.x, g.letter.y - c.y) < 36) {
+    // букву, которая у тебя уже есть, ты просто проезжаешь: она остаётся тем, кому нужна
+    if (g.letter && !c.isBot && !c.letters.has(g.letter.ch) && Math.hypot(g.letter.x - c.x, g.letter.y - c.y) < 36) {
       c.letters.add(g.letter.ch);
       g.events.push({ type: 'letter', car: c, ch: g.letter.ch, have: [...c.letters] });
-      if (LETTERS.every(ch => c.letters.has(ch))) { g.events.push({ type: 'egg', car: c, egg: 'fuad_word' }); c.letters.clear(); }
-      g.letter = null; g.letterT = 50 + g.rand() * 60;
+      if (LETTERS.every(ch => c.letters.has(ch))) g.events.push({ type: 'egg', car: c, egg: 'fuad_word' });
+      g.letter = null; g.letterT = 40 + g.rand() * 40;
     }
   }
   // лобовые столкновения: хозяин земли поглощает чужака
@@ -287,7 +288,10 @@ export function step(g, dt) {
       // буква ставится прямо на линию улицы, по которой ездят машины
       const [a, b] = EDGES[Math.floor(g.rand() * EDGES.length)], k = 0.2 + g.rand() * 0.6;
       const x = NODES[a].x + (NODES[b].x - NODES[a].x) * k, y = NODES[a].y + (NODES[b].y - NODES[a].y) * k;
-      g.letter = { x, y, ch: LETTERS[Math.floor(g.rand() * 4)] }; g.letterT = 90; // не взяли за 90 с — переедет
+      // выпадает буква, которой ещё нет хотя бы у одного игрока в сети
+      const humans = [...g.cars.values()].filter(c => !c.isBot);
+      const need = LETTERS.filter(ch => humans.some(c => !c.letters.has(ch)));
+      if (need.length) g.letter = { x, y, ch: need[Math.floor(g.rand() * need.length)] }; g.letterT = 90; // не взяли за 90 с — переедет
     }
     if (g.letter && g.letterT <= 0) { g.letter = null; g.letterT = 3; }
   }
