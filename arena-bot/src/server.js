@@ -109,7 +109,7 @@ async function giftTick() {
 setInterval(() => giftTick().catch(e => console.error('gift', e)), 60 * 1000).unref();
 
 // ---------- HTTP ----------
-const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.svg': 'image/svg+xml', '.ico': 'image/x-icon' };
+const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.svg': 'image/svg+xml', '.ico': 'image/x-icon', '.jpg': 'image/jpeg', '.mp3': 'audio/mpeg', '.m4a': 'audio/mp4', '.ogg': 'audio/ogg', '.mp4': 'video/mp4' };
 const send = (res, code, body, type = 'application/json') => { res.writeHead(code, { 'content-type': type, 'cache-control': 'no-cache' }); res.end(typeof body === 'string' || Buffer.isBuffer(body) ? body : JSON.stringify(body)); };
 const readBody = (req) => new Promise((ok) => {
   let s = ''; req.on('data', c => { s += c; if (s.length > 1e6) req.destroy(); });
@@ -138,9 +138,30 @@ const server = http.createServer(async (req, res) => {
       scheduleFlush();
       return send(res, 200, out);
     }
+    // список песен: всё, что лежит в public/music
+    if (p === '/music/list') {
+      let list = [];
+      try { list = fs.readdirSync(path.join(PUBLIC, 'music')).filter(f => /\.(mp3|m4a|ogg|mp4)$/i.test(f)); } catch { /* папки нет */ }
+      return send(res, 200, list);
+    }
     // статика
-    const file = path.join(PUBLIC, p === '/' ? 'index.html' : path.normalize(p).replace(/^([/\\])+/, ''));
+    let dp = p; try { dp = decodeURIComponent(p); } catch { /* кривой адрес */ }
+    const file = path.join(PUBLIC, dp === '/' ? 'index.html' : path.normalize(dp).replace(/^([/\\])+/, ''));
     if (!file.startsWith(PUBLIC)) return send(res, 403, 'nope', 'text/plain');
+    // музыка отдаётся кусками (Range), иначе айфоны её не играют
+    if (/\.(mp3|m4a|ogg|mp4)$/i.test(file)) {
+      let st; try { st = fs.statSync(file); } catch { return send(res, 404, 'not found', 'text/plain'); }
+      const type = TYPES[path.extname(file).toLowerCase()];
+      const m = /bytes=(\d*)-(\d*)/.exec(req.headers.range || '');
+      if (m) {
+        const start = m[1] ? +m[1] : 0, end = m[2] ? Math.min(+m[2], st.size - 1) : st.size - 1;
+        if (start >= st.size) { res.writeHead(416, { 'content-range': `bytes */${st.size}` }); return res.end(); }
+        res.writeHead(206, { 'content-type': type, 'content-range': `bytes ${start}-${end}/${st.size}`, 'accept-ranges': 'bytes', 'content-length': end - start + 1, 'cache-control': 'public, max-age=86400' });
+        return fs.createReadStream(file, { start, end }).pipe(res);
+      }
+      res.writeHead(200, { 'content-type': type, 'accept-ranges': 'bytes', 'content-length': st.size, 'cache-control': 'public, max-age=86400' });
+      return fs.createReadStream(file).pipe(res);
+    }
     fs.readFile(file, (err, data) => {
       if (err) return send(res, 404, 'not found', 'text/plain');
       send(res, 200, data, TYPES[path.extname(file)] || 'application/octet-stream');

@@ -1,4 +1,5 @@
 // Клиент «Захват Говсан»: меню, отрисовка карты, онлайн и соло
+import * as music from './music.js';
 import { GW, GH, CELL, W, H, N, S, IMG_W, IMG_H, SPOTS, createGame, addCar, setInput, step, gridFromRLE, cellAt, cellCenter, pct, rng } from './grid.js';
 
 const tg = window.Telegram?.WebApp;
@@ -33,6 +34,11 @@ function renderMe() {
   $('meEggs').textContent = ME.eggs.length + '/' + ME.eggsTotal;
   $('onlineCount').textContent = ME.online ? `сейчас на улицах: ${ME.online} 🟢` : 'одна карта на всех, тут решается топ';
 }
+
+// ---------- музыка ----------
+// песни играют всегда; браузер разрешает звук только после первого касания
+addEventListener('pointerdown', () => music.start(), { capture: true });
+addEventListener('keydown', () => music.start(), { capture: true });
 
 // ---------- розыгрыш подарка ----------
 const MONTHS = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
