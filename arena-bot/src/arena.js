@@ -148,7 +148,6 @@ export class Arena {
       this.boss.stay = BOSS_STAY; this.boss.noRespawn = true;
       this.broadcast({ t: 'people', people: this.people() });
       this.broadcast({ t: 'toast', text: '☠️ В Говсан ворвался Пират Fuadaqa12! Перережь его след!', big: true });
-      this.onAnnounce('☠️ В Говсан ворвался <b>Пират Fuadaqa12</b> и захватывает дворы! Кто первый перережет его след, получит пасхалку 🥚');
     }
   }
 
@@ -178,8 +177,10 @@ export class Arena {
       const vc = [...this.clients.values()].find(x => x.car.owner === o);
       if (vc && n > 20) { this.send(vc.ws, { t: 'toast', text: `😱 ${c.car.name} отжал у тебя ${(n / N * 100).toFixed(1)}% района!` }); this.meUpdate(vc); }
     }
-    if (gained >= 5) this.onAnnounce(`🚗 <b>${esc(c.car.name)}</b> одним кругом захватил ${gained.toFixed(1)}% Говсан!`);
+    // в группу пишем только про большие захваты (20%+) и про рост в топе
+    if (gained >= 20) this.onAnnounce(`⚡⚡ <b>${esc(c.car.name)}</b> одним кругом захватил <b>${gained.toFixed(1)}%</b> Говсан!`);
     this.checkLeader();
+    this.checkRise(c.p);
   }
 
   checkLeader() {
@@ -189,9 +190,33 @@ export class Arena {
       const prev = store.meta.leader; store.meta.leader = lead.p.id; store.save();
       if (prev) {
         this.broadcast({ t: 'toast', text: `👑 Новый хозяин Говсан: ${lead.p.name}!`, big: true });
-        this.onAnnounce(`👑 Новый хозяин Говсан: <b>${esc(lead.p.name)}</b> (${lead.pct.toFixed(1)}% района)`);
       }
     }
+  }
+
+  // игрок поднялся в топе: сообщаем в группу (не чаще раза в 2 минуты на игрока)
+  checkRise(p) {
+    const list = this.top();
+    const ranks = (store.meta.ranks ||= {});
+    const now = Date.now(), cool = (this.riseT ||= {});
+    let changed = false;
+    const i = list.findIndex(x => x.p.id === p.id);
+    if (i < 0) return;
+    const rank = i + 1, before = ranks[p.id];
+    // новичка просто запоминаем: первое появление в топе не анонсируем
+    if (before != null && rank < before) {
+      if (!cool[p.id] || now - cool[p.id] > 120000) {
+        cool[p.id] = now;
+        const passed = list[i + 1]?.p;
+        const nm = esc(p.creator ? '👑 ' + p.name : p.name);
+        this.onAnnounce(rank === 1
+          ? `👑 <b>${nm}</b> теперь <b>топ-1 Говсан</b> (${list[i].pct.toFixed(1)}% района)!` + (passed ? ` Подвинул ${esc(passed.name)}.` : '')
+          : `📈 <b>${nm}</b> поднялся на <b>#${rank}</b> в топе Говсан` + (passed ? `, обогнал ${esc(passed.name)}` : '') + ` (${list[i].pct.toFixed(1)}%)`);
+      }
+    }
+    // запоминаем новые места всех
+    list.forEach((x, k) => { if (ranks[x.p.id] !== k + 1) { ranks[x.p.id] = k + 1; changed = true; } });
+    if (changed) store.save();
   }
 
   onEgg(c, egg) {
@@ -219,7 +244,6 @@ export class Arena {
         this.onEgg(kc, 'boss');
         kc.p.bossKills++;
         this.broadcast({ t: 'toast', text: `☠️ ${k.name} остановил Пирата Fuadaqa12!`, big: true });
-        this.onAnnounce(`🏴‍☠️ <b>${esc(kc.p.name)}</b> остановил Пирата Fuadaqa12 в Говсан!`);
       }
       if (v.botName === 'Не Fuad (точно)') { this.send(kc.ws, { t: 'toast', text: '🤨 «Это был не я!» — сказал Не Fuad, улетая в кювет...' }); this.onEgg(kc, 'not_fuad'); }
     }
