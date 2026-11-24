@@ -1,7 +1,7 @@
 // Движок «Захват Говсан»: машины ездят по карте, оставляют след, замкнул — территория твоя.
 // Один и тот же код крутится на сервере (онлайн) и в браузере (соло).
 import { ROAD_B64 } from './roads.js';
-import { S, NODES, angleOf, edgeLen, SPAWN_NODES, BLOCKS_AT, pathTo } from './city.js';
+import { S, NODES, EDGES, angleOf, edgeLen, SPAWN_NODES, BLOCKS_AT, pathTo } from './city.js';
 export { S, NODES };
 
 export const IMG_W = 1080, IMG_H = 1073;
@@ -260,7 +260,7 @@ export function step(g, dt) {
       if (s.kind === 'bus') { if (c.boostT <= 0) g.events.push({ type: 'boost', car: c }); c.boostT = CFG.boostTime; }
       else if (!c.found.has(s.kind)) { c.found.add(s.kind); g.events.push({ type: 'egg', car: c, egg: s.kind }); }
     }
-    if (g.letter && !c.isBot && Math.hypot(g.letter.x - c.x, g.letter.y - c.y) < 30) {
+    if (g.letter && !c.isBot && Math.hypot(g.letter.x - c.x, g.letter.y - c.y) < 36) {
       c.letters.add(g.letter.ch);
       g.events.push({ type: 'letter', car: c, ch: g.letter.ch, have: [...c.letters] });
       if (LETTERS.every(ch => c.letters.has(ch))) { g.events.push({ type: 'egg', car: c, egg: 'fuad_word' }); c.letters.clear(); }
@@ -284,9 +284,12 @@ export function step(g, dt) {
   if (!g.solo) {
     g.letterT -= dt;
     if (!g.letter && g.letterT <= 0) {
-      const [x, y] = cellCenter(ROAD_CELLS[Math.floor(g.rand() * ROAD_CELLS.length)]);
-      g.letter = { x, y, ch: LETTERS[Math.floor(g.rand() * 4)] }; g.letterT = 999;
+      // буква ставится прямо на линию улицы, по которой ездят машины
+      const [a, b] = EDGES[Math.floor(g.rand() * EDGES.length)], k = 0.2 + g.rand() * 0.6;
+      const x = NODES[a].x + (NODES[b].x - NODES[a].x) * k, y = NODES[a].y + (NODES[b].y - NODES[a].y) * k;
+      g.letter = { x, y, ch: LETTERS[Math.floor(g.rand() * 4)] }; g.letterT = 90; // не взяли за 90 с — переедет
     }
+    if (g.letter && g.letterT <= 0) { g.letter = null; g.letterT = 3; }
   }
 }
 
