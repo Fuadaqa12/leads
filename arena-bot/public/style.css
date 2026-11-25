@@ -124,3 +124,42 @@ h2 { margin: 4px 0; }
 .garage .gcar.on { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold) inset; }
 .garage .gcar.lock { opacity: .45; }
 .garage .gcar small { display: block; color: var(--muted); font-weight: 600; }
+
+/* ---- меню 2.0 ---- */
+.live { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; padding: 4px 12px; border-radius: 99px; background: rgba(255,255,255,.08); border: 1px solid var(--line); font-size: 12.5px; font-weight: 700; color: var(--muted); }
+.live i { width: 8px; height: 8px; border-radius: 50%; background: #6b7280; }
+.live.on { color: #b9f6ca; border-color: rgba(48,209,88,.45); }
+.live.on i { background: #30d158; box-shadow: 0 0 8px #30d158; animation: blink 1.4s infinite; }
+@keyframes blink { 50% { opacity: .35; } }
+.card-h { font-weight: 800; font-size: 15px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.card-h small { color: var(--muted); font-weight: 600; font-size: 12px; }
+.duel-btn { background: linear-gradient(135deg, rgba(191,90,242,.35), rgba(10,132,255,.3)); border-color: rgba(191,90,242,.6); box-shadow: 0 4px 18px rgba(191,90,242,.2); }
+.q { margin-bottom: 9px; }
+.q:last-child { margin-bottom: 0; }
+.q-top { display: flex; justify-content: space-between; gap: 8px; font-size: 13.5px; }
+.q-top b { font-weight: 700; } .q-top span { color: var(--muted); font-size: 12px; white-space: nowrap; }
+.q.done .q-top b { color: #7ee08c; text-decoration: line-through; text-decoration-color: rgba(126,224,140,.5); }
+.bar { height: 6px; border-radius: 6px; background: rgba(255,255,255,.08); margin-top: 5px; overflow: hidden; }
+.bar i { display: block; height: 100%; border-radius: 6px; background: linear-gradient(90deg, #ff9a4d, #ffd60a); transition: width .6s; }
+.q.done .bar i { background: #30d158; }
+.news-i { display: flex; gap: 8px; font-size: 13px; padding: 5px 0; border-top: 1px solid rgba(255,255,255,.06); }
+.news-i:first-child { border-top: 0; }
+.news-i span { color: var(--muted); font-size: 11.5px; white-space: nowrap; margin-left: auto; }
+.invite { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 16px; background: linear-gradient(135deg, #bf5af2, #5e5ce6); box-shadow: 0 6px 24px rgba(191,90,242,.45); animation: pulse 1.6s infinite; font-weight: 700; }
+.invite div { flex: 1; font-size: 14px; } .invite small { display: block; opacity: .8; font-weight: 600; font-size: 12px; }
+.invite button, .li .go { border: 0; border-radius: 12px; padding: 9px 12px; font: inherit; font-weight: 800; background: #fff; color: #3a1a66; }
+.li .go { background: linear-gradient(135deg, #bf5af2, #5e5ce6); color: #fff; }
+.li .go.ghost { background: rgba(255,255,255,.12); color: var(--text); }
+@keyframes pulse { 50% { transform: scale(1.02); box-shadow: 0 6px 34px rgba(191,90,242,.7); } }
+#menu .wrap > * { animation: rise .45s both; }
+#menu .wrap > *:nth-child(2) { animation-delay: .04s } #menu .wrap > *:nth-child(3) { animation-delay: .08s } #menu .wrap > *:nth-child(4) { animation-delay: .12s }
+#menu .wrap > *:nth-child(5) { animation-delay: .16s } #menu .wrap > *:nth-child(6) { animation-delay: .2s } #menu .wrap > *:nth-child(7) { animation-delay: .24s }
+#menu .wrap > *:nth-child(8) { animation-delay: .28s } #menu .wrap > *:nth-child(9) { animation-delay: .32s }
+@keyframes rise { from { opacity: 0; transform: translateY(12px); } }
+/* дуэль в игре */
+.duel-bar { position: absolute; left: 50%; transform: translateX(-50%); top: calc(52px + env(safe-area-inset-top)); display: flex; gap: 10px; align-items: center; background: rgba(5,10,20,.75); border: 1px solid rgba(191,90,242,.6); border-radius: 14px; padding: 6px 12px; font-weight: 900; font-size: 16px; }
+.duel-bar b { font-size: 18px; color: #fff; min-width: 46px; text-align: center; }
+/* эмодзи */
+.emo-bar { position: absolute; left: 8px; bottom: calc(10px + env(safe-area-inset-bottom)); display: flex; gap: 6px; pointer-events: auto; }
+.emo-bar button { width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25); background: rgba(5,10,20,.6); font-size: 20px; padding: 0; }
+.emo-bar button:active { transform: scale(.88); }

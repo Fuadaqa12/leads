@@ -7,6 +7,8 @@ import { fileURLToPath } from 'node:url';
 import { WebSocketServer } from 'ws';
 import { Arena, PALETTE, colorOf } from './arena.js';
 import { CARS } from '../public/grid.js';
+import { Duels } from './duel.js';
+import * as quests from './quests.js';
 import { createBot } from './bot.js';
 import { checkInitData, devUser } from './auth.js';
 import { FileKV, GistKV } from './storage.js';
@@ -42,6 +44,11 @@ process.on('SIGTERM', shutdown); process.on('SIGINT', shutdown);
 let bot;
 const arena = new Arena({ onAnnounce: (html) => bot?.announce(html), onDM: (id, html) => bot?.send(id, html, { reply_markup: { inline_keyboard: [[{ text: '🚗 Вернуть своё', web_app: { url: PUBLIC_URL } }]] } }) });
 arena.onSave = scheduleFlush;
+const duels = new Duels({
+  onAnnounce: (html) => bot?.announce(html),
+  onNews: (text) => arena.news(text),
+  onDM: (id, html, duelId) => bot?.send(id, html, { reply_markup: { inline_keyboard: [[{ text: '⚔️ Принять вызов', web_app: { url: PUBLIC_URL + '/?duel=' + duelId } }]] } }),
+});
 setInterval(scheduleFlush, 5000).unref();
 bot = createBot({ token: TOKEN, publicUrl: PUBLIC_URL, miniAppShort: process.env.MINIAPP_SHORT || '', arena });
 
@@ -69,7 +76,8 @@ function api(route, p, body) {
       const nm = (x) => x.creator ? '👑 ' + x.name : x.name;
       const topDay = arena.topDay().slice(0, 20).map(x => ({ name: nm(x), pct: +x.day.gained.toFixed(1), kills: x.day.kills, color: colorOf(x), me: x.id === p.id }));
       const topKills = arena.topKills().slice(0, 20).map(x => ({ name: nm(x), kills: x.kills, deaths: x.deaths, color: colorOf(x), me: x.id === p.id }));
-      return { me: profile(p), top, topDay, topKills, cars: CARS, palette: PALETTE, gift: { next: gi.next, first: gi.first, leader: strip(gi.leader), last: strip(gi.last), mine: gi.leader?.id === p.id } };
+      const rivals = arena.top().filter(x => x.p.id !== p.id).slice(0, 30).map(x => ({ id: x.p.id, name: nm(x.p), pct: +x.pct.toFixed(1), color: colorOf(x.p), w: x.p.duelW || 0 }));
+      return { me: profile(p), top, topDay, topKills, cars: CARS, palette: PALETTE, duels: duels.pending(p), rivals, quests: quests.view(p), ticker: arena.ticker.slice(0, 8), gift: { next: gi.next, first: gi.first, leader: strip(gi.leader), last: strip(gi.last), mine: gi.leader?.id === p.id } };
     }
     case '/api/color': {
       const taken = store.allPlayers().some(x => x.id !== p.id && x.color === body.color);
@@ -81,6 +89,8 @@ function api(route, p, body) {
       if (c && (p.creator || p.medals >= c.need)) { p.car = c.id; store.save(p); }
       return { me: profile(p) };
     }
+    case '/api/duel': return { ...duels.challenge(p, String(body.to || '')), duels: duels.pending(p) };
+    case '/api/duelDecline': duels.decline(p, String(body.id || '')); return { duels: duels.pending(p) };
     case '/api/egg': {
       // с клиента можно получить только «флаг» (7 тапов по логотипу)
       const fresh = body.egg === 'flag' ? store.giveEgg(p, 'flag') : false;
@@ -93,6 +103,7 @@ function api(route, p, body) {
       const got = [];
       if (res > (p.soloBest || 0)) { p.soloBest = res; store.save(p); }
       for (const m of MILESTONES) if (res >= m && store.giveMedal(p, 'solo:' + m, `⏱ Гонка: захватил ${m}% района`)) got.push(`⏱ Гонка: захватил ${m}% района`);
+      if (res >= 15) got.push(...quests.bump(p, 'solo15').map(x => x.replace('✅ Задание: ', '📋 ')));
       const today = new Date().toISOString().slice(0, 10);
       if (body.daily === today && res >= 20 && store.giveMedal(p, 'daily:' + today, `📅 Испытание дня ${today}`)) got.push(`📅 Испытание дня ${today}`);
       return { got, me: profile(p) };
@@ -187,12 +198,23 @@ server.on('upgrade', (req, socket, head) => {
   const url = new URL(req.url, PUBLIC_URL);
   const u = url.pathname === '/ws' && userFrom(url.searchParams.get('init'), url.searchParams.get('dev'));
   if (!u) { socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n'); socket.destroy(); return; }
+  const duelId = url.searchParams.get('duel');
   wss.handleUpgrade(req, socket, head, (ws) => {
+    if (duelId) {
+      // дуэль: своя комната, своя карта
+      ws.isAlive = true;
+      ws.on('pong', () => { ws.isAlive = true; });
+      ws.on('message', (data) => { try { const m = JSON.parse(data); if (m.t === 'in') duels.input(ws, m); else if (m.t === 'emo') duels.emote(ws, m.e); } catch { /* */ } });
+      ws.on('close', () => { duels.leave(ws); scheduleFlush(); });
+      ws.on('error', () => duels.leave(ws));
+      duels.join(ws, u, duelId);
+      return;
+    }
     arena.join(ws, u);
     ws.isAlive = true;
     ws.on('pong', () => { ws.isAlive = true; });
     ws.on('message', (data) => {
-      try { const m = JSON.parse(data); if (m.t === 'in') arena.input(ws, m); } catch { /* мусор игнорируем */ }
+      try { const m = JSON.parse(data); if (m.t === 'in') arena.input(ws, m); else if (m.t === 'emo') arena.emote(ws, m.e); } catch { /* мусор игнорируем */ }
     });
     ws.on('close', () => { arena.leave(ws); scheduleFlush(); });
     ws.on('error', () => arena.leave(ws));

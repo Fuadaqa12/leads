@@ -1,6 +1,7 @@
 // Онлайн-режим «Захват Говсан»: одна карта на всех, территория сохраняется навсегда
 import { POWERS, createGame, addCar, removeCar, setInput, step, clearOwner, gridToRLE, gridFromRLE, runs, cellAt, N, PN, pct } from '../public/grid.js';
 import * as store from './store.js';
+import * as quests from './quests.js';
 
 const TICK = 1 / 30;
 const BOSS_EVERY = +process.env.BOSS_EVERY || 420; // секунд онлайна между появлениями Пирата
@@ -8,6 +9,7 @@ const BOSS_STAY = 120;
 const BOT_NAMES = ['Не Fuad (точно)', 'Таксист Рамиз', 'Дядя на Жигулях', 'Мопед Самира', 'Курьер Вольт', 'Сосед с BMW'];
 const BOT_COLORS = ['#9ca3af', '#b45309', '#0f766e', '#7c2d12', '#334155', '#a16207'];
 export const PALETTE = ['#ff3b30', '#0a84ff', '#30d158', '#bf5af2', '#ff9f0a', '#ff375f', '#64d2ff', '#5e5ce6', '#ac8e68', '#66d4cf', '#ff6b35', '#a3e635', '#e879f9', '#f472b6'];
+export const EMOJI = ['😂', '🔥', '😡', '👋', '😎', '💀'];
 export const FUAD_COLOR = '#ffd60a';
 
 export class Arena {
@@ -22,6 +24,7 @@ export class Arena {
     this.byCar = new Map();
     this.onAnnounce = onAnnounce || (() => {});
     this.onDM = onDM || (() => {});
+    this.ticker = []; // последние события Говсан для меню
     setInterval(() => this.robberyDMs(), 60 * 1000).unref?.();
     this.tickN = 0; this.timer = null;
     this.bossClock = BOSS_EVERY * 0.6; this.boss = null;
@@ -86,6 +89,13 @@ export class Arena {
   }
 
   input(ws, msg) { const c = this.clients.get(ws); if (c) setInput(c.car, msg.a); }
+  // эмодзи над машиной (не чаще раза в 1.5 с)
+  emote(ws, e) {
+    const c = this.clients.get(ws);
+    if (!c || !EMOJI.includes(e) || Date.now() - (c.emoT || 0) < 1500) return;
+    c.emoT = Date.now();
+    this.broadcast({ t: 'emo', id: c.car.id, e });
+  }
 
   profile(p) {
     const list = this.top();
@@ -167,6 +177,7 @@ export class Arena {
       else if (e.type === 'power') {
         const P = POWERS[e.kind];
         this.toCar(e.car, { t: 'toast', text: `${P.emoji} ${P.name}!` + ({ ghost: ' Твой след сейчас не перерезать', shield: ' Тебя не разбить', nitro: ' Газ в пол', bomb: ' Бабах, район твой' })[e.kind] });
+        this.quest(this.byCar.get(e.car.id), 'power');
         this.broadcast({ t: 'fx', k: 'power', x: Math.round(e.x), y: Math.round(e.y), kind: e.kind });
       }
       else if (e.type === 'bump') this.broadcast({ t: 'fx', k: 'bump', x: Math.round(e.x), y: Math.round(e.y) });
@@ -184,6 +195,8 @@ export class Arena {
     const gained = e.cells.length / PN * 100;
     if (gained >= 0.3) this.send(c.ws, { t: 'gain', pct: +gained.toFixed(2) });
     this.dayStat(c.p).gained += gained;
+    this.quest(c, 'gain', gained);
+    if (gained >= 2) { this.quest(c, 'loop2'); this.news(`🏘 ${c.car.name} захватил ${gained.toFixed(1)}% одним кругом`); }
     this.meUpdate(c);
     // у кого отжали землю
     for (const [o, n] of e.victims || []) {
@@ -211,6 +224,12 @@ export class Arena {
         this.broadcast({ t: 'toast', text: `👑 Новый хозяин Говсан: ${lead.p.name}!`, big: true });
       }
     }
+  }
+
+  news(text) { this.ticker.unshift({ t: Date.now(), text }); if (this.ticker.length > 12) this.ticker.pop(); }
+  quest(c, kind, n = 1) {
+    if (!c) return;
+    for (const text of quests.bump(c.p, kind, n)) this.send(c.ws, { t: 'toast', text, big: true });
   }
 
   // «Пока тебя не было...»: не чаще раза в 30 минут, если отжали хотя бы 0.5%
@@ -255,6 +274,7 @@ export class Arena {
         cool[p.id] = now;
         const passed = list[i + 1]?.p;
         const nm = esc(p.creator ? '👑 ' + p.name : p.name);
+        this.news(rank === 1 ? `👑 ${p.name} стал топ-1 Говсан` : `📈 ${p.name} поднялся на #${rank}`);
         this.onAnnounce(rank === 1
           ? `👑 <b>${nm}</b> теперь <b>топ-1 Говсан</b> (${list[i].pct.toFixed(1)}% района)!` + (passed ? ` Подвинул ${esc(passed.name)}.` : '')
           : `📈 <b>${nm}</b> поднялся на <b>#${rank}</b> в топе Говсан` + (passed ? `, обогнал ${esc(passed.name)}` : '') + ` (${list[i].pct.toFixed(1)}%)`);
@@ -289,6 +309,8 @@ export class Arena {
     if (kc) {
       kc.p.kills++; store.save(kc.p);
       this.dayStat(kc.p).kills++;
+      this.quest(kc, 'kill');
+      if (!v.isBot || v.isBoss) this.news(`${e.kind === 'cut' ? '✂️' : '💥'} ${k.name} разбил ${v.name}`);
       // серии поглощений без смерти
       k.streak = (k.streak || 0) + 1;
       const S = { 2: '🔥 Двойное!', 3: '🔥🔥 Тройное!', 4: '💀 Мясорубка!', 5: '👑 Серийный угонщик!' }[Math.min(k.streak, 5)];
@@ -314,7 +336,7 @@ export class Arena {
   }
 }
 
-function ensureColor(p) {
+export function ensureColor(p) {
   if (p.creator) return;
   if (p.color && PALETTE.includes(p.color)) return;
   const used = new Set(store.allPlayers().map(x => x.color));

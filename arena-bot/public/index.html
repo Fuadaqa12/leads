@@ -16,7 +16,9 @@
     <div id="logo" class="logo">
       <div class="flag">🚗</div>
       <h1>ЗАХВАТ<br><span>ГОВСАН</span></h1>
+      <div class="live" id="livePill"><i></i><span id="liveText">Говсан ждёт</span></div>
     </div>
+    <div id="invites"></div>
     <div class="card me" id="meCard">
       <div class="me-top">
         <div class="me-name" id="meName">Загрузка...</div>
@@ -34,10 +36,19 @@
       <button class="btn" id="btnSolo">⏱ Соло: Гонка<small>медали 🏅</small></button>
       <button class="btn" id="btnDaily">📅 Испытание<small id="dailyName">дня</small></button>
     </div>
+    <button class="btn duel-btn" id="btnDuel">⚔️ Дуэль 1 на 1<small>вызови друга: 3 минуты, кто больше захватил</small></button>
+    <div class="card quests" id="questCard">
+      <div class="card-h">📋 Задания дня <small id="questHint">все три — медаль 🏅</small></div>
+      <div id="questList"></div>
+    </div>
     <div class="card gift" id="giftCard">
       <div class="gift-head"><span class="gift-ico">🎁</span><div><b>Подарок от создателя</b><small>каждую неделю топ-1 получает Telegram-подарок от Fuad</small></div></div>
       <div class="gift-timer"><span id="giftWhen">Первый розыгрыш 1 декабря</span><b id="giftLeft">—</b></div>
       <div class="gift-leader" id="giftLeader"></div>
+    </div>
+    <div class="card news" id="newsCard">
+      <div class="card-h">📰 Новости Говсан</div>
+      <div id="newsList"></div>
     </div>
     <div class="row">
       <button class="btn" id="btnTop">🏆 Топ</button>
@@ -45,6 +56,18 @@
       <button class="btn" id="btnHelp">❓ Как играть</button>
     </div>
     <div class="copy">🎵 Музыка в игре: песни Fuad Agayev<br>© 2026 Fuad Agayev. Все песни защищены авторским правом.</div>
+  </div>
+</div>
+
+<!-- Дуэли -->
+<div id="duelScr" class="screen hidden">
+  <div class="wrap">
+    <h2>⚔️ Дуэль 1 на 1</h2>
+    <p class="muted">Отдельная карта Говсан на двоих, 3 минуты. Кто больше захватил, тот победил. Бот позовёт соперника в личке, вызов живёт 10 минут. На общий топ не влияет.</p>
+    <div id="duelPending" class="list"></div>
+    <div class="card-h" style="margin-top:6px">Кого вызвать?</div>
+    <div id="rivalList" class="list"></div>
+    <button class="btn" data-back>← Назад</button>
   </div>
 </div>
 
@@ -88,6 +111,8 @@
       <p>🔥 Разбей несколько машин подряд без смерти: Двойное, Тройное, Серийный угонщик. Разбили тебя — отомсти обидчику 😤</p>
       <p>🚌 Остановки дают турбо. Иногда приезжает <b>Пират Fuadaqa12</b> и отжимает дворы, режь его след!</p>
       <p>🏆 Топ: у кого больше района. Земля остаётся твоей, даже когда ты не в игре, но её могут отжать.</p>
+      <p>⚔️ <b>Дуэль</b>: вызови друга 1 на 1. Отдельная карта, 3 минуты, кто больше захватил, тот победил. Бот позовёт его в личке.</p>
+      <p>📋 <b>Задания дня</b>: три штуки каждый день, сделал все — медаль 🏅. В игре жми эмодзи внизу, их видят все 😂</p>
       <p>⏱ <b>Гонка</b>: соло против ботов 3 минуты. Медали 🏅 за 10, 20, 35, 50, 70% района.</p>
       <p>🥚 Пасхалок 8, каждая даёт медаль. Подсказки в боте: /eggs</p>
       <p>⌨️ На компе: стрелки или WASD.</div>
@@ -109,6 +134,9 @@
   <button id="btnExit" class="exit">✕</button>
   <div id="joy" class="joy hidden"><div id="joyKnob"></div></div>
   <div id="deathMsg" class="death hidden"></div>
+  <div id="duelBar" class="duel-bar hidden"><span id="duelA">0%</span><b id="duelT">3:00</b><span id="duelB">0%</span></div>
+  <div id="duelWait" class="death hidden"></div>
+  <div id="emoBar" class="emo-bar"></div>
 </div>
 
 <!-- Результат соло -->

@@ -18,12 +18,15 @@ async function api(path, body = {}) {
   const r = await fetch(path, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ init: INIT, dev: DEV, ...body }) });
   return r.json();
 }
+let DUELS = [], RIVALS = [], QUESTS = [], TICKER = [];
 let ME = null, TOP = [], TOPDAY = [], TOPKILLS = [], CARS = [], PALETTE = [], GIFT = null, giftOffset = 0;
 async function refresh() {
   try {
     const r = await api('/api/me');
     if (r.error) { $('meName').textContent = r.error === 'auth' ? 'Открой игру через бота в Телеграме' : 'Ошибка: ' + r.error; return; }
-    ME = r.me; TOP = r.top; TOPDAY = r.topDay || []; TOPKILLS = r.topKills || []; CARS = r.cars || []; PALETTE = r.palette; GIFT = r.gift || null; renderMe(); renderGift();
+    ME = r.me; TOP = r.top; TOPDAY = r.topDay || []; TOPKILLS = r.topKills || []; CARS = r.cars || []; PALETTE = r.palette; GIFT = r.gift || null;
+    DUELS = r.duels || []; RIVALS = r.rivals || []; QUESTS = r.quests || []; TICKER = r.ticker || [];
+    renderMe(); renderGift(); renderMenuExtras();
   } catch { $('meName').textContent = 'Нет связи с сервером 😢'; }
 }
 function renderMe() {
@@ -65,7 +68,39 @@ function tickGift() {
 setInterval(tickGift, 1000);
 
 // ---------- экраны ----------
-const screens = ['menu', 'topScr', 'shipScr', 'helpScr', 'resultScr'];
+const screens = ['menu', 'topScr', 'shipScr', 'helpScr', 'resultScr', 'duelScr'];
+
+// ---------- меню: вызовы, задания, новости ----------
+const ago = (t) => { const s = (Date.now() - t) / 1000; return s < 60 ? 'только что' : s < 3600 ? Math.floor(s / 60) + ' мин' : Math.floor(s / 3600) + ' ч'; };
+function renderMenuExtras() {
+  const on = ME?.online || 0;
+  $('livePill').classList.toggle('on', on > 0);
+  $('liveText').textContent = on ? `сейчас в Говсан: ${on}` : 'Говсан ждёт гонщиков';
+  // входящие вызовы — яркой плашкой сверху
+  const inc = DUELS.filter(d => d.incoming && d.state === 'wait');
+  $('invites').innerHTML = inc.map(d => `<div class="invite"><span style="font-size:26px">⚔️</span><div>${esc(d.name)} вызывает тебя!<small>дуэль 1 на 1 · ещё ${Math.ceil(d.left / 60)} мин</small></div><button data-acc="${d.id}">В бой</button></div>`).join('');
+  $('invites').querySelectorAll('[data-acc]').forEach(b => b.onclick = () => startOnline(b.dataset.acc));
+  $('questList').innerHTML = QUESTS.map(q => `<div class="q ${q.done ? 'done' : ''}"><div class="q-top"><b>${q.done ? '✅ ' : ''}${esc(q.text)}</b><span>${esc(q.label)}</span></div><div class="bar"><i style="width:${Math.round(q.n / q.goal * 100)}%"></i></div></div>`).join('');
+  const nd = QUESTS.filter(q => q.done).length;
+  $('questHint').textContent = nd === 3 ? 'всё сделано, медаль твоя 🏅' : `${nd}/3 · все три — медаль 🏅`;
+  $('newsCard').classList.toggle('hidden', !TICKER.length);
+  $('newsList').innerHTML = TICKER.map(n => `<div class="news-i">${esc(n.text)}<span>${ago(n.t)}</span></div>`).join('');
+}
+function renderDuels() {
+  $('duelPending').innerHTML = DUELS.filter(d => d.state !== 'over').map(d => `<div class="li"><div class="nm"><b>${d.incoming ? '📩 ' : '📤 '}${esc(d.name)}</b><i>${d.state === 'live' ? 'бой идёт!' : d.incoming ? 'вызывает тебя' : 'ждём ответа · ' + Math.ceil(d.left / 60) + ' мин'}</i></div><button class="go" data-go="${d.id}">${d.incoming || d.state === 'live' ? 'В бой' : 'Войти'}</button><button class="go ghost" data-no="${d.id}">✕</button></div>`).join('');
+  $('rivalList').innerHTML = RIVALS.length ? RIVALS.map(r => `<div class="li"><div class="nm"><b><span class="dot" style="background:${r.color}"></span>${esc(r.name)}</b><i>🏘 ${r.pct}% · ⚔️ побед ${r.w}</i></div><button class="go" data-ch="${r.id}">Вызвать</button></div>`).join('') : '<p class="muted">Пока некого вызвать: позови друзей в игру 😉</p>';
+  $('duelScr').querySelectorAll('[data-go]').forEach(b => b.onclick = () => startOnline(b.dataset.go));
+  $('duelScr').querySelectorAll('[data-no]').forEach(b => b.onclick = async () => { const r = await api('/api/duelDecline', { id: b.dataset.no }); DUELS = r.duels || []; renderDuels(); });
+  $('duelScr').querySelectorAll('[data-ch]').forEach(b => b.onclick = async () => {
+    haptic('medium'); b.disabled = true; b.textContent = '...';
+    const r = await api('/api/duel', { to: b.dataset.ch });
+    if (r.error) { alertToast(r.error); b.disabled = false; b.textContent = 'Вызвать'; return; }
+    alertToast('⚔️ Вызов отправлен! Бот позвал соперника в личке');
+    startOnline(r.id);
+  });
+}
+$('btnDuel').onclick = async () => { show('duelScr'); renderDuels(); await refresh(); renderDuels(); };
+setInterval(() => { if (!$('menu').classList.contains('hidden') || !$('duelScr').classList.contains('hidden')) refresh().then(() => { if (!$('duelScr').classList.contains('hidden')) renderDuels(); }); }, 15000);
 function show(id) {
   for (const s of screens) $(s).classList.toggle('hidden', s !== id);
   $('hud').classList.toggle('hidden', id !== null);
@@ -234,6 +269,7 @@ function currentWant() {
 // ---------- общее ----------
 let game = null;
 const fx = [];
+const emos = new Map();   // id машины -> эмодзи над ней
 const disp = new Map();   // сглаженные позиции машин
 const trails = new Map(); // id -> [[x,y]...] (для онлайна)
 
@@ -271,7 +307,7 @@ function boom(x, y, color = '#ff9f0a') {
 
 function startCommon() {
   show(null); disp.clear(); fx.length = 0; trails.clear();
-  $('feed').innerHTML = ''; $('toasts').innerHTML = ''; $('deathMsg').classList.add('hidden'); $('hudTime').textContent = '';
+  $('feed').innerHTML = ''; $('toasts').innerHTML = ''; $('deathMsg').classList.add('hidden'); $('duelWait').classList.add('hidden'); $('duelBar').classList.add('hidden'); emos.clear(); $('hudTime').textContent = '';
   want = null;
 }
 function stopGame() {
@@ -285,14 +321,18 @@ $('btnExit').onclick = () => {
 };
 
 // ---------- ОНЛАЙН ----------
-$('btnArena').onclick = () => {
+$('btnArena').onclick = () => startOnline(null);
+// онлайн и дуэль работают по одному протоколу, у дуэли своя комната
+function startOnline(duelId) {
   haptic('medium');
   stopGame(); startCommon();
   owners = new Uint16Array(N); people = {}; repaintAll();
   const proto = location.protocol === 'https:' ? 'wss' : 'ws';
-  const ws = new WebSocket(`${proto}://${location.host}/ws?init=${encodeURIComponent(INIT)}&dev=${encodeURIComponent(DEV)}`);
-  game = { mode: 'arena', ws, myId: null, myOwner: 0, cars: [], letter: null, last: '', ready: false };
-  $('hudMode').textContent = '🚗 онлайн';
+  const ws = new WebSocket(`${proto}://${location.host}/ws?init=${encodeURIComponent(INIT)}&dev=${encodeURIComponent(DEV)}` + (duelId ? '&duel=' + duelId : ''));
+  game = { mode: 'arena', duel: duelId, ws, myId: null, myOwner: 0, cars: [], letter: null, last: '', ready: false };
+  $('hudMode').textContent = duelId ? '⚔️ дуэль' : '🚗 онлайн';
+  $('duelBar').classList.add('hidden');
+  if (duelId) { const w = $('duelWait'); w.classList.remove('hidden'); w.textContent = '⏳ Подключаюсь к дуэли...'; }
   ws.onmessage = (ev) => onServer(JSON.parse(ev.data));
   ws.onclose = (e) => {
     if (game?.ws !== ws) return;
@@ -305,7 +345,7 @@ $('btnArena').onclick = () => {
     const s = JSON.stringify({ t: 'in', a: w === null ? null : +w.toFixed(2) });
     if (s !== game.last || Date.now() - (game.lastT || 0) > 2000) { ws.send(s); game.last = s; game.lastT = Date.now(); }
   }, 80);
-};
+}
 
 function applyRuns(o, r) {
   for (let k = 0; k < r.length; k += 2) for (let i = r[k]; i < r[k] + r[k + 1]; i++) { owners[i] = o; paintCell(i); }
@@ -354,6 +394,28 @@ function onServer(m) {
       break;
     case 'gain': pop(`+${m.pct}% 🏘`); haptic('medium'); sfx.play('capture', m.pct >= 3 ? 3 : m.pct >= 1 ? 2 : 1); break;
     case 'me': if (ME) Object.assign(ME, m.me); break;
+    case 'emo': emos.set(m.id, { e: m.e, t: performance.now() }); break;
+    case 'duel': {
+      const w = $('duelWait');
+      if (m.wait) { w.classList.remove('hidden'); w.innerHTML = esc(m.text) + '<br><small>как только соперник зайдёт, начнём</small>'; break; }
+      w.classList.add('hidden'); $('duelBar').classList.remove('hidden');
+      const mineFirst = game.myOwner === 1, [a, b] = m.score;
+      $('duelA').textContent = (mineFirst ? a : b) + '%'; $('duelA').style.color = colorOfOwner(game.myOwner);
+      $('duelB').textContent = (mineFirst ? b : a) + '%'; $('duelB').style.color = colorOfOwner(mineFirst ? 2 : 1);
+      $('duelT').textContent = `${Math.floor(m.left / 60)}:${String(m.left % 60).padStart(2, '0')}`;
+      if (m.left === 10) { toast('⏰ 10 секунд!', true); haptic('heavy'); }
+      break;
+    }
+    case 'duelEnd': {
+      const ws = game.ws; game.ws = null; stopGame(); try { ws.close(); } catch {}
+      show('resultScr');
+      const [head, ...rest] = m.text.split('\n');
+      $('resTitle').textContent = head;
+      $('resBody').innerHTML = `<p style="font-size:18px;font-weight:800">${esc(rest.join(' '))}</p>` + (m.win ? '<p>🏅 Победы в дуэлях дают медали</p>' : '<p class="muted">Реванш? Вызови ещё раз ⚔️</p>') + (m.quests || []).map(q => `<div>${esc(q)}</div>`).join('');
+      lastSoloDaily = 'duel'; $('btnAgain').textContent = '⚔️ Реванш';
+      if (m.win) { sfx.play('egg'); haptic('heavy'); }
+      break;
+    }
     case 'dead': {
       const d = $('deathMsg'); d.classList.remove('hidden');
       d.innerHTML = (m.kind === 'cut' ? '✂️ Твой след перерезал<br>' : '💥 Тебя поглотил<br>') + `<span style="color:#ff9f0a">${esc(m.by || '???')}</span><br><small>снова в деле через 3...</small>`;
@@ -369,7 +431,7 @@ const SOLO_TIME = 180;
 let lastSoloDaily = null;
 $('btnSolo').onclick = () => startSolo(null);
 $('btnDaily').onclick = () => startSolo(daily);
-$('btnAgain').onclick = () => startSolo(lastSoloDaily);
+$('btnAgain').onclick = () => { if (lastSoloDaily === 'duel') { $('btnDuel').onclick(); return; } startSolo(lastSoloDaily); };
 
 function startSolo(dailyCfg) {
   haptic('medium');
@@ -674,6 +736,12 @@ function drawCar(c, d, t, mine) {
   ctx.font = `800 ${fs}px system-ui`; ctx.textBaseline = 'alphabetic';
   ctx.lineWidth = 3.5 / z; ctx.strokeStyle = 'rgba(0,0,0,0.8)'; ctx.strokeText(name, 0, ny);
   ctx.fillStyle = mine ? '#ffe08a' : '#fff'; ctx.fillText(name, 0, ny);
+  const em = emos.get(c.id);
+  if (em) {
+    const age = (performance.now() - em.t) / 1000;
+    if (age > 2.6) emos.delete(c.id);
+    else { const k = Math.min(1, age * 5); ctx.globalAlpha = age > 2.1 ? (2.6 - age) * 2 : 1; ctx.font = `${30 * k / z}px serif`; ctx.textBaseline = 'middle'; ctx.fillText(em.e, 0, ny - 24 / z - age * 6 / z); ctx.globalAlpha = 1; }
+  }
   ctx.globalAlpha = 1;
   ctx.restore();
 }
@@ -681,13 +749,22 @@ function drawCar(c, d, t, mine) {
 // ---------- HUD ----------
 const miniBg = document.createElement('canvas');
 let hudT = 0;
+const EMOJI = ['😂', '🔥', '😡', '👋', '😎', '💀'];
+$('emoBar').innerHTML = EMOJI.map(e => `<button data-e="${e}">${e}</button>`).join('');
+$('emoBar').querySelectorAll('button').forEach(b => b.onpointerdown = (ev) => {
+  ev.stopPropagation(); haptic('light');
+  if (game?.mode === 'arena' && game.ws?.readyState === 1) game.ws.send(JSON.stringify({ t: 'emo', e: b.dataset.e }));
+  else if (game) emos.set(game.myId, { e: b.dataset.e, t: performance.now() });
+});
+
 function hud(cars, me) {
+  $('emoBar').classList.toggle('hidden', !game);
   if (performance.now() - hudT < 200) return; hudT = performance.now();
   const counts = new Map();
   for (let i = 0; i < N; i++) if (owners[i]) counts.set(owners[i], (counts.get(owners[i]) || 0) + 1);
   const myPct = (counts.get(game.myOwner) || 0) / PN * 100;
   $('hudPct').textContent = `🏘 ${myPct.toFixed(1)}%`;
-  $('hudKills').textContent = '💥 ' + (game.mode === 'solo' ? game.g.cars.get(game.myId).kills : ME?.kills ?? 0);
+  $('hudKills').textContent = game.duel ? '' : '💥 ' + (game.mode === 'solo' ? game.g.cars.get(game.myId).kills : ME?.kills ?? 0);
   // миникарта
   const mc = $('mini'), m = mc.getContext('2d');
   if (!miniBg.width && mapImg.complete && mapImg.naturalWidth) { miniBg.width = mc.width; miniBg.height = mc.height; miniBg.getContext('2d').drawImage(mapImg, 0, 0, mc.width, mc.height); }
@@ -708,4 +785,7 @@ function hud(cars, me) {
 
 show('menu');
 refresh();
+// пришёл по кнопке «Принять вызов» из бота
+const deepDuel = qs.get('duel') || (tg?.initDataUnsafe?.start_param || '').replace(/^duel_/, '');
+if (deepDuel && /^[0-9a-f]{10}$/.test(deepDuel)) setTimeout(() => startOnline(deepDuel), 400);
 requestAnimationFrame(frame);
