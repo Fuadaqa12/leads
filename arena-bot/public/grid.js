@@ -33,6 +33,27 @@ export const SPOTS = [
   { kind: 'bus', x: 905 * S, y: 345 * S, r: 55, emoji: '🚌' },
 ];
 export const LETTERS = ['F', 'U', 'A', 'D'];
+// машины в гараже: открываются медалями, на силу не влияют
+export const CARS = [
+  { id: 'sedan', name: 'Седан', need: 0 },
+  { id: 'moped', name: 'Мопед', need: 1 },
+  { id: 'zhiguli', name: 'Жигули', need: 3 },
+  { id: 'taxi', name: 'Такси', need: 5 },
+  { id: 'bmw', name: 'BMW', need: 8 },
+  { id: 'jeep', name: 'Пиратский джип', need: 12 },
+];
+// бонусы на дорогах
+export const POWERS = {
+  ghost: { emoji: '👻', name: 'Призрак', time: 6 },   // твой след нельзя перерезать
+  shield: { emoji: '🛡', name: 'Щит', time: 4 },       // тебя нельзя разбить
+  nitro: { emoji: '⚡', name: 'Нитро', time: 3.5 },    // скорость
+  bomb: { emoji: '💣', name: 'Бомба', time: 0 },       // сразу захватывает круг вокруг
+};
+const POWER_KINDS = Object.keys(POWERS);
+function edgePoint(g) {
+  const [a, b] = EDGES[Math.floor(g.rand() * EDGES.length)], k = 0.2 + g.rand() * 0.6;
+  return [NODES[a].x + (NODES[b].x - NODES[a].x) * k, NODES[a].y + (NODES[b].y - NODES[a].y) * k];
+}
 
 export const cellAt = (x, y) => {
   const cx = Math.max(0, Math.min(GW - 1, Math.floor(x / CELL))), cy = Math.max(0, Math.min(GH - 1, Math.floor(y / CELL)));
@@ -100,7 +121,7 @@ export function createGame(opts = {}) {
   const g = {
     t: 0, owners: opts.owners || new Uint16Array(N), counts: new Map(), cars: new Map(), events: [], nextId: 1,
     rand: opts.rand || Math.random, mods: opts.mods || {}, solo: !!opts.solo,
-    letter: null, letterT: 25,
+    letter: null, letterT: 25, powers: [], powerT: 4,
   };
   // земля за городом (из старых сохранений) никому не принадлежит
   for (let i = 0; i < N; i++) if (!PLAY[i]) g.owners[i] = 0;
@@ -127,7 +148,7 @@ export function addCar(g, p) {
   const c = {
     id: p.id ?? g.nextId++, owner: p.owner, name: p.name || '???', color: p.color || '#ff3b30', uid: p.uid ?? null,
     isBot: !!p.isBot, isBoss: !!p.isBoss, x: 0, y: 0, a: 0, want: null, from: 0, to: 0, d: 0, len: 1, v: 0, alive: true, respawnT: 0, shield: 0, boostT: 0,
-    trail: [], trailSet: new Set(), kills: 0, letters: new Set(), plan: [], home: null, found: new Set(), botSpeed: p.botSpeed || 1,
+    trail: [], trailSet: new Set(), kills: 0, ghostT: 0, letters: new Set(), plan: [], home: null, found: new Set(), botSpeed: p.botSpeed || 1,
   };
   g.cars.set(c.id, c);
   spawn(g, c);
@@ -256,7 +277,7 @@ function markCells(g, c, cars) {
     if (!c.trailSet.has(i)) { c.trail.push(i); c.trailSet.add(i); }
     // переехал чужой след — его хозяин разбивается
     if (c.shield <= 0) for (const o of cars) {
-      if (o !== c && o.alive && o.shield <= 0 && o.trailSet.has(i)) kill(g, o, c, 'cut');
+      if (o !== c && o.alive && o.shield <= 0 && o.ghostT <= 0 && o.trailSet.has(i)) kill(g, o, c, 'cut');
     }
   }
 }
@@ -268,6 +289,7 @@ export function step(g, dt) {
     if (!c.alive) { c.respawnT -= dt; if (c.respawnT <= 0 && !c.noRespawn) spawn(g, c); continue; }
     if (c.shield > 0) c.shield -= dt;
     if (c.boostT > 0) c.boostT -= dt;
+    if (c.ghostT > 0) c.ghostT -= dt;
     // разворот посреди улицы, если палец тянет назад
     if (c.want !== null && !c.isBot && Math.abs(angDiff(c.a, c.want)) > 2.5) placeOnEdge(c, c.to, c.from, c.len - c.d);
     let sp = CFG.speed * (c.boostT > 0 ? CFG.boost : 1);
@@ -298,6 +320,36 @@ export function step(g, dt) {
       g.letter = null; g.letterT = 40 + g.rand() * 40;
     }
   }
+  // бонусы: подобрать может любой, и боты тоже
+  for (let k = g.powers.length - 1; k >= 0; k--) {
+    const pw = g.powers[k];
+    const c = cars.find(c => c.alive && Math.hypot(pw.x - c.x, pw.y - c.y) < 38);
+    if (!c) continue;
+    g.powers.splice(k, 1);
+    if (pw.kind === 'ghost') c.ghostT = POWERS.ghost.time;
+    else if (pw.kind === 'shield') c.shield = Math.max(c.shield, POWERS.shield.time);
+    else if (pw.kind === 'nitro') c.boostT = POWERS.nitro.time;
+    else if (pw.kind === 'bomb') {
+      const cell = cellAt(c.x, c.y), cx = cell % GW, cy = Math.floor(cell / GW), R = 7, changed = [], victims = new Map();
+      for (let dy = -R; dy <= R; dy++) for (let dx = -R; dx <= R; dx++) {
+        if (dx * dx + dy * dy > R * R) continue;
+        const x = cx + dx, y = cy + dy; if (x < 0 || y < 0 || x >= GW || y >= GH) continue;
+        const i = y * GW + x, prev = g.owners[i];
+        if (prev && prev !== c.owner) victims.set(prev, (victims.get(prev) || 0) + 1);
+        setCell(g, i, c.owner, changed);
+      }
+      if (changed.length) g.events.push({ type: 'paint', o: c.owner, cells: changed, car: c, victims, bomb: true });
+    }
+    g.events.push({ type: 'power', car: c, kind: pw.kind, x: pw.x, y: pw.y });
+  }
+  g.powerT -= dt;
+  if (g.powerT <= 0) {
+    g.powerT = g.solo ? 7 : 10;
+    if (g.powers.length < (g.solo ? 3 : 4)) {
+      const [x, y] = edgePoint(g);
+      g.powers.push({ x, y, kind: POWER_KINDS[Math.floor(g.rand() * POWER_KINDS.length)] });
+    }
+  }
   // лобовые столкновения: хозяин земли поглощает чужака
   for (let i = 0; i < cars.length; i++) for (let j = i + 1; j < cars.length; j++) {
     const a = cars[i], b = cars[j];
@@ -316,8 +368,7 @@ export function step(g, dt) {
     g.letterT -= dt;
     if (!g.letter && g.letterT <= 0) {
       // буква ставится прямо на линию улицы, по которой ездят машины
-      const [a, b] = EDGES[Math.floor(g.rand() * EDGES.length)], k = 0.2 + g.rand() * 0.6;
-      const x = NODES[a].x + (NODES[b].x - NODES[a].x) * k, y = NODES[a].y + (NODES[b].y - NODES[a].y) * k;
+      const [x, y] = edgePoint(g);
       // выпадает буква, которой ещё нет хотя бы у одного игрока в сети
       const humans = [...g.cars.values()].filter(c => !c.isBot);
       const need = LETTERS.filter(ch => humans.some(c => !c.letters.has(ch)));

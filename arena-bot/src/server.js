@@ -6,6 +6,7 @@ import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { WebSocketServer } from 'ws';
 import { Arena, PALETTE, colorOf } from './arena.js';
+import { CARS } from '../public/grid.js';
 import { createBot } from './bot.js';
 import { checkInitData, devUser } from './auth.js';
 import { FileKV, GistKV } from './storage.js';
@@ -39,7 +40,7 @@ process.on('SIGTERM', shutdown); process.on('SIGINT', shutdown);
 
 // ---------- игра и бот ----------
 let bot;
-const arena = new Arena({ onAnnounce: (html) => bot?.announce(html) });
+const arena = new Arena({ onAnnounce: (html) => bot?.announce(html), onDM: (id, html) => bot?.send(id, html, { reply_markup: { inline_keyboard: [[{ text: '🚗 Вернуть своё', web_app: { url: PUBLIC_URL } }]] } }) });
 arena.onSave = scheduleFlush;
 setInterval(scheduleFlush, 5000).unref();
 bot = createBot({ token: TOKEN, publicUrl: PUBLIC_URL, miniAppShort: process.env.MINIAPP_SHORT || '', arena });
@@ -55,7 +56,7 @@ function profile(p) {
     name: p.name, creator: p.creator, pct: +pct.toFixed(2), medals: p.medals, title: store.titleFor(p, pct),
     rank: (list.findIndex(x => x.p.id === p.id) + 1) || list.length + 1, eggs: p.eggs, eggsTotal: Object.keys(store.EGGS).length,
     soloBest: p.soloBest || 0, color: colorOf(p), medalList: p.medalList.slice(-30), online: arena.humans(),
-    kills: p.kills, deaths: p.deaths,
+    kills: p.kills, deaths: p.deaths, car: p.car || 'sedan',
   };
 }
 
@@ -65,12 +66,20 @@ function api(route, p, body) {
       const top = arena.top().slice(0, 20).map(({ p: x, pct }) => ({ name: x.creator ? '👑 ' + x.name : x.name, pct: +pct.toFixed(1), medals: x.medals, title: store.titleFor(x, pct), color: colorOf(x), me: x.id === p.id }));
       const gi = gift.info(arena);
       const strip = (x) => x && { name: x.name, pct: x.pct, week: x.week };
-      return { me: profile(p), top, palette: PALETTE, gift: { next: gi.next, first: gi.first, leader: strip(gi.leader), last: strip(gi.last), mine: gi.leader?.id === p.id } };
+      const nm = (x) => x.creator ? '👑 ' + x.name : x.name;
+      const topDay = arena.topDay().slice(0, 20).map(x => ({ name: nm(x), pct: +x.day.gained.toFixed(1), kills: x.day.kills, color: colorOf(x), me: x.id === p.id }));
+      const topKills = arena.topKills().slice(0, 20).map(x => ({ name: nm(x), kills: x.kills, deaths: x.deaths, color: colorOf(x), me: x.id === p.id }));
+      return { me: profile(p), top, topDay, topKills, cars: CARS, palette: PALETTE, gift: { next: gi.next, first: gi.first, leader: strip(gi.leader), last: strip(gi.last), mine: gi.leader?.id === p.id } };
     }
     case '/api/color': {
       const taken = store.allPlayers().some(x => x.id !== p.id && x.color === body.color);
       if (PALETTE.includes(body.color) && !taken && !p.creator) { p.color = body.color; store.save(p); }
       return { me: profile(p), taken };
+    }
+    case '/api/car': {
+      const c = CARS.find(x => x.id === body.car);
+      if (c && (p.creator || p.medals >= c.need)) { p.car = c.id; store.save(p); }
+      return { me: profile(p) };
     }
     case '/api/egg': {
       // с клиента можно получить только «флаг» (7 тапов по логотипу)

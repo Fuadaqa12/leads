@@ -2,7 +2,7 @@
 import * as music from './music.js';
 import * as sfx from './sfx.js';
 import { RING_EDGES } from './city.js';
-import { GW, GH, CELL, W, H, N, PN, PLAY, S, NODES, IMG_W, IMG_H, SPOTS, createGame, addCar, setInput, step, gridFromRLE, cellAt, cellCenter, pct, rng } from './grid.js';
+import { POWERS, GW, GH, CELL, W, H, N, PN, PLAY, S, NODES, IMG_W, IMG_H, SPOTS, createGame, addCar, setInput, step, gridFromRLE, cellAt, cellCenter, pct, rng } from './grid.js';
 
 const tg = window.Telegram?.WebApp;
 try { tg?.ready(); tg?.expand(); tg?.disableVerticalSwipes?.(); tg?.setHeaderColor?.('#101418'); tg?.setBackgroundColor?.('#101418'); } catch {}
@@ -18,12 +18,12 @@ async function api(path, body = {}) {
   const r = await fetch(path, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ init: INIT, dev: DEV, ...body }) });
   return r.json();
 }
-let ME = null, TOP = [], PALETTE = [], GIFT = null, giftOffset = 0;
+let ME = null, TOP = [], TOPDAY = [], TOPKILLS = [], CARS = [], PALETTE = [], GIFT = null, giftOffset = 0;
 async function refresh() {
   try {
     const r = await api('/api/me');
     if (r.error) { $('meName').textContent = r.error === 'auth' ? 'Открой игру через бота в Телеграме' : 'Ошибка: ' + r.error; return; }
-    ME = r.me; TOP = r.top; PALETTE = r.palette; GIFT = r.gift || null; renderMe(); renderGift();
+    ME = r.me; TOP = r.top; TOPDAY = r.topDay || []; TOPKILLS = r.topKills || []; CARS = r.cars || []; PALETTE = r.palette; GIFT = r.gift || null; renderMe(); renderGift();
   } catch { $('meName').textContent = 'Нет связи с сервером 😢'; }
 }
 function renderMe() {
@@ -74,15 +74,43 @@ function show(id) {
 document.querySelectorAll('[data-back]').forEach(b => b.onclick = () => { show('menu'); refresh(); });
 tg?.BackButton?.onClick(() => { if (game) stopGame(); show('menu'); refresh(); });
 
-$('btnTop').onclick = async () => {
-  show('topScr');
-  await refresh();
+let topTab = 'all';
+function renderTop() {
   const icons = ['🥇', '🥈', '🥉'];
-  $('topList').innerHTML = TOP.length ? TOP.map((p, i) => `<div class="li ${p.me ? 'me' : ''}"><div class="pos">${icons[i] || i + 1}</div><div class="nm"><b><span class="dot" style="background:${p.color}"></span>${esc(p.name)}</b><i>${esc(p.title)}</i></div><div class="sc">🏘 ${p.pct}%<span>🏅 ${p.medals}</span></div></div>`).join('')
-    : '<p class="muted">Пока пусто. Захвати первый квартал!</p>';
-};
+  const row = (p, i, sc) => `<div class="li ${p.me ? 'me' : ''}"><div class="pos">${icons[i] || i + 1}</div><div class="nm"><b><span class="dot" style="background:${p.color}"></span>${esc(p.name)}</b>${p.title ? `<i>${esc(p.title)}</i>` : ''}</div><div class="sc">${sc}</div></div>`;
+  const hints = { all: 'Место решает, какая часть района твоя 🏘. Медали 🏅 из соло показаны рядом, но на место не влияют.', day: 'Кто больше всех захватил сегодня (по Баку). Обнуляется в полночь.', kills: 'Кто разбил больше всех машин за всё время.' };
+  $('topHint').textContent = hints[topTab];
+  let html = '';
+  if (topTab === 'all') html = TOP.map((p, i) => row(p, i, `🏘 ${p.pct}%<span>🏅 ${p.medals}</span>`)).join('');
+  if (topTab === 'day') html = TOPDAY.map((p, i) => row(p, i, `+${p.pct}%<span>💥 ${p.kills}</span>`)).join('');
+  if (topTab === 'kills') html = TOPKILLS.map((p, i) => row(p, i, `💥 ${p.kills}<span>🚑 ${p.deaths}</span>`)).join('');
+  $('topList').innerHTML = html || '<p class="muted">Пока пусто. Будь первым!</p>';
+}
+document.querySelectorAll('#topTabs button').forEach(b => b.onclick = () => {
+  topTab = b.dataset.t; haptic();
+  document.querySelectorAll('#topTabs button').forEach(x => x.classList.toggle('on', x === b)); renderTop();
+});
+$('btnTop').onclick = async () => { show('topScr'); renderTop(); await refresh(); renderTop(); };
+function renderGarage() {
+  $('garage').innerHTML = CARS.map(c => {
+    const open = ME?.creator || (ME?.medals || 0) >= c.need;
+    return `<div class="gcar ${ME?.car === c.id ? 'on' : ''} ${open ? '' : 'lock'}" data-car="${c.id}"><canvas width="120" height="70"></canvas>${esc(c.name)}<small>${open ? (ME?.car === c.id ? 'выбрана' : 'открыта') : '🔒 ' + c.need + ' 🏅'}</small></div>`;
+  }).join('');
+  $('garage').querySelectorAll('.gcar').forEach(el => {
+    const cvs = el.querySelector('canvas'), x = cvs.getContext('2d');
+    const keep = ctx; ctx = x; // рисуем той же функцией, что и в игре
+    x.translate(60, 36); x.scale(1.9, 1.9);
+    const [L, Wd] = CAR_SIZE[el.dataset.car]; carBody(el.dataset.car, ME?.color || '#ff3b30', L, Wd, false);
+    ctx = keep;
+    el.onclick = async () => {
+      const c = CARS.find(c => c.id === el.dataset.car);
+      if (!(ME?.creator || (ME?.medals || 0) >= c.need)) { alertToast(`🔒 Нужно ${c.need} 🏅. Медали дают за гонки, пасхалки и серии`); return; }
+      haptic(); const r = await api('/api/car', { car: c.id }); if (r.me) ME = r.me; renderGarage();
+    };
+  });
+}
 $('btnShip').onclick = () => {
-  show('shipScr');
+  show('shipScr'); renderGarage();
   if (ME?.creator) $('skins').innerHTML = `<div class="skin on" style="background:#ffd60a">👑</div><p class="muted" style="grid-column:1/-1">У Создателя свой цвет, золотой 😎</p>`;
   else {
     $('skins').innerHTML = PALETTE.map(c => `<div class="skin ${ME?.color === c ? 'on' : ''}" data-c="${c}" style="background:${c}">🚗</div>`).join('');
@@ -127,7 +155,7 @@ const daily = DAILY_MODS[rng(+today.replace(/-/g, ''))() * DAILY_MODS.length | 0
 $('dailyName').textContent = daily.name;
 
 // ---------- канвас и картинки ----------
-const cv = $('cv'), ctx = cv.getContext('2d');
+const cv = $('cv'); let ctx = cv.getContext('2d');
 let VW = 0, VH = 0, DPR = 1;
 function resize() { DPR = Math.min(2, devicePixelRatio || 1); VW = innerWidth; VH = innerHeight; cv.width = VW * DPR; cv.height = VH * DPR; }
 addEventListener('resize', resize); resize();
@@ -302,7 +330,8 @@ function onServer(m) {
       if (m.o) { const cells = []; for (let k = 0; k < m.r.length; k += 2) for (let i = m.r[k]; i < m.r[k] + m.r[k + 1]; i++) cells.push(i); flash(cells); }
       break;
     case 's':
-      game.cars = m.cars.map(a => ({ id: a[0], x: a[1], y: a[2], a: a[3], alive: !!(a[4] & 1), shield: !!(a[4] & 2), boost: !!(a[4] & 4), isBot: !!(a[4] & 8), isBoss: !!(a[4] & 16), owner: a[5] }));
+      game.cars = m.cars.map(a => ({ id: a[0], x: a[1], y: a[2], a: a[3], alive: !!(a[4] & 1), shield: !!(a[4] & 2), boost: !!(a[4] & 4), isBot: !!(a[4] & 8), isBoss: !!(a[4] & 16), ghost: !!(a[4] & 32), owner: a[5] }));
+      game.powers = (m.pw || []).map(([x, y, kind]) => ({ x, y, kind }));
       game.letter = m.letter && { x: m.letter[0], y: m.letter[1], ch: m.letter[2] };
       for (const c of game.cars) {
         if (!c.alive) { trails.delete(c.id); continue; }
@@ -320,6 +349,7 @@ function onServer(m) {
     case 'feed': feed(m.text); break;
     case 'fx':
       if (m.k === 'boom') { boom(m.x, m.y); if (m.id != null) trails.delete(m.id); }
+      else if (m.k === 'power') { fx.push({ x: m.x, y: m.y, ring: true, life: 0.6, max: 0.6, c: '#ffe08a', r: 10 }); if (nearMe(m.x, m.y)) sfx.play('power'); }
       else if (m.k === 'bump') { fx.push({ x: m.x, y: m.y, ring: true, life: 0.5, max: 0.5, c: '#fff', r: 8 }); haptic('rigid'); if (nearMe(m.x, m.y)) sfx.play('bump'); }
       break;
     case 'gain': pop(`+${m.pct}% 🏘`); haptic('medium'); sfx.play('capture', m.pct >= 3 ? 3 : m.pct >= 1 ? 2 : 1); break;
@@ -348,13 +378,13 @@ function startSolo(dailyCfg) {
   const mods = dailyCfg?.mods || {};
   const g = createGame({ solo: true, mods });
   owners = g.owners;
-  people = { 1: [ME?.creator ? '👑 Fuad' : ME?.name || 'Ты', ME?.color || '#ff3b30'] };
+  people = { 1: [ME?.creator ? '👑 Fuad' : ME?.name || 'Ты', ME?.color || '#ff3b30', ME?.car || 'sedan'] };
   const me = addCar(g, { owner: 1, name: people[1][0], color: people[1][1] });
   const botNames = ['Таксист Рамиз', 'Дядя на Жигулях', 'Мопед Самира', 'Курьер Вольт', 'Сосед с BMW'];
   const botColors = ['#9ca3af', '#b45309', '#0f766e', '#7c2d12', '#334155'];
   const nBots = 3 + (mods.extraBots || 0);
-  for (let i = 0; i < nBots; i++) { people[i + 2] = ['🤖 ' + botNames[i], botColors[i]]; addCar(g, { owner: i + 2, name: people[i + 2][0], color: botColors[i], isBot: true }); }
-  if (mods.boss) { people[9] = ['☠️ Пират Fuadaqa12', '#1c1c1e']; addCar(g, { owner: 9, name: people[9][0], color: '#1c1c1e', isBot: true, isBoss: true, botSpeed: 1.15 }); }
+  for (let i = 0; i < nBots; i++) { people[i + 2] = ['🤖 ' + botNames[i], botColors[i], ['taxi', 'zhiguli', 'moped', 'sedan', 'bmw'][i]]; addCar(g, { owner: i + 2, name: people[i + 2][0], color: botColors[i], isBot: true }); }
+  if (mods.boss) { people[9] = ['☠️ Пират Fuadaqa12', '#1c1c1e', 'jeep']; addCar(g, { owner: 9, name: people[9][0], color: '#1c1c1e', isBot: true, isBoss: true, botSpeed: 1.15 }); }
   repaintAll();
   game = { mode: 'solo', g, myId: me.id, myOwner: 1, timeLeft: SOLO_TIME, t0: performance.now(), daily: dailyCfg, mods, over: false };
   $('hudMode').textContent = dailyCfg ? `📅 ${dailyCfg.name}` : '⏱ Гонка против ботов';
@@ -377,6 +407,9 @@ function soloTick(dt) {
       feed(`${e.killer?.name || '???'} ${e.kind === 'cut' ? '✂️' : '💥'} ${e.victim.name}`);
       if (e.victim.id === G.myId) { haptic('heavy'); toast(e.kind === 'cut' ? '✂️ Твой след перерезали!' : '💥 Тебя поглотили!', true); }
       else if (e.killer?.id === G.myId) haptic('medium');
+    } else if (e.type === 'power') {
+      fx.push({ x: e.x, y: e.y, ring: true, life: 0.6, max: 0.6, c: '#ffe08a', r: 10 });
+      if (e.car.id === G.myId) { const P = POWERS[e.kind]; toast(`${P.emoji} ${P.name}!`, true); sfx.play('power'); haptic('medium'); }
     } else if (e.type === 'boost' && e.car.id === G.myId) { toast('🚌 Турбо!'); sfx.play('boost'); }
     else if (e.type === 'bump') { fx.push({ x: e.x, y: e.y, ring: true, life: 0.5, max: 0.5, c: '#fff', r: 8 }); if (nearMe(e.x, e.y)) sfx.play('bump'); }
   }
@@ -411,7 +444,7 @@ async function endSolo() {
 function viewCars() {
   if (!game) return [];
   if (game.mode === 'arena') return game.cars;
-  return [...game.g.cars.values()].map(c => ({ id: c.id, x: c.x, y: c.y, a: c.a, alive: c.alive, shield: c.shield > 0, boost: c.boostT > 0, isBot: c.isBot, isBoss: c.isBoss, owner: c.owner, trail: c.trail }));
+  return [...game.g.cars.values()].map(c => ({ id: c.id, x: c.x, y: c.y, a: c.a, alive: c.alive, shield: c.shield > 0, boost: c.boostT > 0, isBot: c.isBot, isBoss: c.isBoss, ghost: c.ghostT > 0, owner: c.owner, trail: c.trail }));
 }
 
 let lastT = performance.now(), cam = { x: W / 2, y: H / 2 };
@@ -476,6 +509,15 @@ function draw(dt, t) {
     ctx.save(); ctx.translate(L.x, L.y); ctx.scale(p, p); ctx.shadowColor = '#ff3df5'; ctx.shadowBlur = 25;
     ctx.fillStyle = '#ffb0ff'; ctx.font = '900 46px system-ui'; ctx.fillText(L.ch, 0, 0); ctx.restore();
   }
+  // бонусы на дорогах
+  const PW = game ? (game.mode === 'arena' ? game.powers : game.g.powers) : null;
+  if (PW) for (const p of PW) {
+    const bob = Math.sin(t * 4 + p.x) * 4;
+    ctx.save(); ctx.translate(p.x, p.y + bob);
+    ctx.fillStyle = 'rgba(255,224,138,0.22)'; circle(0, 0, 26 + Math.sin(t * 6) * 3); ctx.fill();
+    ctx.strokeStyle = 'rgba(255,224,138,0.9)'; ctx.lineWidth = 2.5; circle(0, 0, 22); ctx.stroke();
+    ctx.font = '28px serif'; ctx.fillText(POWERS[p.kind].emoji, 0, 2); ctx.restore();
+  }
   // следы
   ctx.lineCap = 'round'; ctx.lineJoin = 'round';
   for (const c of cars) {
@@ -489,9 +531,10 @@ function draw(dt, t) {
     for (const p of pts) { if (Math.hypot(p[0] - px, p[1] - py) > CELL * 2.5) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]); px = p[0]; py = p[1]; }
     if (Math.hypot(d.x - px, d.y - py) < CELL * 2.5) ctx.lineTo(d.x, d.y);
     ctx.strokeStyle = 'rgba(0,0,0,0.45)'; ctx.lineWidth = 15; ctx.stroke();
+    if (c.ghost) ctx.globalAlpha = 0.35 + Math.sin(t * 10) * 0.15;
     ctx.shadowColor = col; ctx.shadowBlur = 16;
     ctx.strokeStyle = col; ctx.lineWidth = 10; ctx.setLineDash([22, 10]); ctx.lineDashOffset = -t * 60; ctx.stroke(); ctx.setLineDash([]);
-    ctx.shadowBlur = 0;
+    ctx.shadowBlur = 0; ctx.globalAlpha = 1;
   }
   // дым из-под колёс: на турбо и на поворотах
   for (const c of cars) {
@@ -567,31 +610,71 @@ function drawFx(dt) {
   }
 }
 
+// корпус машины по типу (рисуем в осях машины: нос смотрит вправо)
+function carBody(type, col, L, Wd, boost) {
+  const shadow = () => { ctx.fillStyle = 'rgba(0,0,0,0.35)'; rrect(-L / 2 + 3, -Wd / 2 + 4, L, Wd, 6); ctx.fill(); };
+  const flame = () => { if (boost) { ctx.fillStyle = '#ffb340'; ctx.beginPath(); ctx.moveTo(-L / 2, -5); ctx.lineTo(-L / 2 - 14 - Math.random() * 8, 0); ctx.lineTo(-L / 2, 5); ctx.fill(); } };
+  const lights = () => {
+    ctx.fillStyle = '#fffbe0'; ctx.fillRect(L / 2 - 3, -Wd / 2 + 2, 3, 4); ctx.fillRect(L / 2 - 3, Wd / 2 - 6, 3, 4);
+    ctx.fillStyle = '#ff3b30'; ctx.fillRect(-L / 2, -Wd / 2 + 2, 2, 4); ctx.fillRect(-L / 2, Wd / 2 - 6, 2, 4);
+  };
+  const glass = (x1, w1, x2, w2, r = 3) => {
+    ctx.fillStyle = 'rgba(20,30,45,0.85)'; rrect(L * x1, -Wd / 2 + 3, L * w1, Wd - 6, r); ctx.fill();
+    ctx.fillStyle = 'rgba(20,30,45,0.6)'; rrect(L * x2, -Wd / 2 + 3, L * w2, Wd - 6, r); ctx.fill();
+  };
+  const body = (r) => { ctx.fillStyle = col; rrect(-L / 2, -Wd / 2, L, Wd, r); ctx.fill(); ctx.strokeStyle = 'rgba(0,0,0,0.5)'; ctx.lineWidth = 1.5; ctx.stroke(); };
+  if (type === 'moped') {
+    ctx.fillStyle = 'rgba(0,0,0,0.35)'; rrect(-L / 2 + 2, -4, L, 9, 4); ctx.fill(); flame();
+    ctx.fillStyle = '#222'; circle(L / 2 - 4, 0, 4); ctx.fill(); circle(-L / 2 + 4, 0, 4); ctx.fill();
+    ctx.fillStyle = col; rrect(-L / 2 + 3, -4, L - 6, 8, 4); ctx.fill();
+    ctx.fillStyle = '#f2d2b0'; circle(-2, 0, 5.5); ctx.fill(); ctx.fillStyle = col; circle(-2, 0, 3.5); ctx.fill(); // гонщик в шлеме
+    return;
+  }
+  shadow(); flame();
+  if (type === 'zhiguli') {
+    body(2); glass(0.08, 0.2, -0.36, 0.16, 1);
+    ctx.fillStyle = '#d9d9d9'; ctx.fillRect(L / 2 - 2, -Wd / 2, 2, Wd); ctx.fillRect(-L / 2, -Wd / 2, 2, Wd); // хромированные бамперы
+  } else if (type === 'taxi') {
+    body(6); glass(0.05, 0.22, -0.38, 0.16);
+    ctx.fillStyle = '#111'; for (let k = 0; k < 6; k++) ctx.fillRect(-L * 0.3 + k * 4, (k % 2 ? -1 : 1) * (Wd / 2 - 2) - 1, 4, 2); // шашечки
+    ctx.fillStyle = '#ffd60a'; rrect(-5, -4, 9, 8, 2); ctx.fill(); ctx.fillStyle = '#111'; ctx.font = 'bold 5px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('T', -0.5, 0.5);
+  } else if (type === 'bmw') {
+    body(9); glass(0.08, 0.2, -0.3, 0.2, 5);
+    ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(-L / 2 - 2, -Wd / 2 + 1, 3, Wd - 2); // спойлер
+    ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.fillRect(-L * 0.45, -1, L * 0.9, 2); // полоса
+  } else if (type === 'jeep') {
+    body(4); glass(0.1, 0.18, -0.32, 0.14, 2);
+    ctx.fillStyle = '#1c1c1e'; circle(-L / 2 - 2, 0, 5); ctx.fill(); ctx.strokeStyle = '#555'; ctx.lineWidth = 1.5; ctx.stroke(); // запаска
+    ctx.fillStyle = 'rgba(0,0,0,0.45)'; for (const yy of [-Wd / 2 + 1, Wd / 2 - 3]) ctx.fillRect(-L * 0.25, yy, L * 0.5, 2); // багажник
+  } else {
+    body(6); glass(0.05, 0.22, -0.38, 0.16);
+  }
+  lights();
+}
+const CAR_SIZE = { sedan: [36, 20], moped: [24, 10], zhiguli: [34, 20], taxi: [36, 20], bmw: [40, 19], jeep: [40, 24] };
+
 function drawCar(c, d, t, mine) {
-  const col = colorOfOwner(c.owner), L = c.isBoss ? 44 : 36, Wd = c.isBoss ? 24 : 20;
+  const col = colorOfOwner(c.owner), type = c.isBoss ? 'jeep' : people[c.owner]?.[2] || 'sedan';
+  let [L, Wd] = CAR_SIZE[type] || CAR_SIZE.sedan;
+  if (c.isBoss) { L = 46; Wd = 26; }
   const z = ZOOM();
   const name = people[c.owner]?.[0] || '?';
   ctx.save(); ctx.translate(d.x, d.y);
+  if (c.ghost) ctx.globalAlpha = 0.5;
   if (mine) { ctx.fillStyle = 'rgba(255,255,255,0.18)'; circle(0, 0, 30 + Math.sin(t * 4) * 3); ctx.fill(); }
-  if (c.shield) { ctx.strokeStyle = 'rgba(120,220,255,0.85)'; ctx.lineWidth = 3; circle(0, 0, 26); ctx.stroke(); }
+  if (c.shield) { ctx.strokeStyle = 'rgba(120,220,255,0.85)'; ctx.lineWidth = 3; circle(0, 0, 28); ctx.stroke(); }
   ctx.save(); ctx.rotate(d.a);
-  ctx.fillStyle = 'rgba(0,0,0,0.35)'; rrect(-L / 2 + 3, -Wd / 2 + 4, L, Wd, 6); ctx.fill();
-  if (c.boost) { ctx.fillStyle = '#ffb340'; ctx.beginPath(); ctx.moveTo(-L / 2, -5); ctx.lineTo(-L / 2 - 14 - Math.random() * 8, 0); ctx.lineTo(-L / 2, 5); ctx.fill(); }
-  ctx.fillStyle = col; rrect(-L / 2, -Wd / 2, L, Wd, 6); ctx.fill();
-  ctx.strokeStyle = 'rgba(0,0,0,0.5)'; ctx.lineWidth = 1.5; ctx.stroke();
-  ctx.fillStyle = 'rgba(20,30,45,0.85)'; rrect(L * 0.05, -Wd / 2 + 3, L * 0.22, Wd - 6, 3); ctx.fill(); // лобовое
-  ctx.fillStyle = 'rgba(20,30,45,0.6)'; rrect(-L * 0.38, -Wd / 2 + 3, L * 0.16, Wd - 6, 3); ctx.fill(); // заднее
-  ctx.fillStyle = '#fffbe0'; ctx.fillRect(L / 2 - 3, -Wd / 2 + 2, 3, 4); ctx.fillRect(L / 2 - 3, Wd / 2 - 6, 3, 4);
-  ctx.fillStyle = '#ff3b30'; ctx.fillRect(-L / 2, -Wd / 2 + 2, 2, 4); ctx.fillRect(-L / 2, Wd / 2 - 6, 2, 4);
+  carBody(type, col, L, Wd, c.boost);
   ctx.restore();
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   if (c.isBoss) { ctx.font = '20px serif'; ctx.fillText('☠️', 0, 0); }
-  if (col === '#ffd60a' && !c.isBot) { ctx.font = `${18 / z}px serif`; ctx.fillText('👑', 0, -L / 2 - 22 / z + Math.sin(t * 3) * 2); }
+  if (col === '#ffd60a' && !c.isBot) { ctx.font = `${18 / z}px serif`; ctx.fillText('👑', 0, -Math.max(L, 30) / 2 - 22 / z + Math.sin(t * 3) * 2); }
   // подпись одного размера на экране при любом зуме
-  const fs = (mine ? 13 : 12) / z, ny = -L / 2 - 4 / z;
+  const fs = (mine ? 13 : 12) / z, ny = -Math.max(L, 30) / 2 - 4 / z;
   ctx.font = `800 ${fs}px system-ui`; ctx.textBaseline = 'alphabetic';
   ctx.lineWidth = 3.5 / z; ctx.strokeStyle = 'rgba(0,0,0,0.8)'; ctx.strokeText(name, 0, ny);
   ctx.fillStyle = mine ? '#ffe08a' : '#fff'; ctx.fillText(name, 0, ny);
+  ctx.globalAlpha = 1;
   ctx.restore();
 }
 

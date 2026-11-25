@@ -114,3 +114,13 @@ h2 { margin: 4px 0; }
 .gift-leader .you { color: #ffd60a; font-weight: 800; }
 
 .copy { text-align: center; font-size: 11.5px; line-height: 1.5; color: var(--muted); opacity: .85; margin-top: 4px; }
+
+.tabs { display: flex; gap: 6px; background: rgba(255,255,255,.06); padding: 4px; border-radius: 14px; }
+.tabs button { flex: 1; border: 0; background: transparent; color: var(--muted); font: inherit; font-size: 13px; font-weight: 700; padding: 9px 4px; border-radius: 10px; }
+.tabs button.on { background: rgba(255,255,255,.14); color: #fff; }
+.garage { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.garage .gcar { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 8px 4px 6px; text-align: center; font-size: 12px; font-weight: 700; cursor: pointer; }
+.garage .gcar canvas { width: 100%; height: 46px; display: block; }
+.garage .gcar.on { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold) inset; }
+.garage .gcar.lock { opacity: .45; }
+.garage .gcar small { display: block; color: var(--muted); font-weight: 600; }

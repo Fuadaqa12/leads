@@ -1,5 +1,5 @@
 // Онлайн-режим «Захват Говсан»: одна карта на всех, территория сохраняется навсегда
-import { createGame, addCar, removeCar, setInput, step, clearOwner, gridToRLE, gridFromRLE, runs, cellAt, N, PN, pct } from '../public/grid.js';
+import { POWERS, createGame, addCar, removeCar, setInput, step, clearOwner, gridToRLE, gridFromRLE, runs, cellAt, N, PN, pct } from '../public/grid.js';
 import * as store from './store.js';
 
 const TICK = 1 / 30;
@@ -11,7 +11,7 @@ export const PALETTE = ['#ff3b30', '#0a84ff', '#30d158', '#bf5af2', '#ff9f0a', '
 export const FUAD_COLOR = '#ffd60a';
 
 export class Arena {
-  constructor({ onAnnounce } = {}) {
+  constructor({ onAnnounce, onDM } = {}) {
     const m = store.meta;
     m.ownerTable ||= [''];                       // индекс -> 'p:<id>' или 'bot:<имя>'
     const owners = gridFromRLE(m.grid || '');
@@ -21,6 +21,8 @@ export class Arena {
     this.clients = new Map(); // ws -> { p, car }
     this.byCar = new Map();
     this.onAnnounce = onAnnounce || (() => {});
+    this.onDM = onDM || (() => {});
+    setInterval(() => this.robberyDMs(), 60 * 1000).unref?.();
     this.tickN = 0; this.timer = null;
     this.bossClock = BOSS_EVERY * 0.6; this.boss = null;
     this.paints = []; this.gridDirty = false;
@@ -38,9 +40,9 @@ export class Arena {
     const out = {};
     for (const [o] of this.g.counts) {
       const key = this.ownerKey(o);
-      if (key.startsWith('p:')) { const p = store.findPlayer(key.slice(2)); if (p) out[o] = [p.creator ? '👑 Fuad' : p.name, colorOf(p)]; }
+      if (key.startsWith('p:')) { const p = store.findPlayer(key.slice(2)); if (p) out[o] = [p.creator ? '👑 Fuad' : p.name, colorOf(p), p.car || 'sedan']; }
     }
-    for (const c of this.g.cars.values()) out[c.owner] = [c.name, c.color];
+    for (const c of this.g.cars.values()) out[c.owner] = [c.name, c.color, c.carType || (c.isBoss ? 'jeep' : 'sedan')];
     return out;
   }
   pctOf(p) { const i = store.meta.ownerTable.indexOf('p:' + p.id); return i > 0 ? pct(this.g, i) : 0; }
@@ -58,6 +60,7 @@ export class Arena {
     const owner = this.ownerIdx('p:' + p.id);
     const car = addCar(this.g, { owner, name: p.creator ? '👑 Fuad' : p.name || 'Гонщик', color: colorOf(p), uid: p.id });
     // собранные буквы F-U-A-D помним между заходами; кто уже собрал слово, тому буквы не нужны
+    car.carType = p.car || 'sedan';
     car.letters = new Set(p.eggs.includes('fuad_word') ? ['F', 'U', 'A', 'D'] : p.letters || []);
     const c = { ws, p, car };
     this.clients.set(ws, c); this.byCar.set(car.id, c);
@@ -104,6 +107,7 @@ export class Arena {
       const name = BOT_NAMES.find(n => !used.has(n));
       const k = BOT_NAMES.indexOf(name);
       const car = addCar(this.g, { owner: this.ownerIdx('bot:' + name), name: '🤖 ' + name, color: BOT_COLORS[k], isBot: true });
+      car.carType = { 'Таксист Рамиз': 'taxi', 'Дядя на Жигулях': 'zhiguli', 'Мопед Самира': 'moped', 'Сосед с BMW': 'bmw' }[name] || 'sedan';
       car.botName = name;
       bots.push(car);
     }
@@ -124,9 +128,9 @@ export class Arena {
     this.bossTick();
     this.flushEvents();
     if (++this.tickN % 2 === 0) {
-      const cars = [...this.g.cars.values()].map(c => [c.id, Math.round(c.x), Math.round(c.y), +c.a.toFixed(2), (c.alive ? 1 : 0) | (c.shield > 0 ? 2 : 0) | (c.boostT > 0 ? 4 : 0) | (c.isBot ? 8 : 0) | (c.isBoss ? 16 : 0), c.owner]);
+      const cars = [...this.g.cars.values()].map(c => [c.id, Math.round(c.x), Math.round(c.y), +c.a.toFixed(2), (c.alive ? 1 : 0) | (c.shield > 0 ? 2 : 0) | (c.boostT > 0 ? 4 : 0) | (c.isBot ? 8 : 0) | (c.isBoss ? 16 : 0) | (c.ghostT > 0 ? 32 : 0), c.owner]);
       const L = this.g.letter;
-      this.broadcast({ t: 's', cars, letter: L ? [Math.round(L.x), Math.round(L.y), L.ch] : null });
+      this.broadcast({ t: 's', cars, letter: L ? [Math.round(L.x), Math.round(L.y), L.ch] : null, pw: this.g.powers.map(p => [Math.round(p.x), Math.round(p.y), p.kind]) });
     }
     if (this.gridDirty && this.tickN % 60 === 0) {
       this.gridDirty = false;
@@ -160,6 +164,11 @@ export class Arena {
       else if (e.type === 'kill') this.onKill(e);
       else if (e.type === 'egg') this.onEgg(this.byCar.get(e.car.id), e.egg);
       else if (e.type === 'boost') this.toCar(e.car, { t: 'toast', text: '🚌 Автобусная остановка: турбо!' });
+      else if (e.type === 'power') {
+        const P = POWERS[e.kind];
+        this.toCar(e.car, { t: 'toast', text: `${P.emoji} ${P.name}!` + ({ ghost: ' Твой след сейчас не перерезать', shield: ' Тебя не разбить', nitro: ' Газ в пол', bomb: ' Бабах, район твой' })[e.kind] });
+        this.broadcast({ t: 'fx', k: 'power', x: Math.round(e.x), y: Math.round(e.y), kind: e.kind });
+      }
       else if (e.type === 'bump') this.broadcast({ t: 'fx', k: 'bump', x: Math.round(e.x), y: Math.round(e.y) });
       else if (e.type === 'letter') { const lc = this.byCar.get(e.car.id); if (lc) { lc.p.letters = e.have; store.save(lc.p); } }
       if (e.type === 'letter') this.toCar(e.car, { t: 'toast', text: `✨ Буква «${e.ch}»! Собрано: ${['F', 'U', 'A', 'D'].map(ch => e.have.includes(ch) ? ch : '_').join(' ')}` });
@@ -174,11 +183,18 @@ export class Arena {
     if (!c) return;
     const gained = e.cells.length / PN * 100;
     if (gained >= 0.3) this.send(c.ws, { t: 'gain', pct: +gained.toFixed(2) });
+    this.dayStat(c.p).gained += gained;
     this.meUpdate(c);
     // у кого отжали землю
     for (const [o, n] of e.victims || []) {
       const vc = [...this.clients.values()].find(x => x.car.owner === o);
       if (vc && n > 20) { this.send(vc.ws, { t: 'toast', text: `😱 ${c.car.name} отжал у тебя ${(n / PN * 100).toFixed(1)}% района!` }); this.meUpdate(vc); }
+      // хозяина нет в игре — копим, бот потом напишет ему в личку
+      const key = this.ownerKey(o);
+      if (!vc && key.startsWith('p:')) {
+        const vp = store.findPlayer(key.slice(2));
+        if (vp) { vp.robbed ||= {}; vp.robbed[c.p.name || 'Кто-то'] = (vp.robbed[c.p.name || 'Кто-то'] || 0) + n; store.save(vp); }
+      }
     }
     // в группу пишем только про большие захваты (20%+) и про рост в топе
     if (gained >= 20) this.onAnnounce(`⚡⚡ <b>${esc(c.car.name)}</b> одним кругом захватил <b>${gained.toFixed(1)}%</b> Говсан!`);
@@ -196,6 +212,33 @@ export class Arena {
       }
     }
   }
+
+  // «Пока тебя не было...»: не чаще раза в 30 минут, если отжали хотя бы 0.5%
+  robberyDMs() {
+    const now = Date.now();
+    for (const p of store.allPlayers()) {
+      if (!p.robbed) continue;
+      if ([...this.clients.values()].some(c => c.p.id === p.id)) { p.robbed = null; continue; }
+      const total = Object.values(p.robbed).reduce((a, b) => a + b, 0) / PN * 100;
+      if (total < 0.5 || now - (p.robbedDM || 0) < 30 * 60 * 1000) continue;
+      const who = Object.entries(p.robbed).sort((a, b) => b[1] - a[1]).map(([n, c]) => `<b>${esc(n)}</b> (${(c / PN * 100).toFixed(1)}%)`).join(', ');
+      p.robbed = null; p.robbedDM = now; store.save(p);
+      this.onDM(p.id, `😱 Пока тебя не было, у тебя отжали <b>${total.toFixed(1)}%</b> Говсан!\nГрабили: ${who}\n\nСейчас у тебя ${this.pctOf(p).toFixed(1)}%. Пора возвращать своё 🚗`);
+    }
+  }
+
+  // статистика за сегодня (по Баку): сколько района захватил и сколько машин разбил
+  dayStat(p) {
+    const today = new Date(Date.now() + 4 * 3600e3).toISOString().slice(0, 10);
+    if (p.day?.d !== today) p.day = { d: today, gained: 0, kills: 0 };
+    return p.day;
+  }
+  topDay() {
+    const today = new Date(Date.now() + 4 * 3600e3).toISOString().slice(0, 10);
+    return store.allPlayers().filter(p => p.day?.d === today && (p.day.gained > 0 || p.day.kills > 0))
+      .sort((a, b) => b.day.gained - a.day.gained || b.day.kills - a.day.kills);
+  }
+  topKills() { return store.allPlayers().filter(p => p.kills > 0).sort((a, b) => b.kills - a.kills); }
 
   // игрок поднялся в топе: сообщаем в группу (не чаще раза в 2 минуты на игрока)
   checkRise(p) {
@@ -236,12 +279,30 @@ export class Arena {
     const how = e.kind === 'cut' ? '✂️ перерезал след' : '💥 поглотил';
     this.broadcast({ t: 'feed', text: `${k ? k.name : '???'} ${how} ${v.name}` });
     this.broadcast({ t: 'fx', k: 'boom', x: Math.round(e.x), y: Math.round(e.y), id: v.id });
+    v.streak = 0;
     if (vc) {
       vc.p.deaths++; store.save(vc.p);
+      // запоминаем обидчика: разобьёшь его в ответ — будет «Месть»
+      if (kc) vc.revengeOn = kc.p.id;
       this.send(vc.ws, { t: 'dead', by: k ? k.name : '', kind: e.kind });
     }
     if (kc) {
       kc.p.kills++; store.save(kc.p);
+      this.dayStat(kc.p).kills++;
+      // серии поглощений без смерти
+      k.streak = (k.streak || 0) + 1;
+      const S = { 2: '🔥 Двойное!', 3: '🔥🔥 Тройное!', 4: '💀 Мясорубка!', 5: '👑 Серийный угонщик!' }[Math.min(k.streak, 5)];
+      if (k.streak >= 2) {
+        this.send(kc.ws, { t: 'toast', text: `${S} ${k.streak} подряд`, big: true });
+        if (k.streak >= 3) this.broadcast({ t: 'feed', text: `${S} ${k.name}: ${k.streak} подряд` });
+        if (k.streak === 5 && store.giveMedal(kc.p, 'streak5', '👑 Серийный угонщик: 5 подряд без смерти')) this.send(kc.ws, { t: 'toast', text: '🏅 Новая медаль: Серийный угонщик!', big: true });
+      }
+      if (vc && kc.revengeOn === vc.p.id) {
+        kc.revengeOn = null;
+        this.send(kc.ws, { t: 'toast', text: `😤 МЕСТЬ! ${v.name} получил своё`, big: true });
+        this.send(vc.ws, { t: 'toast', text: `😤 ${k.name} отомстил тебе` });
+        if (store.giveMedal(kc.p, 'revenge', '😤 Месть подаётся холодной')) this.send(kc.ws, { t: 'toast', text: '🏅 Новая медаль: Месть!' });
+      }
       this.send(kc.ws, { t: 'toast', text: e.kind === 'cut' ? `✂️ Ты перерезал след ${v.name}!` : `💥 Ты поглотил ${v.name} на своей земле!` });
       if (v.isBoss) {
         this.onEgg(kc, 'boss');
