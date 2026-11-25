@@ -1,5 +1,6 @@
 // Клиент «Захват Говсан»: меню, отрисовка карты, онлайн и соло
 import * as music from './music.js';
+import * as sfx from './sfx.js';
 import { RING_EDGES } from './city.js';
 import { GW, GH, CELL, W, H, N, PN, PLAY, S, NODES, IMG_W, IMG_H, SPOTS, createGame, addCar, setInput, step, gridFromRLE, cellAt, cellCenter, pct, rng } from './grid.js';
 
@@ -38,7 +39,7 @@ function renderMe() {
 
 // ---------- музыка ----------
 // песни играют всегда; браузер разрешает звук только после первого касания
-addEventListener('pointerdown', () => music.start(), { capture: true });
+addEventListener('pointerdown', () => { music.start(); sfx.unlock(); }, { capture: true });
 addEventListener('keydown', () => music.start(), { capture: true });
 
 // ---------- розыгрыш подарка ----------
@@ -134,9 +135,11 @@ const ZOOM = () => Math.min(1.1, Math.max(0.5, Math.min(VW, VH) / 700));
 const mapImg = new Image(); mapImg.src = 'hovsan.jpg';
 
 // слой территорий: 1 пиксель = 1 клетка
-const terr = document.createElement('canvas'); terr.width = GW; terr.height = GH;
+// слой территорий: 4 пикселя на клетку, заливка + яркий контур по границе участка
+const TS = 4;
+const terr = document.createElement('canvas'); terr.width = GW * TS; terr.height = GH * TS;
 const tctx = terr.getContext('2d');
-const tdata = tctx.createImageData(GW, GH);
+const tdata = tctx.createImageData(GW * TS, GH * TS);
 let owners = new Uint16Array(N);
 let people = {}; // ownerIdx -> [name, color]
 const rgbCache = new Map();
@@ -145,14 +148,32 @@ function rgb(hex) {
   return rgbCache.get(hex);
 }
 function colorOfOwner(o) { return people[o]?.[1] || '#9e9e9e'; }
-function paintCell(i) {
-  const o = owners[i], k = i * 4;
-  if (!o) { tdata.data[k + 3] = 0; return; }
+const TW = GW * TS, D = tdata.data;
+function drawCell(i) {
+  const o = owners[i], cx = i % GW, cy = (i / GW) | 0;
+  if (!o) { for (let y = 0; y < TS; y++) { let k = ((cy * TS + y) * TW + cx * TS) * 4; for (let x = 0; x < TS; x++, k += 4) D[k + 3] = 0; } return; }
   const [r, g, b] = rgb(colorOfOwner(o));
-  tdata.data[k] = r; tdata.data[k + 1] = g; tdata.data[k + 2] = b; tdata.data[k + 3] = 150;
+  const L = cx > 0 && owners[i - 1] !== o, R = cx < GW - 1 && owners[i + 1] !== o;
+  const T = cy > 0 && owners[i - GW] !== o, B = cy < GH - 1 && owners[i + GW] !== o;
+  for (let y = 0; y < TS; y++) {
+    let k = ((cy * TS + y) * TW + cx * TS) * 4;
+    for (let x = 0; x < TS; x++, k += 4) {
+      const edge = (L && x === 0) || (R && x === TS - 1) || (T && y === 0) || (B && y === TS - 1);
+      // контур чуть светлее и плотнее заливки
+      D[k] = edge ? Math.min(255, r + 60) : r; D[k + 1] = edge ? Math.min(255, g + 60) : g; D[k + 2] = edge ? Math.min(255, b + 60) : b;
+      D[k + 3] = edge ? 245 : 120;
+    }
+  }
+}
+// клетку меняем вместе с соседями: у них мог появиться или пропасть контур
+function paintCell(i) {
+  drawCell(i);
+  const x = i % GW;
+  if (x > 0) drawCell(i - 1); if (x < GW - 1) drawCell(i + 1);
+  if (i >= GW) drawCell(i - GW); if (i < N - GW) drawCell(i + GW);
 }
 let terrDirty = true;
-function repaintAll() { for (let i = 0; i < N; i++) paintCell(i); terrDirty = true; }
+function repaintAll() { for (let i = 0; i < N; i++) drawCell(i); terrDirty = true; }
 
 // ---------- управление: тянешь пальцем в сторону поворота ----------
 let want = null;
@@ -202,7 +223,20 @@ function pop(text, color = '#ffd60a') {
   d.style.left = VW / 2 - 50 + 'px'; d.style.top = VH / 2 - 90 + 'px';
   $('hud').appendChild(d); setTimeout(() => d.remove(), 1600);
 }
+// вспышка над только что захваченной землёй
+const flashes = [];
+function flash(cells) {
+  if (cells.length < 6) return;
+  const c = document.createElement('canvas'); c.width = GW; c.height = GH;
+  const x = c.getContext('2d'), im = x.createImageData(GW, GH);
+  for (const i of cells) { im.data[i * 4] = im.data[i * 4 + 1] = im.data[i * 4 + 2] = 255; im.data[i * 4 + 3] = 255; }
+  x.putImageData(im, 0, 0); flashes.push({ c, t: 0 });
+  if (flashes.length > 4) flashes.shift();
+}
+let shake = 0;
+const nearMe = (x, y) => { const m = game && disp.get(game.myId); return m && Math.hypot(m.x - x, m.y - y) < 600; };
 function boom(x, y, color = '#ff9f0a') {
+  if (nearMe(x, y)) { shake = Math.max(shake, 0.45); sfx.play('crash'); }
   for (let i = 0; i < 28; i++) fx.push({ x, y, vx: (Math.random() - .5) * 320, vy: (Math.random() - .5) * 320, life: 0.9, max: 0.9, c: [color, '#ffcc00', '#ff453a', '#666'][i % 4], r: 4 + Math.random() * 5 });
   fx.push({ x, y, ring: true, life: 0.6, max: 0.6, c: '#fff', r: 10 });
 }
@@ -265,6 +299,7 @@ function onServer(m) {
       if (!game.ready) break;
       applyRuns(m.o, m.r);
       if (m.car != null) trails.delete(m.car);
+      if (m.o) { const cells = []; for (let k = 0; k < m.r.length; k += 2) for (let i = m.r[k]; i < m.r[k] + m.r[k + 1]; i++) cells.push(i); flash(cells); }
       break;
     case 's':
       game.cars = m.cars.map(a => ({ id: a[0], x: a[1], y: a[2], a: a[3], alive: !!(a[4] & 1), shield: !!(a[4] & 2), boost: !!(a[4] & 4), isBot: !!(a[4] & 8), isBoss: !!(a[4] & 16), owner: a[5] }));
@@ -278,13 +313,16 @@ function onServer(m) {
         trails.set(c.id, t);
       }
       break;
-    case 'toast': toast(m.text, m.big); if (m.big) haptic('heavy'); break;
+    case 'toast':
+      toast(m.text, m.big); if (m.big) haptic('heavy');
+      if (/Буква/.test(m.text)) sfx.play('letter'); else if (/ПАСХАЛКА/.test(m.text)) sfx.play('egg'); else if (/Турбо|турбо/.test(m.text)) sfx.play('boost');
+      break;
     case 'feed': feed(m.text); break;
     case 'fx':
       if (m.k === 'boom') { boom(m.x, m.y); if (m.id != null) trails.delete(m.id); }
-      else if (m.k === 'bump') { fx.push({ x: m.x, y: m.y, ring: true, life: 0.5, max: 0.5, c: '#fff', r: 8 }); haptic('rigid'); }
+      else if (m.k === 'bump') { fx.push({ x: m.x, y: m.y, ring: true, life: 0.5, max: 0.5, c: '#fff', r: 8 }); haptic('rigid'); if (nearMe(m.x, m.y)) sfx.play('bump'); }
       break;
-    case 'gain': pop(`+${m.pct}% 🏘`); haptic('medium'); break;
+    case 'gain': pop(`+${m.pct}% 🏘`); haptic('medium'); sfx.play('capture', m.pct >= 3 ? 3 : m.pct >= 1 ? 2 : 1); break;
     case 'me': if (ME) Object.assign(ME, m.me); break;
     case 'dead': {
       const d = $('deathMsg'); d.classList.remove('hidden');
@@ -328,14 +366,19 @@ function soloTick(dt) {
   setInput(g.cars.get(G.myId), currentWant());
   step(g, dt);
   for (const e of g.events) {
-    if (e.type === 'paint') { for (const i of e.cells) paintCell(i); terrDirty = true; if (e.car?.id === G.myId && e.cells.length / PN * 100 >= 0.3) { pop(`+${(e.cells.length / PN * 100).toFixed(1)}% 🏘`); haptic('medium'); } }
+    if (e.type === 'paint') {
+      for (const i of e.cells) paintCell(i); terrDirty = true;
+      if (e.o) flash(e.cells);
+      const gp = e.cells.length / PN * 100;
+      if (e.car?.id === G.myId && gp >= 0.3) { pop(`+${gp.toFixed(1)}% 🏘`); haptic('medium'); sfx.play('capture', gp >= 3 ? 3 : gp >= 1 ? 2 : 1); }
+    }
     else if (e.type === 'kill') {
       boom(e.x, e.y);
       feed(`${e.killer?.name || '???'} ${e.kind === 'cut' ? '✂️' : '💥'} ${e.victim.name}`);
       if (e.victim.id === G.myId) { haptic('heavy'); toast(e.kind === 'cut' ? '✂️ Твой след перерезали!' : '💥 Тебя поглотили!', true); }
       else if (e.killer?.id === G.myId) haptic('medium');
-    } else if (e.type === 'boost' && e.car.id === G.myId) toast('🚌 Турбо!');
-    else if (e.type === 'bump') fx.push({ x: e.x, y: e.y, ring: true, life: 0.5, max: 0.5, c: '#fff', r: 8 });
+    } else if (e.type === 'boost' && e.car.id === G.myId) { toast('🚌 Турбо!'); sfx.play('boost'); }
+    else if (e.type === 'bump') { fx.push({ x: e.x, y: e.y, ring: true, life: 0.5, max: 0.5, c: '#fff', r: 8 }); if (nearMe(e.x, e.y)) sfx.play('bump'); }
   }
   g.events.length = 0;
   G.timeLeft -= dt;
@@ -401,7 +444,9 @@ function draw(dt, t) {
   cam.y = H + 2 * M > hh * 2 ? Math.min(H + M - hh, Math.max(hh - M, cam.y)) : H / 2;
   ctx.fillStyle = '#101418'; ctx.fillRect(0, 0, VW, VH);
   ctx.save();
-  ctx.translate(VW / 2, VH / 2); ctx.scale(z, z); ctx.translate(-cam.x, -cam.y);
+  shake = Math.max(0, shake - dt);
+  const sh = shake * 14;
+  ctx.translate(VW / 2 + (Math.random() - 0.5) * sh, VH / 2 + (Math.random() - 0.5) * sh); ctx.scale(z, z); ctx.translate(-cam.x, -cam.y);
   // карта
   if (mapImg.complete && mapImg.naturalWidth) ctx.drawImage(mapImg, 0, 0, IMG_W * S, IMG_H * S);
   // Окружная по краю карты
@@ -417,6 +462,11 @@ function draw(dt, t) {
   // мягкие края территорий смотрятся лучше пиксельной лесенки
   ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
   ctx.drawImage(terr, 0, 0, W, H);
+  for (let i = flashes.length - 1; i >= 0; i--) {
+    const f = flashes[i]; f.t += dt;
+    if (f.t > 0.7) { flashes.splice(i, 1); continue; }
+    ctx.globalAlpha = 0.55 * (1 - f.t / 0.7); ctx.drawImage(f.c, 0, 0, W, H); ctx.globalAlpha = 1;
+  }
   // особые места
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   for (const s of SPOTS) { ctx.font = '34px serif'; ctx.fillText(s.emoji, s.x, s.y - 30 + Math.sin(t * 3 + s.x) * 3); }
@@ -439,18 +489,66 @@ function draw(dt, t) {
     for (const p of pts) { if (Math.hypot(p[0] - px, p[1] - py) > CELL * 2.5) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]); px = p[0]; py = p[1]; }
     if (Math.hypot(d.x - px, d.y - py) < CELL * 2.5) ctx.lineTo(d.x, d.y);
     ctx.strokeStyle = 'rgba(0,0,0,0.45)'; ctx.lineWidth = 15; ctx.stroke();
+    ctx.shadowColor = col; ctx.shadowBlur = 16;
     ctx.strokeStyle = col; ctx.lineWidth = 10; ctx.setLineDash([22, 10]); ctx.lineDashOffset = -t * 60; ctx.stroke(); ctx.setLineDash([]);
+    ctx.shadowBlur = 0;
+  }
+  // дым из-под колёс: на турбо и на поворотах
+  for (const c of cars) {
+    if (!c.alive) continue;
+    const d = disp.get(c.id); if (!d) continue;
+    const turning = Math.abs(((c.a - d.a + 3 * Math.PI) % (2 * Math.PI)) - Math.PI) > 0.25;
+    if ((c.boost || turning) && Math.random() < (c.boost ? 0.9 : 0.5) && fx.length < 220) {
+      fx.push({ x: d.x - Math.cos(d.a) * 18, y: d.y - Math.sin(d.a) * 18, vx: (Math.random() - .5) * 30, vy: (Math.random() - .5) * 30, life: 0.7, max: 0.7, c: c.boost ? '#ffcf8a' : '#d8d8d8', r: 6, smoke: true });
+    }
   }
   drawFx(dt);
   // машины
   for (const c of cars) if (c.alive) drawCar(c, disp.get(c.id), t, c.id === game.myId);
   ctx.restore();
+  drawNight(cars, z);
   if (game?.mode === 'solo' && game.mods.fog) {
     const fg = ctx.createRadialGradient(VW / 2, VH / 2, 110 * z, VW / 2, VH / 2, 380 * z);
     fg.addColorStop(0, 'rgba(5,10,20,0)'); fg.addColorStop(1, 'rgba(5,10,20,0.97)');
     ctx.fillStyle = fg; ctx.fillRect(0, 0, VW, VH);
   }
   if (game) hud(cars, me);
+}
+
+// ночь по времени Баку: темнеет, у машин горят фары
+const night = document.createElement('canvas'), nctx = night.getContext('2d');
+function darkness() {
+  const h = (new Date().getUTCHours() + 4) % 24 + new Date().getUTCMinutes() / 60;
+  if (h >= 20 || h < 5) return 0.55;
+  if (h >= 18) return (h - 18) / 2 * 0.55;      // закат
+  if (h < 7) return (7 - h) / 2 * 0.55;         // рассвет
+  return 0;
+}
+function drawNight(cars, z) {
+  const dk = qs.get("night") ? 0.55 : darkness();
+  if (!dk || !game) return;
+  if (night.width !== cv.width || night.height !== cv.height) { night.width = cv.width; night.height = cv.height; }
+  nctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  nctx.globalCompositeOperation = 'source-over'; nctx.clearRect(0, 0, VW, VH);
+  nctx.fillStyle = `rgba(6,10,32,${dk})`; nctx.fillRect(0, 0, VW, VH);
+  nctx.globalCompositeOperation = 'destination-out';
+  for (const c of cars) {
+    if (!c.alive) continue;
+    const d = disp.get(c.id); if (!d) continue;
+    const sx = VW / 2 + (d.x - cam.x) * z, sy = VH / 2 + (d.y - cam.y) * z;
+    if (sx < -300 || sy < -300 || sx > VW + 300 || sy > VH + 300) continue;
+    let gr = nctx.createRadialGradient(sx, sy, 0, sx, sy, 70 * z);
+    gr.addColorStop(0, 'rgba(0,0,0,0.9)'); gr.addColorStop(1, 'rgba(0,0,0,0)');
+    nctx.fillStyle = gr; nctx.beginPath(); nctx.arc(sx, sy, 70 * z, 0, 7); nctx.fill();
+    // фары: конус вперёд
+    const fx2 = sx + Math.cos(d.a) * 150 * z, fy2 = sy + Math.sin(d.a) * 150 * z;
+    gr = nctx.createRadialGradient(sx, sy, 10 * z, fx2, fy2, 120 * z);
+    gr.addColorStop(0, 'rgba(0,0,0,0.95)'); gr.addColorStop(1, 'rgba(0,0,0,0)');
+    nctx.fillStyle = gr; nctx.beginPath(); nctx.moveTo(sx, sy);
+    nctx.arc(sx, sy, 230 * z, d.a - 0.45, d.a + 0.45); nctx.closePath(); nctx.fill();
+  }
+  nctx.globalCompositeOperation = 'source-over';
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(night, 0, 0); ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 }
 
 function circle(x, y, r) { ctx.beginPath(); ctx.arc(x, y, Math.max(0, r), 0, Math.PI * 2); }
@@ -463,6 +561,7 @@ function drawFx(dt) {
     const k = p.life / p.max;
     ctx.globalAlpha = k;
     if (p.ring) { ctx.strokeStyle = p.c; ctx.lineWidth = 4; circle(p.x, p.y, p.r + (1 - k) * 70); ctx.stroke(); }
+    else if (p.smoke) { p.x += p.vx * dt; p.y += p.vy * dt; ctx.globalAlpha = k * 0.45; ctx.fillStyle = p.c; circle(p.x, p.y, p.r * (2.2 - k)); ctx.fill(); }
     else { p.x += p.vx * dt; p.y += p.vy * dt; ctx.fillStyle = p.c; circle(p.x, p.y, p.r * (k + 0.3)); ctx.fill(); }
     ctx.globalAlpha = 1;
   }
