@@ -1,7 +1,7 @@
 // Движок «Захват Говсан»: машины ездят по карте, оставляют след, замкнул — территория твоя.
 // Один и тот же код крутится на сервере (онлайн) и в браузере (соло).
 import { ROAD_B64 } from './roads.js';
-import { S, NODES, EDGES, angleOf, edgeLen, SPAWN_NODES, BLOCKS_AT, pathTo } from './city.js';
+import { S, NODES, EDGES, OUTER, angleOf, edgeLen, SPAWN_NODES, BLOCKS_AT, pathTo } from './city.js';
 export { S, NODES };
 
 export const IMG_W = 1080, IMG_H = 1073;
@@ -24,6 +24,7 @@ export const ROAD = (() => {
 })();
 export const ROAD_CELLS = [...ROAD.keys()].filter(i => ROAD[i]);
 
+
 // особые места (координаты карты ×S)
 export const SPOTS = [
   { kind: 'fish', x: 905 * S, y: 588 * S, r: 70, emoji: '🐟' },
@@ -38,6 +39,33 @@ export const cellAt = (x, y) => {
   return cy * GW + cx;
 };
 export const cellCenter = (i) => [(i % GW + 0.5) * CELL, (Math.floor(i / GW) + 0.5) * CELL];
+
+// игровая зона: всё, что внутри внешнего кольца улиц, плюс сами улицы.
+// За городом (куда не замкнуть круг) захватывать нельзя, и в проценты эта земля не входит,
+// поэтому 100% реально взять.
+export const PLAY = (() => {
+  const P = new Uint8Array(N);
+  const poly = OUTER.map(i => [NODES[i].x, NODES[i].y]);
+  const inside = (x, y) => {
+    let r = false;
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+      const [xi, yi] = poly[i], [xj, yj] = poly[j];
+      if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) r = !r;
+    }
+    return r;
+  };
+  for (let i = 0; i < N; i++) {
+    const x = (i % GW + 0.5) * CELL, y = (Math.floor(i / GW) + 0.5) * CELL;
+    if (inside(x, y)) P[i] = 1;
+  }
+  // клетки, по которым проезжает машина (след на них тоже становится землёй)
+  for (const [a, b] of EDGES) {
+    const A = NODES[a], B = NODES[b], n = Math.ceil(Math.hypot(B.x - A.x, B.y - A.y) / (CELL / 3));
+    for (let k = 0; k <= n; k++) P[cellAt(A.x + (B.x - A.x) * k / n, A.y + (B.y - A.y) * k / n)] = 1;
+  }
+  return P;
+})();
+export const PN = PLAY.reduce((s, v) => s + v, 0);
 
 export function rng(seed) {
   let s = seed >>> 0 || 1;
@@ -74,13 +102,15 @@ export function createGame(opts = {}) {
     rand: opts.rand || Math.random, mods: opts.mods || {}, solo: !!opts.solo,
     letter: null, letterT: 25,
   };
+  // земля за городом (из старых сохранений) никому не принадлежит
+  for (let i = 0; i < N; i++) if (!PLAY[i]) g.owners[i] = 0;
   for (let i = 0; i < N; i++) if (g.owners[i]) g.counts.set(g.owners[i], (g.counts.get(g.owners[i]) || 0) + 1);
   return g;
 }
 
 function setCell(g, i, o, changed) {
   const prev = g.owners[i];
-  if (prev === o) return;
+  if (prev === o || (o && !PLAY[i])) return;
   if (prev) g.counts.set(prev, (g.counts.get(prev) || 1) - 1);
   if (o) g.counts.set(o, (g.counts.get(o) || 0) + 1);
   g.owners[i] = o;
@@ -297,4 +327,4 @@ export function step(g, dt) {
   }
 }
 
-export const pct = (g, o) => (g.counts.get(o) || 0) / N * 100;
+export const pct = (g, o) => Math.min(100, (g.counts.get(o) || 0) / PN * 100);

@@ -1,5 +1,5 @@
 // Онлайн-режим «Захват Говсан»: одна карта на всех, территория сохраняется навсегда
-import { createGame, addCar, removeCar, setInput, step, clearOwner, gridToRLE, gridFromRLE, runs, cellAt, N, pct } from '../public/grid.js';
+import { createGame, addCar, removeCar, setInput, step, clearOwner, gridToRLE, gridFromRLE, runs, cellAt, N, PN, pct } from '../public/grid.js';
 import * as store from './store.js';
 
 const TICK = 1 / 30;
@@ -172,13 +172,13 @@ export class Arena {
     this.broadcast({ t: 'paint', o: e.o, r: runs(e.cells), car: e.car?.id ?? null });
     const c = e.car && this.byCar.get(e.car.id);
     if (!c) return;
-    const gained = e.cells.length / N * 100;
+    const gained = e.cells.length / PN * 100;
     if (gained >= 0.3) this.send(c.ws, { t: 'gain', pct: +gained.toFixed(2) });
     this.meUpdate(c);
     // у кого отжали землю
     for (const [o, n] of e.victims || []) {
       const vc = [...this.clients.values()].find(x => x.car.owner === o);
-      if (vc && n > 20) { this.send(vc.ws, { t: 'toast', text: `😱 ${c.car.name} отжал у тебя ${(n / N * 100).toFixed(1)}% района!` }); this.meUpdate(vc); }
+      if (vc && n > 20) { this.send(vc.ws, { t: 'toast', text: `😱 ${c.car.name} отжал у тебя ${(n / PN * 100).toFixed(1)}% района!` }); this.meUpdate(vc); }
     }
     // в группу пишем только про большие захваты (20%+) и про рост в топе
     if (gained >= 20) this.onAnnounce(`⚡⚡ <b>${esc(c.car.name)}</b> одним кругом захватил <b>${gained.toFixed(1)}%</b> Говсан!`);

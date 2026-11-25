@@ -1,6 +1,7 @@
 // Клиент «Захват Говсан»: меню, отрисовка карты, онлайн и соло
 import * as music from './music.js';
-import { GW, GH, CELL, W, H, N, S, IMG_W, IMG_H, SPOTS, createGame, addCar, setInput, step, gridFromRLE, cellAt, cellCenter, pct, rng } from './grid.js';
+import { RING_EDGES } from './city.js';
+import { GW, GH, CELL, W, H, N, PN, PLAY, S, NODES, IMG_W, IMG_H, SPOTS, createGame, addCar, setInput, step, gridFromRLE, cellAt, cellCenter, pct, rng } from './grid.js';
 
 const tg = window.Telegram?.WebApp;
 try { tg?.ready(); tg?.expand(); tg?.disableVerticalSwipes?.(); tg?.setHeaderColor?.('#101418'); tg?.setBackgroundColor?.('#101418'); } catch {}
@@ -327,7 +328,7 @@ function soloTick(dt) {
   setInput(g.cars.get(G.myId), currentWant());
   step(g, dt);
   for (const e of g.events) {
-    if (e.type === 'paint') { for (const i of e.cells) paintCell(i); terrDirty = true; if (e.car?.id === G.myId && e.cells.length / N * 100 >= 0.3) { pop(`+${(e.cells.length / N * 100).toFixed(1)}% 🏘`); haptic('medium'); } }
+    if (e.type === 'paint') { for (const i of e.cells) paintCell(i); terrDirty = true; if (e.car?.id === G.myId && e.cells.length / PN * 100 >= 0.3) { pop(`+${(e.cells.length / PN * 100).toFixed(1)}% 🏘`); haptic('medium'); } }
     else if (e.type === 'kill') {
       boom(e.x, e.y);
       feed(`${e.killer?.name || '???'} ${e.kind === 'cut' ? '✂️' : '💥'} ${e.victim.name}`);
@@ -395,13 +396,21 @@ function draw(dt, t) {
   const z = game ? ZOOM() : ZOOM() * 0.8;
   // камера не уезжает за край карты (там пустота)
   const hw = VW / 2 / z, hh = VH / 2 / z;
-  cam.x = W > hw * 2 ? Math.min(W - hw, Math.max(hw, cam.x)) : W / 2;
-  cam.y = H > hh * 2 ? Math.min(H - hh, Math.max(hh, cam.y)) : H / 2;
+  const M = 90; // немного видно за краем, чтобы Окружную было видно целиком
+  cam.x = W + 2 * M > hw * 2 ? Math.min(W + M - hw, Math.max(hw - M, cam.x)) : W / 2;
+  cam.y = H + 2 * M > hh * 2 ? Math.min(H + M - hh, Math.max(hh - M, cam.y)) : H / 2;
   ctx.fillStyle = '#101418'; ctx.fillRect(0, 0, VW, VH);
   ctx.save();
   ctx.translate(VW / 2, VH / 2); ctx.scale(z, z); ctx.translate(-cam.x, -cam.y);
   // карта
   if (mapImg.complete && mapImg.naturalWidth) ctx.drawImage(mapImg, 0, 0, IMG_W * S, IMG_H * S);
+  // Окружная по краю карты
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.beginPath();
+  for (const [a, b] of RING_EDGES) { ctx.moveTo(NODES[a].x, NODES[a].y); ctx.lineTo(NODES[b].x, NODES[b].y); }
+  ctx.strokeStyle = 'rgba(20,20,24,0.55)'; ctx.lineWidth = 40; ctx.stroke();
+  ctx.strokeStyle = '#7a7a7e'; ctx.lineWidth = 32; ctx.stroke();
+  ctx.setLineDash([24, 22]); ctx.strokeStyle = 'rgba(255,255,255,0.55)'; ctx.lineWidth = 2.5; ctx.stroke(); ctx.setLineDash([]);
   ctx.fillStyle = 'rgba(10,15,25,0.22)'; ctx.fillRect(0, 0, W, H);
   // территории
   if (terrDirty) { tctx.putImageData(tdata, 0, 0); terrDirty = false; }
@@ -494,7 +503,7 @@ function hud(cars, me) {
   if (performance.now() - hudT < 200) return; hudT = performance.now();
   const counts = new Map();
   for (let i = 0; i < N; i++) if (owners[i]) counts.set(owners[i], (counts.get(owners[i]) || 0) + 1);
-  const myPct = (counts.get(game.myOwner) || 0) / N * 100;
+  const myPct = (counts.get(game.myOwner) || 0) / PN * 100;
   $('hudPct').textContent = `🏘 ${myPct.toFixed(1)}%`;
   $('hudKills').textContent = '💥 ' + (game.mode === 'solo' ? game.g.cars.get(game.myId).kills : ME?.kills ?? 0);
   // миникарта
@@ -512,7 +521,7 @@ function hud(cars, me) {
   }
   // табло: все, у кого есть земля
   const list = [...counts.entries()].filter(([o]) => people[o]).sort((a, b) => b[1] - a[1]).slice(0, 6);
-  $('board').innerHTML = list.map(([o, n]) => `<div class="${o === game.myOwner ? 'me' : ''}"><span><i class="dot" style="background:${colorOfOwner(o)}"></i>${esc(people[o][0].replace('🤖 ', ''))}</span><span>${(n / N * 100).toFixed(1)}%</span></div>`).join('');
+  $('board').innerHTML = list.map(([o, n]) => `<div class="${o === game.myOwner ? 'me' : ''}"><span><i class="dot" style="background:${colorOfOwner(o)}"></i>${esc(people[o][0].replace('🤖 ', ''))}</span><span>${(n / PN * 100).toFixed(1)}%</span></div>`).join('');
 }
 
 show('menu');
