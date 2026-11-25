@@ -29,8 +29,8 @@ ICONS["fb"] = '<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0
 HERE = os.path.dirname(os.path.abspath(__file__))
 DIST = os.path.join(HERE, "dist")
 VERSION = "1.0.0"
-PRICE = 19
-BUNDLE_PRICE = 49
+PRICE = 14
+BUNDLE_PRICE = 39
 e = html.escape
 
 
@@ -395,7 +395,7 @@ def page(N):
         pr = ""
         if len(s) > 3:
             val = s[3]
-            shown = val if not val[0].isdigit() else f"{cur}{val}"
+            shown = f"{cur}{val}" if val.replace(",", "").replace(".", "").isdigit() else val
             if val.startswith("From"):
                 shown = f"<small>from</small> {cur}{val[5:]}"
             pr = f'<div class="price"><span>Price</span><b>{shown}</b></div>'
