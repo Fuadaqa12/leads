@@ -1,0 +1,12 @@
+{
+  "siteName": "Toolora",
+  "siteUrl": "https://fuadaqa12.github.io/freetools/",
+  "customDomain": "",
+  "languages": ["en", "ru", "es", "pt", "fr", "de", "tr", "az", "ar", "hi"],
+  "adsenseClient": "",
+  "adSlots": { "top": "", "mid": "", "bottom": "", "side": "" },
+  "gaId": "",
+  "gscVerification": "",
+  "contactEmail": "",
+  "outDir": "dist"
+}
