@@ -165987,9 +165987,2545 @@
    "near": "Клиника \"Саглам Хаят\"",
    "amen": [],
    "enriched": true
+  },
+  "ChIJvURT0VZ9MEARpU7KCTe6UCU": {
+   "id": "ChIJvURT0VZ9MEARpU7KCTe6UCU",
+   "name": "Texnoservis",
+   "slug": "texnoservis-2650",
+   "query": "ремонт техники",
+   "city": "Bakı",
+   "category": "Услуги",
+   "phone": "",
+   "wa": "",
+   "address": "1/25 Əhməd Rəcəbli, Bakı, Азербайджан",
+   "rating": 3,
+   "reviews": 59,
+   "maps": "https://maps.google.com/?cid=2688853723090407077&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.408318,
+    49.862038
+   ],
+   "hours": [
+    [
+     540,
+     1080
+    ],
+    [
+     540,
+     1080
+    ],
+    [
+     540,
+     1080
+    ],
+    [
+     540,
+     1080
+    ],
+    [
+     540,
+     1080
+    ],
+    [
+     600,
+     1020
+    ],
+    []
+   ],
+   "district": "Nərimanov",
+   "near": "Sağlam Ailə",
+   "amen": [],
+   "enriched": true
+  },
+  "ChIJN2BydFF9MEARNM_X603KW5s": {
+   "id": "ChIJN2BydFF9MEARNM_X603KW5s",
+   "name": "Bakond Service",
+   "slug": "bakond-service-20f6",
+   "query": "ремонт техники",
+   "city": "Bakı",
+   "category": "Услуги",
+   "phone": "+994 12 465 54 54",
+   "wa": "",
+   "address": "28 Əhməd Rəcəbli, Bakı, Азербайджан",
+   "rating": 4.3,
+   "reviews": 41,
+   "maps": "https://maps.google.com/?cid=11194763734777581364&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.4075,
+    49.865833
+   ],
+   "hours": [
+    [
+     540,
+     1080
+    ],
+    [
+     540,
+     1080
+    ],
+    [
+     540,
+     1080
+    ],
+    [
+     540,
+     1080
+    ],
+    [
+     540,
+     1080
+    ],
+    [
+     540,
+     1080
+    ],
+    []
+   ],
+   "district": "Nərimanov",
+   "near": "MediStyle Hospital",
+   "amen": [],
+   "enriched": true
+  },
+  "ChIJTx312ARjMEAR86JzmNqs24U": {
+   "id": "ChIJTx312ARjMEAR86JzmNqs24U",
+   "name": "Eşref Soyuducu temiri",
+   "slug": "esref-soyuducu-temiri-a7c1",
+   "query": "ремонт техники",
+   "city": "Bakı",
+   "category": "Услуги",
+   "phone": "+994 51 545 60 91",
+   "wa": "994515456091",
+   "address": "40 Mukhtar Fataliyev St, Baku, Азербайджан",
+   "rating": 5,
+   "reviews": 12,
+   "maps": "https://maps.google.com/?cid=9645493081804612339&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.421643,
+    49.960783
+   ],
+   "hours": [
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ]
+   ],
+   "district": "Sabunchu",
+   "near": "Orta məktəb №107",
+   "amen": [
+    "parking"
+   ],
+   "enriched": true
+  },
+  "ChIJxatbKgB9MEARh8F625BMpAM": {
+   "id": "ChIJxatbKgB9MEARh8F625BMpAM",
+   "name": "Elxan usta",
+   "slug": "elxan-usta-f58d",
+   "query": "ремонт техники",
+   "city": "Bakı",
+   "category": "Услуги",
+   "phone": "",
+   "wa": "",
+   "address": "30 Cəlil Məmmədquluzadə, Baku, Азербайджан",
+   "rating": "",
+   "reviews": 0,
+   "maps": "https://maps.google.com/?cid=262418863335588231&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.381,
+    49.832602
+   ],
+   "district": "Nasimi",
+   "near": "ст. Низами",
+   "amen": [],
+   "enriched": true
+  },
+  "ChIJecep71uHMEARYrprCV2TFTM": {
+   "id": "ChIJecep71uHMEARYrprCV2TFTM",
+   "name": "Repair shop",
+   "slug": "repair-shop-c274",
+   "query": "ремонт техники",
+   "city": "Bakı",
+   "category": "Услуги",
+   "phone": "+994 55 555 35 60",
+   "wa": "994555553560",
+   "address": "Yuksalish HC, Bakı, Азербайджан",
+   "rating": "",
+   "reviews": 0,
+   "maps": "https://maps.google.com/?cid=3681010298244545122&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.400215,
+    49.796786
+   ],
+   "hours": [
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ]
+   ],
+   "district": "Yasamal",
+   "near": "2 saylı poçt filialının 12 saylı poçt",
+   "amen": [],
+   "enriched": true
+  },
+  "ChIJQUQ25GSHMEARDfpk0_liqck": {
+   "id": "ChIJQUQ25GSHMEARDfpk0_liqck",
+   "name": "Marco Computer Technology",
+   "slug": "marco-computer-technology-4341",
+   "query": "ремонт техники",
+   "city": "Bakı",
+   "category": "Консультант",
+   "phone": "+994 12 432 07 44",
+   "wa": "",
+   "address": "Baku, A.Abassov, 1С, Bakı 1038, Азербайджан",
+   "rating": 5,
+   "reviews": 3,
+   "maps": "https://maps.google.com/?cid=14531254497820604941&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "сайт не для телефона",
+   "site_url": "http://marco.az/",
+   "added": "2026-11-28",
+   "weak": "mobile",
+   "loc": [
+    40.385636,
+    49.802434
+   ],
+   "hours": [
+    [
+     600,
+     1080
+    ],
+    [
+     600,
+     1080
+    ],
+    [
+     600,
+     1080
+    ],
+    [
+     600,
+     1080
+    ],
+    [
+     600,
+     1080
+    ],
+    [
+     660,
+     900
+    ],
+    []
+   ],
+   "district": "Yasamal",
+   "near": "Школа №158",
+   "amen": [],
+   "enriched": true
+  },
+  "ChIJpfS3uNZ9MEAR-ERgJe3NzC4": {
+   "id": "ChIJpfS3uNZ9MEAR-ERgJe3NzC4",
+   "name": "Xonca Sweet Flower",
+   "slug": "xonca-sweet-flower-a4b4",
+   "query": "кейтеринг",
+   "city": "Bakı",
+   "category": "Продукты питания",
+   "phone": "+994 50 559 97 07",
+   "wa": "994505599707",
+   "address": "33 Təbriz, Bakı, Азербайджан",
+   "rating": 5,
+   "reviews": 3,
+   "maps": "https://maps.google.com/?cid=3372296639411668216&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.390559,
+    49.853463
+   ],
+   "hours": [
+    [
+     660,
+     1140
+    ],
+    [
+     660,
+     1140
+    ],
+    [
+     660,
+     1140
+    ],
+    [
+     660,
+     1140
+    ],
+    [
+     660,
+     1140
+    ],
+    [
+     660,
+     1140
+    ],
+    [
+     660,
+     1140
+    ]
+   ],
+   "district": "Nərimanov",
+   "near": "СРЕДНЯЯ ШКОЛА №177",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
+  },
+  "ChIJY_OGhrB9MEAR6OpO9ZqltUk": {
+   "id": "ChIJY_OGhrB9MEAR6OpO9ZqltUk",
+   "name": "Royal Castle Bar & Catering",
+   "slug": "royal-castle-bar-catering-0a0b",
+   "query": "кейтеринг",
+   "city": "Bakı",
+   "category": "Консультант",
+   "phone": "+994 51 566 76 82",
+   "wa": "994515667682",
+   "address": "Bakı şəhəri, küç. 191 Lev Tolstoy, Baku 1005, Азербайджан",
+   "rating": 5,
+   "reviews": 17,
+   "maps": "https://maps.google.com/?cid=5311333420512504552&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.374155,
+    49.842129
+   ],
+   "hours": [
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ]
+   ],
+   "district": "Nasimi",
+   "near": "1 saylı orta məktəb",
+   "amen": [
+    "parking"
+   ],
+   "enriched": true
+  },
+  "ChIJc7g2T6V9MEAR2FlAFxkb8gY": {
+   "id": "ChIJc7g2T6V9MEAR2FlAFxkb8gY",
+   "name": "Mon Caprice - beauty salon",
+   "slug": "mon-caprice-beauty-salon-a4c4",
+   "query": "салон красоты",
+   "city": "Bakı",
+   "category": "Салон красоты",
+   "phone": "+994 12 409 00 08",
+   "wa": "",
+   "address": "199 ул. Башира Сафароглу, Bakı, Азербайджан",
+   "rating": 5,
+   "reviews": 4,
+   "maps": "https://maps.google.com/?cid=500492303169771992&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.375,
+    49.839642
+   ],
+   "hours": [
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ]
+   ],
+   "district": "Nəsimi",
+   "near": "International Medical Center 1",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
+  },
+  "ChIJ0yoYR4t9MEARKRtpQVBYpxU": {
+   "id": "ChIJ0yoYR4t9MEARKRtpQVBYpxU",
+   "name": "loook salon",
+   "slug": "loook-salon-364e",
+   "query": "салон красоты",
+   "city": "Bakı",
+   "category": "Салон красоты",
+   "phone": "",
+   "wa": "",
+   "address": "106 Şamil Əzizbəyov, Bakı, Азербайджан",
+   "rating": 4.4,
+   "reviews": 18,
+   "maps": "https://maps.google.com/?cid=1560312897625201449&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "Instagram",
+   "site_url": "https://www.instagram.com/loook.salon/",
+   "added": "2026-11-28",
+   "loc": [
+    40.379603,
+    49.838209
+   ],
+   "hours": [
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ]
+   ],
+   "district": "Nəsimi",
+   "near": "Bakı Slavyan Universitetinin Məktəb Lisey Kompleksi",
+   "amen": [],
+   "enriched": true
+  },
+  "ChIJ0eUBltl9MEARDhBAc5x87Yg": {
+   "id": "ChIJ0eUBltl9MEARDhBAc5x87Yg",
+   "name": "Gaga Beauty Factory",
+   "slug": "gaga-beauty-factory-5359",
+   "query": "салон красоты",
+   "city": "Bakı",
+   "category": "Салон красоты",
+   "phone": "+994 50 580 29 99",
+   "wa": "994505802999",
+   "address": "208 Dilarə Əliyeva Küçəsi, Bakı, Азербайджан",
+   "rating": 4,
+   "reviews": 4,
+   "maps": "https://maps.google.com/?cid=9866679370028945422&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.376827,
+    49.84529
+   ],
+   "hours": [
+    [
+     660,
+     1140
+    ],
+    [
+     660,
+     1140
+    ],
+    [
+     660,
+     1140
+    ],
+    [
+     660,
+     1140
+    ],
+    [
+     660,
+     1140
+    ],
+    [
+     660,
+     1140
+    ],
+    [
+     660,
+     1140
+    ]
+   ],
+   "district": "Nəsimi",
+   "near": "Торговый Центр 28 Mall",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
+  },
+  "ChIJT3jF9L19MEARqUQd1-zPvO8": {
+   "id": "ChIJT3jF9L19MEARqUQd1-zPvO8",
+   "name": "Barber shop 49",
+   "slug": "barber-shop-49-a9ab",
+   "query": "барбершоп",
+   "city": "Bakı",
+   "category": "Мужская парикмахерская",
+   "phone": "+994 77 119 84 49",
+   "wa": "994771198449",
+   "address": "40a Yusif Məmmədəliyev, Bakı 1000, Азербайджан",
+   "rating": 4.9,
+   "reviews": 178,
+   "maps": "https://maps.google.com/?cid=17274910886814631081&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.371241,
+    49.838632
+   ],
+   "hours": [
+    [
+     540,
+     1410
+    ],
+    [
+     540,
+     1410
+    ],
+    [
+     540,
+     1410
+    ],
+    [
+     540,
+     1410
+    ],
+    [
+     540,
+     1410
+    ],
+    [
+     540,
+     1410
+    ],
+    [
+     540,
+     1410
+    ]
+   ],
+   "district": "Səbail",
+   "near": "Сад имени Хагани",
+   "amen": [
+    "kids"
+   ],
+   "enriched": true
+  },
+  "ChIJw-UZQAB9MEARLw6JLv5nTqk": {
+   "id": "ChIJw-UZQAB9MEARLw6JLv5nTqk",
+   "name": "Barber Shop",
+   "slug": "barber-shop-b24d",
+   "query": "барбершоп",
+   "city": "Bakı",
+   "category": "Мужская парикмахерская",
+   "phone": "",
+   "wa": "",
+   "address": "9VG3+MX3, Nizami St, Baku, Азербайджан",
+   "rating": 5,
+   "reviews": 1,
+   "maps": "https://maps.google.com/?cid=12199802781993340463&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.376627,
+    49.854918
+   ],
+   "hours": [
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ]
+   ],
+   "district": "",
+   "near": "MediClub",
+   "amen": [
+    "kids"
+   ],
+   "enriched": true
+  },
+  "ChIJj5KsFDZ9MEARtx__Po5Owb8": {
+   "id": "ChIJj5KsFDZ9MEARtx__Po5Owb8",
+   "name": "Paris Küaför-Barber Shop",
+   "slug": "paris-kuafor-barber-shop-7395",
+   "query": "барбершоп",
+   "city": "Bakı",
+   "category": "Мужская парикмахерская",
+   "phone": "+994 51 775 34 35",
+   "wa": "994517753435",
+   "address": "20 Xan Şuşinski, Bakı, Азербайджан",
+   "rating": 5,
+   "reviews": 5,
+   "maps": "https://maps.google.com/?cid=13817411504598622135&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.39546,
+    49.83741
+   ],
+   "hours": [
+    [
+     540,
+     1290
+    ],
+    [
+     540,
+     1290
+    ],
+    [
+     540,
+     1290
+    ],
+    [
+     540,
+     1290
+    ],
+    [
+     540,
+     1290
+    ],
+    [
+     540,
+     1290
+    ],
+    [
+     540,
+     1290
+    ]
+   ],
+   "district": "Nəsimi",
+   "near": "Referans Poliklinik Nəsimi filialı",
+   "amen": [
+    "card",
+    "kids"
+   ],
+   "enriched": true
+  },
+  "ChIJqTQkQAB9MEARRRENoJ7COzw": {
+   "id": "ChIJqTQkQAB9MEARRRENoJ7COzw",
+   "name": "Stilist Ruslan Barbershop",
+   "slug": "stilist-ruslan-barbershop-c335",
+   "query": "барбершоп",
+   "city": "Bakı",
+   "category": "Мужская парикмахерская",
+   "phone": "",
+   "wa": "",
+   "address": "39 Faiq Yusifov, Bakı, Азербайджан",
+   "rating": 5,
+   "reviews": 2,
+   "maps": "https://maps.google.com/?cid=4340276652447437125&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.402087,
+    49.873284
+   ],
+   "district": "Nərimanov",
+   "near": "Narimanov Park",
+   "amen": [
+    "card",
+    "kids"
+   ],
+   "enriched": true
+  },
+  "ChIJWV9JeatlMEAREneWUP8yP9E": {
+   "id": "ChIJWV9JeatlMEAREneWUP8yP9E",
+   "name": "Bakı Əyləc Mərkəzi",
+   "slug": "baki-eylec-merkezi-c67b",
+   "query": "автосервис",
+   "city": "Bakı",
+   "category": "Ремонт и обслуживание автомобилей",
+   "phone": "+994 50 634 30 34",
+   "wa": "994506343034",
+   "address": "50 General Əliağa Şıxlınski, Bakı, Азербайджан",
+   "rating": 4.5,
+   "reviews": 15,
+   "maps": "https://maps.google.com/?cid=15077826149609797394&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.371841,
+    49.967068
+   ],
+   "hours": [
+    [
+     540,
+     1080
+    ],
+    [
+     540,
+     1080
+    ],
+    [
+     540,
+     1080
+    ],
+    [
+     540,
+     1080
+    ],
+    [
+     540,
+     1020
+    ],
+    [
+     540,
+     1080
+    ],
+    [
+     540,
+     1080
+    ]
+   ],
+   "district": "Xətai",
+   "near": "Turş Su Restoranı",
+   "amen": [],
+   "enriched": true
+  },
+  "ChIJUR1GWURjMEARcUt-sK7AQcE": {
+   "id": "ChIJUR1GWURjMEARcUt-sK7AQcE",
+   "name": "Delta Avto servis",
+   "slug": "delta-avto-servis-fde4",
+   "query": "автосервис",
+   "city": "Bakı",
+   "category": "Ремонт и обслуживание автомобилей",
+   "phone": "",
+   "wa": "",
+   "address": "9XJ7+7V7, Баку, Азербайджан",
+   "rating": 4.6,
+   "reviews": 9,
+   "maps": "https://maps.google.com/?cid=13925623379324193649&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.380657,
+    49.964558
+   ],
+   "hours": [
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ]
+   ],
+   "district": "Хатаинский район",
+   "near": "Детский Сад - Индиго",
+   "amen": [],
+   "enriched": true
+  },
+  "ChIJP9Sz4LplMEAR63zmOSXVb14": {
+   "id": "ChIJP9Sz4LplMEAR63zmOSXVb14",
+   "name": "100 avto servise (avto servis)",
+   "slug": "100-avto-servise-avto-servis-c797",
+   "query": "автосервис",
+   "city": "Bakı",
+   "category": "Ремонт и обслуживание автомобилей",
+   "phone": "",
+   "wa": "",
+   "address": "9XC9+HH4, Баку, Азербайджан",
+   "rating": 4.4,
+   "reviews": 9,
+   "maps": "https://maps.google.com/?cid=6804891917842021611&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.371386,
+    49.968947
+   ],
+   "hours": [
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ]
+   ],
+   "district": "Хатаинский район",
+   "near": "Turş Su Restoranı",
+   "amen": [],
+   "enriched": true
+  },
+  "ChIJOYtZEQBjMEARuxg6RY0eIM4": {
+   "id": "ChIJOYtZEQBjMEARuxg6RY0eIM4",
+   "name": "Behmen usta",
+   "slug": "behmen-usta-22e7",
+   "query": "автосервис",
+   "city": "Bakı",
+   "category": "Ремонт и обслуживание автомобилей",
+   "phone": "",
+   "wa": "",
+   "address": "67 Mikayil Aliyev, Baku, Азербайджан",
+   "rating": 5,
+   "reviews": 3,
+   "maps": "https://maps.google.com/?cid=14852905163168553147&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.398706,
+    49.933241
+   ],
+   "hours": [
+    [
+     540,
+     1110
+    ],
+    [
+     540,
+     1110
+    ],
+    [
+     540,
+     1110
+    ],
+    [
+     540,
+     1110
+    ],
+    [
+     540,
+     1110
+    ],
+    [
+     540,
+     1110
+    ],
+    [
+     540,
+     1110
+    ]
+   ],
+   "district": "Nizami",
+   "near": "Колледж Азербайджан Бритиш",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
+  },
+  "ChIJsdO_RABjMEARgENXhZ_VuiM": {
+   "id": "ChIJsdO_RABjMEARgENXhZ_VuiM",
+   "name": "Baku Avto Servis",
+   "slug": "baku-avto-servis-5bfe",
+   "query": "автосервис",
+   "city": "Bakı",
+   "category": "Автосалон",
+   "phone": "",
+   "wa": "",
+   "address": "CW2J+4MW, Mikayil Aliyev, Baku, Азербайджан",
+   "rating": 4.3,
+   "reviews": 6,
+   "maps": "https://maps.google.com/?cid=2574605018109264768&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.400411,
+    49.930843
+   ],
+   "hours": [
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    []
+   ],
+   "district": "Nizami",
+   "near": "Restoran Khachapuri",
+   "amen": [],
+   "enriched": true
+  },
+  "ChIJGZ9aetFlMEARvNiNKlTFbYY": {
+   "id": "ChIJGZ9aetFlMEARvNiNKlTFbYY",
+   "name": "Premium Avto Servis",
+   "slug": "premium-avto-servis-f35e",
+   "query": "автосервис",
+   "city": "Bakı",
+   "category": "Ремонт и обслуживание автомобилей",
+   "phone": "",
+   "wa": "",
+   "address": "9XF6+8MW, 16 Nəsirəddin Tusi, Bakı, Азербайджан",
+   "rating": 3.7,
+   "reviews": 3,
+   "maps": "https://maps.google.com/?cid=9686615338825668796&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.373244,
+    49.961838
+   ],
+   "hours": [
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    []
+   ],
+   "district": "Xətai",
+   "near": "Tusi Hazırlıq Mərkəzi",
+   "amen": [],
+   "enriched": true
+  },
+  "ChIJdXh_vvhjMEARlmNvVT5gmnQ": {
+   "id": "ChIJdXh_vvhjMEARlmNvVT5gmnQ",
+   "name": "Razval Azerbaycan",
+   "slug": "razval-azerbaycan-4b8e",
+   "query": "автосервис",
+   "city": "Bakı",
+   "category": "Ремонт и обслуживание автомобилей",
+   "phone": "+994 51 840 02 00",
+   "wa": "994518400200",
+   "address": "9WR3+MM5, Баку 0010, Азербайджан",
+   "rating": 5,
+   "reviews": 3,
+   "maps": "https://maps.google.com/?cid=8402133875650683798&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.391496,
+    49.904264
+   ],
+   "hours": [
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ]
+   ],
+   "district": "Низаминский район",
+   "near": "Avromed",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
+  },
+  "ChIJsW2zUbiHMEARLPEBzIZ4u0o": {
+   "id": "ChIJsW2zUbiHMEARLPEBzIZ4u0o",
+   "name": "RR100 Avtoyuma",
+   "slug": "rr100-avtoyuma-a9bf",
+   "query": "автомойка",
+   "city": "Bakı",
+   "category": "Автомойка",
+   "phone": "",
+   "wa": "",
+   "address": "190 Abbas Mirzə Şərifzadə küçəsi, Bakı, Азербайджан",
+   "rating": 4,
+   "reviews": 4,
+   "maps": "https://maps.google.com/?cid=5385030299795190060&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.392551,
+    49.804002
+   ],
+   "hours": [
+    [
+     480,
+     1320
+    ],
+    [
+     480,
+     1320
+    ],
+    [
+     480,
+     1320
+    ],
+    [
+     480,
+     1320
+    ],
+    [
+     480,
+     1320
+    ],
+    [
+     480,
+     1320
+    ],
+    [
+     480,
+     1320
+    ]
+   ],
+   "district": "Yasamal",
+   "near": "13 nömrəli tam orta məktəb",
+   "amen": [],
+   "enriched": true
+  },
+  "ChIJZ4_UWwCJMEARLBE7oMgpsSg": {
+   "id": "ChIJZ4_UWwCJMEARLBE7oMgpsSg",
+   "name": "Avto Yuma Sedmoy",
+   "slug": "avto-yuma-sedmoy-1676",
+   "query": "автомойка",
+   "city": "Bakı",
+   "category": "Автомойка",
+   "phone": "+994 70 434 84 00",
+   "wa": "994704348400",
+   "address": "CRHX+X4G, Баку, Азербайджан",
+   "rating": "",
+   "reviews": 0,
+   "maps": "https://maps.google.com/?cid=2932170774053327148&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.429945,
+    49.847833
+   ],
+   "hours": [
+    [
+     480,
+     1440
+    ],
+    [
+     480,
+     1440
+    ],
+    [
+     480,
+     1440
+    ],
+    [
+     480,
+     1440
+    ],
+    [
+     480,
+     1440
+    ],
+    [
+     480,
+     1440
+    ],
+    [
+     480,
+     1440
+    ]
+   ],
+   "district": "Бинагадинский район",
+   "near": "283 Saylı Orta Məktəb",
+   "amen": [],
+   "enriched": true
+  },
+  "ChIJn94kBYNjMEARe5G_IuYFdLs": {
+   "id": "ChIJn94kBYNjMEARe5G_IuYFdLs",
+   "name": "Dental Baku Estetik Clinic",
+   "slug": "dental-baku-estetik-clinic-2b0e",
+   "query": "стоматология",
+   "city": "Bakı",
+   "category": "Стоматологическая клиника",
+   "phone": "+994 99 862 09 00",
+   "wa": "994998620900",
+   "address": "94 Babək Prospekti, Bakı, Азербайджан",
+   "rating": 5,
+   "reviews": 2,
+   "maps": "https://maps.google.com/?cid=13507427668374557051&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "Instagram",
+   "site_url": "https://www.instagram.com/dental.baku.clinic/",
+   "added": "2026-11-28",
+   "loc": [
+    40.39425,
+    49.963668
+   ],
+   "hours": [
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1080
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    []
+   ],
+   "district": "Xətai",
+   "near": "Baku Medical Plaza",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
+  },
+  "ChIJ_3NkQXJ9MEARVhpcnHZDfys": {
+   "id": "ChIJ_3NkQXJ9MEARVhpcnHZDfys",
+   "name": "Dr Nargiz 111",
+   "slug": "dr-nargiz-111-1c46",
+   "query": "стоматология",
+   "city": "Bakı",
+   "category": "Врач",
+   "phone": "+994 51 422 11 11",
+   "wa": "994514221111",
+   "address": "Möhsün Sənani küç, Bakı 1078, Азербайджан",
+   "rating": 5,
+   "reviews": 13,
+   "maps": "https://maps.google.com/?cid=3134298042381638230&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "Instagram",
+   "site_url": "https://www.instagram.com/dr.nargiz.111/",
+   "added": "2026-11-28",
+   "loc": [
+    40.398148,
+    49.83512
+   ],
+   "hours": [
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    [
+     600,
+     1200
+    ],
+    []
+   ],
+   "district": "Nərimanov",
+   "near": "EGE Hospital",
+   "amen": [
+    "card",
+    "parking"
+   ],
+   "enriched": true
+  },
+  "ChIJ-fT_F-L0MEARj2A8p4amsRY": {
+   "id": "ChIJ-fT_F-L0MEARj2A8p4amsRY",
+   "name": "Kafe Bakı",
+   "slug": "kafe-baki-cc54",
+   "query": "кафе",
+   "city": "Bakı",
+   "category": "Кафе",
+   "phone": "",
+   "wa": "",
+   "address": "G2FH+4HW, Нардаран, Азербайджан",
+   "rating": 4.7,
+   "reviews": 15,
+   "maps": "https://maps.google.com/?cid=1635271236973781135&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.522875,
+    50.028957
+   ],
+   "district": "",
+   "near": "Rəhman market",
+   "amen": [
+    "parking",
+    "kids"
+   ],
+   "enriched": true
+  },
+  "ChIJk8ntLwB9MEARlWTnh1aF1jw": {
+   "id": "ChIJk8ntLwB9MEARlWTnh1aF1jw",
+   "name": "Canele.az",
+   "slug": "canele-az-edce",
+   "query": "пекарня",
+   "city": "Bakı",
+   "category": "Пекарня",
+   "phone": "",
+   "wa": "",
+   "address": "60a Aşıq Molla Cümə, Bakı 1072, Азербайджан",
+   "rating": 5,
+   "reviews": 1,
+   "maps": "https://maps.google.com/?cid=4383837893985526933&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.400307,
+    49.868954
+   ],
+   "hours": [
+    [
+     450,
+     1380
+    ],
+    [
+     450,
+     1380
+    ],
+    [
+     450,
+     1380
+    ],
+    [
+     450,
+     1380
+    ],
+    [
+     450,
+     1380
+    ],
+    [
+     450,
+     1380
+    ],
+    [
+     450,
+     1380
+    ]
+   ],
+   "district": "Nərimanov",
+   "near": "Нариман Нариманов",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
+  },
+  "ChIJ8eU-6a59MEARDReM3u90QXI": {
+   "id": "ChIJ8eU-6a59MEARDReM3u90QXI",
+   "name": "Zanobia Patisserie",
+   "slug": "zanobia-patisserie-4f6b",
+   "query": "пекарня",
+   "city": "Bakı",
+   "category": "Кондитерская",
+   "phone": "",
+   "wa": "",
+   "address": "9RFW+HR5, Баку, Азербайджан",
+   "rating": 3.7,
+   "reviews": 3,
+   "maps": "https://maps.google.com/?cid=8232990167389705997&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.373877,
+    49.847123
+   ],
+   "hours": [
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ],
+    [
+     540,
+     1260
+    ]
+   ],
+   "district": "Сабаиль",
+   "near": "Парк Сахиль",
+   "amen": [
+    "card",
+    "takeout"
+   ],
+   "enriched": true
+  },
+  "ChIJRfEZUQB9MEAR4hY2yYrt6vQ": {
+   "id": "ChIJRfEZUQB9MEAR4hY2yYrt6vQ",
+   "name": "Almond cake&bakery",
+   "slug": "almond-cake-bakery-4d9b",
+   "query": "кондитерская",
+   "city": "Bakı",
+   "category": "Пекарня",
+   "phone": "+994 10 236 23 66",
+   "wa": "994102362366",
+   "address": "Kiçik qala, 106 Kichik Qala, Bakı, Азербайджан",
+   "rating": 4.8,
+   "reviews": 36,
+   "maps": "https://maps.google.com/?cid=17648179270141744866&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.368096,
+    49.834386
+   ],
+   "hours": [
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ]
+   ],
+   "district": "Səbail",
+   "near": "Дворец Ширваншахов",
+   "amen": [
+    "card",
+    "takeout"
+   ],
+   "enriched": true
+  },
+  "ChIJF_6Ojjh9MEAR5rUKDcAixGU": {
+   "id": "ChIJF_6Ojjh9MEAR5rUKDcAixGU",
+   "name": "Xonça Patisserie & chocolate",
+   "slug": "xonca-patisserie-chocolate-6c9e",
+   "query": "кондитерская",
+   "city": "Bakı",
+   "category": "Пекарня",
+   "phone": "+994 99 209 85 01",
+   "wa": "994992098501",
+   "address": "11B Rəsul Rza, Bakı 1005, Азербайджан",
+   "rating": 4.6,
+   "reviews": 48,
+   "maps": "https://maps.google.com/?cid=7333024301513881062&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.370859,
+    49.840142
+   ],
+   "hours": [
+    [
+     480,
+     1320
+    ],
+    [
+     480,
+     1320
+    ],
+    [
+     480,
+     1320
+    ],
+    [
+     480,
+     1320
+    ],
+    [
+     480,
+     1320
+    ],
+    [
+     480,
+     1320
+    ],
+    [
+     480,
+     1320
+    ]
+   ],
+   "district": "Səbail",
+   "near": "Malakan",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
+  },
+  "ChIJMfIXzup9MEARAHXHyVrkrAg": {
+   "id": "ChIJMfIXzup9MEARAHXHyVrkrAg",
+   "name": "Euphoria M.B. Şirniyyat",
+   "slug": "euphoria-m-b-sirniyyat-a9c8",
+   "query": "кондитерская",
+   "city": "Bakı",
+   "category": "Ресторан самообслуживания",
+   "phone": "+994 12 539 53 88",
+   "wa": "",
+   "address": "9RG8+FQW, Баку 1141, Азербайджан",
+   "rating": 4.4,
+   "reviews": 20,
+   "maps": "https://maps.google.com/?cid=625125526881137920&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.376239,
+    49.816944
+   ],
+   "district": "Ясамал",
+   "near": "6 Nömrəli Doğum Evi",
+   "amen": [
+    "card",
+    "takeout",
+    "kids"
+   ],
+   "enriched": true
+  },
+  "ChIJBxBFaABlMEARmmZemcUi6qI": {
+   "id": "ChIJBxBFaABlMEARmmZemcUi6qI",
+   "name": "WILL POWER",
+   "slug": "will-power-7a69",
+   "query": "фитнес клуб",
+   "city": "Bakı",
+   "category": "Фитнес-клуб",
+   "phone": "+994 60 211 20 11",
+   "wa": "994602112011",
+   "address": "Xətai r-nu, küç. 69/71 Mahammad Hadi Rd, Baku 1129, Азербайджан",
+   "rating": 4.5,
+   "reviews": 10,
+   "maps": "https://maps.google.com/?cid=11739233610771621530&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.373126,
+    49.956195
+   ],
+   "hours": [
+    [
+     480,
+     1380
+    ],
+    [
+     480,
+     1380
+    ],
+    [
+     480,
+     1380
+    ],
+    [
+     480,
+     1380
+    ],
+    [
+     480,
+     1380
+    ],
+    [
+     480,
+     1380
+    ],
+    [
+     660,
+     1020
+    ]
+   ],
+   "district": "Khatai",
+   "near": "249 saylı orta məktəb",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
+  },
+  "ChIJc-rK7DCHMEARxXF-EN4xhCk": {
+   "id": "ChIJc-rK7DCHMEARxXF-EN4xhCk",
+   "name": "Premium Fitness & Beauty",
+   "slug": "premium-fitness-beauty-b81e",
+   "query": "фитнес клуб",
+   "city": "Bakı",
+   "category": "Спортивный зал",
+   "phone": "+994 50 247 48 78",
+   "wa": "994502474878",
+   "address": "11A Ceyhun Səlimov, Bakı 1078, Азербайджан",
+   "rating": 4.6,
+   "reviews": 16,
+   "maps": "https://maps.google.com/?cid=2991570882310074821&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "Instagram",
+   "site_url": "https://instagram.com/premium_fitness_beauty?igshid=YmMyMTA2M2Y=",
+   "added": "2026-11-28",
+   "loc": [
+    40.400883,
+    49.822047
+   ],
+   "hours": [
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ],
+    [
+     600,
+     1320
+    ]
+   ],
+   "district": "Nəsimi",
+   "near": "\"Рахат\" супермаркет",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
+  },
+  "ChIJyWxkE9l9MEARlioyKGHgnk4": {
+   "id": "ChIJyWxkE9l9MEARlioyKGHgnk4",
+   "name": "The Muscle Club",
+   "slug": "the-muscle-club-0ce2",
+   "query": "фитнес клуб",
+   "city": "Bakı",
+   "category": "Спортивный зал",
+   "phone": "",
+   "wa": "",
+   "address": "Sharifzade Centre, 3 cu mertebe, 118A Abbas Mirzə Şərifzadə küçəsi, Bakı, Азербайджан",
+   "rating": 4.7,
+   "reviews": 9,
+   "maps": "https://maps.google.com/?cid=5665212089169488534&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.383898,
+    49.80393
+   ],
+   "hours": [
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1410
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     420,
+     1380
+    ],
+    [
+     540,
+     1320
+    ],
+    [
+     600,
+     1080
+    ]
+   ],
+   "district": "Yasamal",
+   "near": "Bakı Şeheri Narkoloji Dispanser",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
+  },
+  "ChIJE0d2eXjpXikR9uwfr_XWD4c": {
+   "id": "ChIJE0d2eXjpXikR9uwfr_XWD4c",
+   "name": "Flowers City Baku",
+   "slug": "flowers-city-baku-1816",
+   "query": "цветочный магазин",
+   "city": "Bakı",
+   "category": "Цветочный магазин",
+   "phone": "+994 77 329 35 45",
+   "wa": "994773293545",
+   "address": "176 Səməd Vurğun, Bakı 1022, Азербайджан",
+   "rating": 2.3,
+   "reviews": 4,
+   "maps": "https://maps.google.com/?cid=9732233670464367862&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.394998,
+    49.834191
+   ],
+   "hours": [
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ]
+   ],
+   "district": "Nəsimi",
+   "near": "Азербайджанский Медицинский Университет",
+   "amen": [
+    "card",
+    "delivery"
+   ],
+   "enriched": true
+  },
+  "ChIJaxE5HAR9MEAREigFRMJrFlw": {
+   "id": "ChIJaxE5HAR9MEAREigFRMJrFlw",
+   "name": "By Clean - Professional Quru Təmizləmə",
+   "slug": "by-clean-professional-quru-temizleme-e79e",
+   "query": "химчистка",
+   "city": "Bakı",
+   "category": "Прачечная",
+   "phone": "+994 55 587 85 55",
+   "wa": "994555878555",
+   "address": "249 Nizami St, Baku 1010, Азербайджан",
+   "rating": 5,
+   "reviews": 4,
+   "maps": "https://maps.google.com/?cid=6635609583086020626&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.378887,
+    49.860798
+   ],
+   "hours": [
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     600,
+     1080
+    ]
+   ],
+   "district": "Nasimi",
+   "near": "Школа №27",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
+  },
+  "ChIJPcbQDgB9MEAR7CRP1yLGAmc": {
+   "id": "ChIJPcbQDgB9MEAR7CRP1yLGAmc",
+   "name": "AGNA Quru Təmizləmə",
+   "slug": "agna-quru-temizleme-6cf6",
+   "query": "химчистка",
+   "city": "Bakı",
+   "category": "Прачечная",
+   "phone": "",
+   "wa": "",
+   "address": "20a Əfzələddin Xaqani, Bakı, Азербайджан",
+   "rating": 5,
+   "reviews": 4,
+   "maps": "https://maps.google.com/?cid=7422712988803474668&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.373012,
+    49.843058
+   ],
+   "hours": [
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ]
+   ],
+   "district": "Səbail",
+   "near": "Travel Inn Hostel",
+   "amen": [],
+   "enriched": true
+  },
+  "ChIJi3qIav99MEARnavRLgSW0O4": {
+   "id": "ChIJi3qIav99MEARnavRLgSW0O4",
+   "name": "مغسلة ملابس باكو Baku Laundry",
+   "slug": "baku-laundry-cac3",
+   "query": "химчистка",
+   "city": "Bakı",
+   "category": "Прачечная",
+   "phone": "+994 10 410 22 24",
+   "wa": "994104102224",
+   "address": "22 Rasul Rza, Baku 1001, Азербайджан",
+   "rating": 4.4,
+   "reviews": 13,
+   "maps": "https://maps.google.com/?cid=17208419120892193693&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.373965,
+    49.838272
+   ],
+   "hours": [
+    [
+     660,
+     1380
+    ],
+    [
+     660,
+     1380
+    ],
+    [
+     660,
+     1380
+    ],
+    [
+     660,
+     1380
+    ],
+    [
+     660,
+     1380
+    ],
+    [
+     660,
+     1380
+    ],
+    [
+     660,
+     1380
+    ]
+   ],
+   "district": "Nasimi",
+   "near": "International Medical Center 1",
+   "amen": [],
+   "enriched": true
+  },
+  "ChIJI8apNi99MEAR_AP1l3hoCis": {
+   "id": "ChIJI8apNi99MEAR_AP1l3hoCis",
+   "name": "Cordonnier - ayaqqabı və dəri bərpası",
+   "slug": "cordonnier-ayaqqabi-ve-deri-berpasi-f63a",
+   "query": "химчистка",
+   "city": "Bakı",
+   "category": "Услуги",
+   "phone": "+994 70 252 03 02",
+   "wa": "994702520302",
+   "address": "Əhməd Cəmil 41, Bakı 1100, Азербайджан",
+   "rating": 4.8,
+   "reviews": 102,
+   "maps": "https://maps.google.com/?cid=3101406160552788988&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "Taplink",
+   "site_url": "https://taplink.cc/cordonnier",
+   "added": "2026-11-28",
+   "loc": [
+    40.381109,
+    49.812737
+   ],
+   "hours": [
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     660,
+     1080
+    ]
+   ],
+   "district": "Yasamal",
+   "near": "161 SAYLI UŞAQ BAĞÇASI",
+   "amen": [
+    "parking"
+   ],
+   "enriched": true
+  },
+  "ChIJL-wERQB9MEAR9TS6PB6B06c": {
+   "id": "ChIJL-wERQB9MEAR9TS6PB6B06c",
+   "name": "AMF QURU TƏMİZLƏMƏ",
+   "slug": "amf-quru-temi-zleme-76ef",
+   "query": "химчистка",
+   "city": "Bakı",
+   "category": "Прачечная",
+   "phone": "",
+   "wa": "",
+   "address": "9RH6+QG9, Баку, Азербайджан",
+   "rating": 5,
+   "reviews": 2,
+   "maps": "https://maps.google.com/?cid=12093151391287751925&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.379438,
+    49.811449
+   ],
+   "district": "Ясамал",
+   "near": "Полная средняя школа №53",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
+  },
+  "ChIJMX56DgBjMEAR5LjfReyogDc": {
+   "id": "ChIJMX56DgBjMEAR5LjfReyogDc",
+   "name": "Azercell",
+   "slug": "azercell-f227",
+   "query": "ремонт телефонов",
+   "city": "Bakı",
+   "category": "Услуги",
+   "phone": "",
+   "wa": "",
+   "address": "9WR8+RG8, Babək Prospekti, Bakı, Азербайджан",
+   "rating": "",
+   "reviews": 0,
+   "maps": "https://maps.google.com/?cid=3999382201843038436&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.392042,
+    49.916338
+   ],
+   "district": "Xətai",
+   "near": "Haval Azerbaijan",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
+  },
+  "ChIJNXjcQgB9MEAR0rHfvJhbBeA": {
+   "id": "ChIJNXjcQgB9MEAR0rHfvJhbBeA",
+   "name": "FixMobile",
+   "slug": "fixmobile-b87f",
+   "query": "ремонт телефонов",
+   "city": "Bakı",
+   "category": "Услуги",
+   "phone": "",
+   "wa": "",
+   "address": "9RH6+GG6, Zahid Xəlilov Küçəsi, Bakı, Азербайджан",
+   "rating": "",
+   "reviews": 0,
+   "maps": "https://maps.google.com/?cid=16142409150941344210&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.378776,
+    49.811258
+   ],
+   "district": "Yasamal",
+   "near": "Полная средняя школа №53",
+   "amen": [],
+   "enriched": true
+  },
+  "ChIJHxhsBwB9MEARxZ9MvNuy58M": {
+   "id": "ChIJHxhsBwB9MEARxZ9MvNuy58M",
+   "name": "Həsən telekom",
+   "slug": "hesen-telekom-9211",
+   "query": "ремонт телефонов",
+   "city": "Bakı",
+   "category": "Услуги",
+   "phone": "",
+   "wa": "",
+   "address": "9RMH+V6R, Bəsti Bağırova, Bakı, Азербайджан",
+   "rating": "",
+   "reviews": 0,
+   "maps": "https://maps.google.com/?cid=14116448213842829253&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.384749,
+    49.828017
+   ],
+   "district": "Yasamal",
+   "near": "Азербайджанский Государственный Экономический Университет",
+   "amen": [],
+   "enriched": true
+  },
+  "ChIJE3DPQABjMEARtCHlH0pNy5Q": {
+   "id": "ChIJE3DPQABjMEARtCHlH0pNy5Q",
+   "name": "Foto studiya",
+   "slug": "foto-studiya-be6e",
+   "query": "фотостудия",
+   "city": "Bakı",
+   "category": "Салон сотовой связи",
+   "phone": "",
+   "wa": "",
+   "address": "9XV6+36C, Seyid Əzim Şirvani, Bakı, Азербайджан",
+   "rating": 5,
+   "reviews": 1,
+   "maps": "https://maps.google.com/?cid=10721748318643626420&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.392688,
+    49.960522
+   ],
+   "district": "Xətai",
+   "near": "TAMSTORE",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
+  },
+  "ChIJrfSSifV9MEARiEbV6cb2JEU": {
+   "id": "ChIJrfSSifV9MEARiEbV6cb2JEU",
+   "name": "Wolt Azərbaycan",
+   "slug": "wolt-azerbaycan-69f1",
+   "query": "доставка еды",
+   "city": "Bakı",
+   "category": "Ресторан",
+   "phone": "",
+   "wa": "",
+   "address": "Баку, Азербайджан",
+   "rating": 1.6,
+   "reviews": 121,
+   "maps": "https://maps.google.com/?cid=4982378421965637256&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.383841,
+    49.829546
+   ],
+   "hours": [
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ],
+    [
+     540,
+     1440
+    ]
+   ],
+   "district": "Ясамал",
+   "near": "Азербайджанский Государственный Экономический Университет",
+   "amen": [
+    "card",
+    "delivery",
+    "takeout"
+   ],
+   "enriched": true
+  },
+  "ChIJZ90OQUV9MEARHHUeTNdwm7A": {
+   "id": "ChIJZ90OQUV9MEARHHUeTNdwm7A",
+   "name": "İzmir Kokoreç By Vuqar Abdulkarim",
+   "slug": "i-zmir-kokorec-by-vuqar-abdulkarim-0a66",
+   "query": "доставка еды",
+   "city": "Bakı",
+   "category": "Ресторан ближневосточной кухни",
+   "phone": "+994 77 550 10 10",
+   "wa": "994775501010",
+   "address": "164 Salatın Əsgərova küçəsi, Bakı 1105, Азербайджан",
+   "rating": 4,
+   "reviews": 114,
+   "maps": "https://maps.google.com/?cid=12725889242062812444&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.382148,
+    49.845527
+   ],
+   "hours": [
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ]
+   ],
+   "district": "Nəsimi",
+   "near": "28 May",
+   "amen": [
+    "card",
+    "parking",
+    "delivery",
+    "takeout",
+    "terrace",
+    "kids",
+    "reserve",
+    "breakfast",
+    "wheelchair"
+   ],
+   "enriched": true
+  },
+  "ChIJr0_VwaR9MEAR-Ubm5u5X5Ho": {
+   "id": "ChIJr0_VwaR9MEAR-Ubm5u5X5Ho",
+   "name": "Abay dongesi",
+   "slug": "abay-dongesi-48f6",
+   "query": "стоматологическая клиника",
+   "city": "Bakı",
+   "category": "Стоматологическая клиника",
+   "phone": "",
+   "wa": "",
+   "address": "360 Abay döngəsi, Bakı 1022, Азербайджан",
+   "rating": 2.1,
+   "reviews": 11,
+   "maps": "https://maps.google.com/?cid=8855299450904921849&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.384322,
+    49.834554
+   ],
+   "hours": [
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    [
+     600,
+     1140
+    ],
+    []
+   ],
+   "district": "Nəsimi",
+   "near": "Парк офицеров",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
+  },
+  "ChIJIe9O9_Z9MEAR3uWJ5guzuc0": {
+   "id": "ChIJIe9O9_Z9MEAR3uWJ5guzuc0",
+   "name": "Doctor Dent",
+   "slug": "doctor-dent-266b",
+   "query": "стоматологическая клиника",
+   "city": "Bakı",
+   "category": "Стоматологическая клиника",
+   "phone": "",
+   "wa": "",
+   "address": "2a İzzət Nəbiyev, Bakı 1001, Азербайджан",
+   "rating": 5,
+   "reviews": 5,
+   "maps": "https://maps.google.com/?cid=14824076512160507358&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.359608,
+    49.822548
+   ],
+   "hours": [
+    [
+     540,
+     1140
+    ],
+    [
+     540,
+     1140
+    ],
+    [
+     540,
+     1140
+    ],
+    [
+     540,
+     1140
+    ],
+    [
+     540,
+     1140
+    ],
+    [
+     540,
+     900
+    ],
+    []
+   ],
+   "district": "Səbail",
+   "near": "MediClub Dental",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
+  },
+  "ChIJTZTncAB9MEARAjW3AB-O6dg": {
+   "id": "ChIJTZTncAB9MEARAjW3AB-O6dg",
+   "name": "Great Smile dental clinic",
+   "slug": "great-smile-dental-clinic-f70c",
+   "query": "стоматологическая клиника",
+   "city": "Bakı",
+   "category": "Стоматологическая клиника",
+   "phone": "+994 55 608 80 02",
+   "wa": "994556088002",
+   "address": "9VG8+RWV, 8 Noyabr Prospekti, Bakı, Азербайджан",
+   "rating": "",
+   "reviews": 0,
+   "maps": "https://maps.google.com/?cid=15630180245573154050&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA",
+   "site": "нет",
+   "site_url": "",
+   "added": "2026-11-28",
+   "loc": [
+    40.37711,
+    49.867294
+   ],
+   "hours": [
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    [
+     540,
+     1200
+    ],
+    []
+   ],
+   "district": "Xətai",
+   "near": "Victory Park",
+   "amen": [
+    "card"
+   ],
+   "enriched": true
   }
  },
  "cursor": 10,
- "hunt_cursor": 137,
- "nearby_cursor": 506
+ "hunt_cursor": 164,
+ "nearby_cursor": 586
 }
